@@ -1,7 +1,7 @@
 package yzw.ahaqth.accountbag.modules;
 
+import org.litepal.annotation.Column;
 import org.litepal.crud.LitePalSupport;
-
 import yzw.ahaqth.accountbag.tools.EncryptAndDecrypt;
 
 public class ImageRecord extends LitePalSupport {
@@ -23,4 +23,6 @@ public class ImageRecord extends LitePalSupport {
 
     private String imageFileName;
     private String path;
+    @Column(ignore = true)
+    public boolean isDeleted;
 }

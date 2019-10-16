@@ -9,7 +9,7 @@ public class TextRecord extends LitePalSupport {
     private String key;
     private String content;
     @Column(ignore = true)
-    public boolean isShowValue;
+    public boolean isDeleted;
 
     public String getKey() {
         return EncryptAndDecrypt.decrypt(key);
@@ -26,4 +26,6 @@ public class TextRecord extends LitePalSupport {
     public void setContent(String content) {
         this.content = EncryptAndDecrypt.encrypt(content);
     }
+
+
 }

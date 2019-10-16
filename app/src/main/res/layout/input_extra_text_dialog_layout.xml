@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:drawableLeft="@drawable/ic_text_18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/textview1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="20sp"
+        android:textColor="@color/colorPrimary"
+        android:text="文本信息"/>
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/extra_text_key_ET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:hint="标题"
+        android:inputType="text"
+        app:met_floatingLabelAnimating="true"
+        app:met_primaryColor="@color/colorAccent"
+        app:met_floatingLabelPadding="4dp"
+        app:met_floatingLabel="highlight"
+        app:met_clearButton="true"
+        app:met_helperText="请输入标题或提示"
+        app:met_helperTextAlwaysShown="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textview1" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/extra_text_content_ET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:hint="内容"
+        android:inputType="text"
+        app:met_floatingLabelAnimating="true"
+        app:met_primaryColor="@color/colorAccent"
+        app:met_floatingLabelPadding="4dp"
+        app:met_floatingLabel="highlight"
+        app:met_clearButton="true"
+        app:met_helperText="请输入内容"
+        app:met_helperTextAlwaysShown="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/extra_text_key_ET" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/extra_text_content_ET">
+
+        <TextView
+            android:layout_toStartOf="@+id/confirm"
+            android:id="@+id/cancel"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:gravity="center"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="取消"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/confirm"
+            android:layout_alignParentEnd="true"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:gravity="center"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="确定"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

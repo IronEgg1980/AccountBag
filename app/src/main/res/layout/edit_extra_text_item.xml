@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_marginBottom="4dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/extra_text_key_TV"
+        style="@style/RecordItemTitleTextViewStyle"
+        android:drawableRight="@drawable/clear_black_18dp"
+        android:text="名称"/>
+
+    <TextView
+        android:layout_below="@+id/extra_text_key_TV"
+        android:id="@+id/extra_text_content_TV"
+        style="@style/RecordItemContentTextViewStyle"
+        android:text="内容"/>
+
+<!--    <ImageView-->
+<!--        android:id="@+id/deleted_flag_IV"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="#55000000"-->
+<!--        android:scaleType="centerInside"-->
+<!--        android:src="@drawable/delete_24dp" />-->
+
+<!--    <ImageButton-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_marginEnd="4dp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/dele"-->
+<!--        android:src="@drawable/clear_black_18dp"/>-->
+</RelativeLayout>
