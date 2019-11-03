@@ -62,12 +62,13 @@ public class ShowDetailsActivity extends AppCompatActivity {
     private TextRecordAdapter textRecordAdapter;
     private ImageRecordAdapter imageRecordAdapter;
     private LinearLayoutManager manager;
+    private DividerItemDecoration dividerItemDecoration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
-        setContentView(R.layout.activity_show_details);
+        setContentView(R.layout.temp);
         Intent intent = getIntent();
         if(intent != null){
             id = intent.getLongExtra("id",-1L);
@@ -126,6 +127,10 @@ public class ShowDetailsActivity extends AppCompatActivity {
     private void deleRecord(){
         AccountRecord record = RecordOperator.findOne(id);
         if (record!=null) {
+//            for (ImageRecord imageRecord : record.getImageRecords()) {
+//                ImageOperator.deleImageFile(imageRecord);
+//            }
+//            record.delete();
             RecordOperator.dele(record);
             new ToastFactory(this).showCenterToast("已删除");
             finish();
@@ -133,6 +138,10 @@ public class ShowDetailsActivity extends AppCompatActivity {
     }
 
     private void initialView(){
+//        accountNameGroup = findViewById(R.id.accountNameGroup);
+//        accountPWDGroup = findViewById(R.id.accountPWDGroup);
+//        line = findViewById(R.id.line);
+//        contentCardView = findViewById(R.id.contentCardView);
         accountNameCardView = findViewById(R.id.accountNameCardView);
         accountPWDCardView = findViewById(R.id.accountPWDCardView);
         extraTextCardView = findViewById(R.id.extraTextCardView);
@@ -156,9 +165,11 @@ public class ShowDetailsActivity extends AppCompatActivity {
     }
 
     private void readData(){
+        boolean b2 = false;
         final AccountRecord record = RecordOperator.findOne(id);
         if(record == null)
             return;
+//        setTitle(record.getRecordName());
         recordNameTV.setText(record.getRecordName());
         String createTimeString = "创建时间："+format.format(record.getRecordTime());
         recordTimeTV.setText(createTimeString);
@@ -169,9 +180,13 @@ public class ShowDetailsActivity extends AppCompatActivity {
             modifyTimeTV.setText("");
         }
         if(TextUtils.isEmpty(record.getAccountName())){
+            b2 = true;
+//            accountNameGroup.setVisibility(View.GONE);
             accountNameCardView.setVisibility(View.GONE);
         }else {
+//            accountNameGroup.setVisibility(View.VISIBLE);
             accountNameCardView.setVisibility(View.VISIBLE);
+//            b = false;
             accountNameTV.setText(record.getAccountName());
             copyName.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -182,9 +197,13 @@ public class ShowDetailsActivity extends AppCompatActivity {
             });
         }
         if(TextUtils.isEmpty(record.getAccountPWD())){
+            b2 = true;
+//            accountPWDGroup.setVisibility(View.GONE);
             accountPWDCardView.setVisibility(View.GONE);
         }else {
             accountPWDCardView.setVisibility(View.VISIBLE);
+//            accountPWDGroup.setVisibility(View.VISIBLE);
+//            b = false;
             accountPwdTV.setText("********");
             copyPWD.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -206,13 +225,27 @@ public class ShowDetailsActivity extends AppCompatActivity {
             accountDiscribeTV.setVisibility(View.VISIBLE);
             accountDiscribeTV.setText(record.getDescribe());
         }
+//        if(b)
+//            contentCardView.setVisibility(View.GONE);
+//        else
+//            contentCardView.setVisibility(View.VISIBLE);
+//        if(b2){
+//            line.setVisibility(View.GONE);
+//        }else{
+//            line.setVisibility(View.VISIBLE);
+//        }
         textRecords = record.getTextRecords();
         if(textRecords.size() == 0){
+            manager.setOrientation(LinearLayoutManager.VERTICAL);
+            dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
+            extraImageCardView.setMinimumHeight(800);
             extraTextCardView.setVisibility(View.GONE);
         }else{
             extraTextCardView.setVisibility(View.VISIBLE);
             textRecordAdapter = new TextRecordAdapter(textRecords);
             extraTextRLV.setAdapter(textRecordAdapter);
+            manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.HORIZONTAL);
         }
         imageRecords = record.getImageRecords();
         if(imageRecords.size() == 0){
@@ -234,7 +267,7 @@ public class ShowDetailsActivity extends AppCompatActivity {
             });
             extraImageRLV.setLayoutManager(manager);
             extraImageRLV.setAdapter(imageRecordAdapter);
-            extraImageRLV.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+            extraImageRLV.addItemDecoration(dividerItemDecoration);
         }
     }
 }
