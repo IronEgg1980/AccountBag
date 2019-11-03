@@ -7,10 +7,25 @@
         android:id="@+id/extra_text_key_TV"
         style="@style/RecordItemTitleTextViewStyle"
         android:text="名称"/>
-    <TextView
-        android:id="@+id/extra_text_content_TV"
-        style="@style/RecordItemContentTextViewStyle"
-        android:drawableRight="@drawable/copy_24dp"
-        android:text="内容"/>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/extra_text_content_TV"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:textIsSelectable="true"
+            android:text="内容"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:id="@+id/copy"
+            android:background="@android:color/transparent"
+            android:src="@drawable/copy_24dp"/>
+    </LinearLayout>
 </LinearLayout>

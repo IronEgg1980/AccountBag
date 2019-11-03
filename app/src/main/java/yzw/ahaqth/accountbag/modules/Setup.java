@@ -13,6 +13,10 @@ public class Setup extends LitePalSupport {
         this.value = EncryptAndDecrypt.encrypt(value);
     }
 
+    public long getId(){
+        return getBaseObjId();
+    }
+
     public String getKey() {
         return EncryptAndDecrypt.decrypt(key);
     }

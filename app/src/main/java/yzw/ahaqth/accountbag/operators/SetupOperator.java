@@ -15,6 +15,8 @@ public final class SetupOperator {
     private static final String ID = "phoneid";
     private static final String LAST_VERSION = "lastversion";
     private static final String PWD = "apppassword";
+    private static final String GESTURE_PWD = "gesturepassword";
+    private static final String USER_NAME = "username";
 
     // 获取唯一ID，恢复出厂设置会改变
     private static String getUUID() {
@@ -87,11 +89,36 @@ public final class SetupOperator {
         saveSetupValue(LAST_VERSION,version);
     }
 
+    public static String getUserName(){
+        return getSetupValue(USER_NAME, "");
+    }
+
+    public static void saveUserName(String username){
+        saveSetupValue(USER_NAME,username);
+    }
+
     public static String getPassWord(){
         return getSetupValue(PWD, "");
     }
 
     public static void savePassWord(String pwd){
         saveSetupValue(PWD,pwd);
+    }
+
+    public static String getGesturePassWord(){
+        return getSetupValue(GESTURE_PWD, "");
+    }
+
+    public static void saveGesturePassWord(String gesturePWD){
+        saveSetupValue(GESTURE_PWD,gesturePWD);
+    }
+
+    public static void setInputPassWordMode(int mode){
+        saveSetupValue("inputpasswordmode",mode);
+    }
+
+    public static int getInputPassWordMode(){
+        // 1 - 输入密码；2 - 手势密码
+        return getSetupValue("inputpasswordmode",1);
     }
 }

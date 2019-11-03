@@ -1,6 +1,7 @@
 package yzw.ahaqth.accountbag.inputoredit;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import yzw.ahaqth.accountbag.R;
@@ -63,6 +65,9 @@ public class InputEditExtraTextRecordDialog extends DialogFragment {
 
     @Override
     public void onDismiss(DialogInterface dialog) {
+//        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(keyET.getWindowToken(),1);
         super.onDismiss(dialog);
         onDismiss.onDismiss(isConfirm,key,content);
     }
@@ -124,4 +129,5 @@ public class InputEditExtraTextRecordDialog extends DialogFragment {
         }
         keyET.requestFocus();
     }
+
 }

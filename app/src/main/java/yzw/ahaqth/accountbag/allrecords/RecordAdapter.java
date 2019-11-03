@@ -1,10 +1,7 @@
-package yzw.ahaqth.accountbag.main;
+package yzw.ahaqth.accountbag.allrecords;
 
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +9,13 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
+
 import java.util.List;
 
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
 import yzw.ahaqth.accountbag.modules.AccountRecord;
-import yzw.ahaqth.accountbag.modules.ImageRecord;
-import yzw.ahaqth.accountbag.operators.ImageOperator;
-import yzw.ahaqth.accountbag.operators.RecordOperator;
-import yzw.ahaqth.accountbag.tools.ToastFactory;
-import yzw.ahaqth.accountbag.tools.ToolUtils;
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> {
     private List<AccountRecord> mList;
@@ -53,7 +47,8 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> 
         recordVH.delButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                delClick.click(recordVH.getAdapterPosition());
+//                recordVH.swipeMenuLayout.quickClose();
+                delClick.click(recordVH.getAdapterPosition(),recordVH);
             }
         });
         recordVH.recordNameTV.setText(record.getRecordName());
@@ -155,6 +150,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> 
         private TextView imageExtraTV;
         private TextView textExtraTV;
         private View delButton;
+        private SwipeMenuLayout swipeMenuLayout;
 //        private TextView accountNameTV;
 //        private TextView accountPwdTV;
 
@@ -168,12 +164,17 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> 
             imageExtraTV = itemView.findViewById(R.id.image_extra_TV);
             textExtraTV = itemView.findViewById(R.id.text_extra_TV);
             delButton = itemView.findViewById(R.id.delbutton);
+            swipeMenuLayout = itemView.findViewById(R.id.swipemenu);
 //            accountNameTV = itemView.findViewById(R.id.account_name_TV);
 //            accountPwdTV = itemView.findViewById(R.id.account_pwd_TV);
 //            showPWDTV = itemView.findViewById(R.id.showPWD);
 //            linear1 = itemView.findViewById(R.id.linear1);
 //            linear2 = itemView.findViewById(R.id.linear2);
 
+        }
+
+        public void closeMenu(){
+            swipeMenuLayout.quickClose();
         }
     }
 }

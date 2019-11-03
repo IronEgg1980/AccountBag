@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class TextRecordAdapter extends RecyclerView.Adapter<TextRecordAdapter.Te
         final TextRecord record = mList.get(i);
         textRecordVH.extraTextKeyTV.setText(record.getKey());
         textRecordVH.extraTextContentTV.setText(record.getContent());
-        textRecordVH.extraTextContentTV.setOnClickListener(new View.OnClickListener() {
+        textRecordVH.copyIB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ToolUtils.copy(v.getContext(),record.getContent());
@@ -49,11 +50,13 @@ public class TextRecordAdapter extends RecyclerView.Adapter<TextRecordAdapter.Te
     protected class TextRecordVH extends RecyclerView.ViewHolder{
         private TextView extraTextKeyTV;
         private TextView extraTextContentTV;
+        private ImageButton copyIB;
 
         public TextRecordVH(@NonNull View itemView) {
             super(itemView);
             extraTextKeyTV = itemView.findViewById(R.id.extra_text_key_TV);
             extraTextContentTV = itemView.findViewById(R.id.extra_text_content_TV);
+            copyIB = itemView.findViewById(R.id.copy);
         }
     }
 }

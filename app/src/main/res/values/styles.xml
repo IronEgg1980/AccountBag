@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -51,4 +51,21 @@
         <item name="android:paddingEnd">3dp</item>
         <item name="android:paddingBottom">3dp</item>
     </style>
+
+    <attr name="not_touched_color" format="color"/>
+    <attr name="touched_color" format = "color"/>
+    <attr name = "validate_failed_color" format="color"/>
+    <attr name = "validate_success_color" format = "color"/>
+    <attr name = "count" format = "integer"/>
+    <attr name = "max_time" format="integer"/>
+
+    <declare-styleable name = "GestureView">
+        <attr name="not_touched_color"/>
+        <attr name="touched_color"/>
+        <attr name = "validate_failed_color"/>
+        <attr name = "validate_success_color"/>
+        <attr name = "count"/>
+        <attr name = "max_time"/>
+    </declare-styleable>
+
 </resources>

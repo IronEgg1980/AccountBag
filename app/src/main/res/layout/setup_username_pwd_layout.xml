@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/top_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:gravity="center"
+        android:text="使用前请先设定用户名和密码"/>
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/app_username_ET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:maxLength="20"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp"
+        app:met_helperTextAlwaysShown="true"
+        app:met_helperText="不超过20字符或10个汉字"
+        app:met_clearButton="true"
+        app:met_floatingLabelText="用户名"
+        app:met_floatingLabelAlwaysShown="true"
+        app:met_floatingLabel="highlight"
+        app:met_floatingLabelPadding="4dp"
+        app:met_primaryColor="@color/colorAccent" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/app_pwd_ET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:inputType="textPassword"
+        android:maxLength="20"
+        android:textSize="16sp"
+        app:met_helperTextAlwaysShown="true"
+        app:met_helperText="6-20位字母和数字的组合"
+        app:met_clearButton="true"
+        app:met_floatingLabelText="密码"
+        app:met_floatingLabelAlwaysShown="true"
+        app:met_floatingLabel="highlight"
+        app:met_floatingLabelPadding="4dp"
+        app:met_primaryColor="@color/colorAccent" />
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/app_pwd_confirm_ET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:inputType="textPassword"
+        android:maxLength="20"
+        android:textSize="16sp"
+        app:met_helperTextAlwaysShown="true"
+        app:met_helperText="再输入一次密码"
+        app:met_floatingLabelText="确认密码"
+        app:met_floatingLabelAlwaysShown="true"
+        app:met_floatingLabel="highlight"
+        app:met_clearButton="true"
+        app:met_floatingLabelPadding="4dp"
+        app:met_primaryColor="@color/colorAccent" />
+    <android.support.design.button.MaterialButton
+        android:id="@+id/set_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:textSize="16sp"
+        android:text="设定"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorAccent"
+        app:cornerRadius="8dp"
+        app:rippleColor="@color/colorWhite"
+        />
+</LinearLayout>

@@ -20,12 +20,22 @@ public class AccountRecord extends LitePalSupport {
     private int sortIndex;
     private long recordTime;
     private long modifyTime;
+    private boolean isDeleted;
+    private long deleTime;
     private List<TextRecord> textRecords = new ArrayList<>();
     private List<ImageRecord> imageRecords = new ArrayList<>();
     @Column(ignore = true)
-    private boolean isExpand;
+    public boolean isSeleted = false;
     @Column(ignore = true)
-    private boolean isShowPWD;
+    public boolean isMultiMode = false;
+//    @Column(ignore = true)
+//    private boolean isExpand;
+//    @Column(ignore = true)
+//    private boolean isShowPWD;
+    public AccountRecord(){
+        super();
+        this.isDeleted = false;
+    }
 
     public long getId() {
         return getBaseObjId();
@@ -145,6 +155,22 @@ public class AccountRecord extends LitePalSupport {
         this.modifyTime = modifyTime;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public long getDeleTime() {
+        return deleTime;
+    }
+
+    public void setDeleTime(long deleTime) {
+        this.deleTime = deleTime;
+    }
+
     public List<TextRecord> getTextRecords() {
         return textRecords;
     }
@@ -178,19 +204,19 @@ public class AccountRecord extends LitePalSupport {
         this.imageRecords.remove(position);
     }
 
-    public boolean isExpand() {
-        return isExpand;
-    }
-
-    public void setExpand(boolean expand) {
-        isExpand = expand;
-    }
-
-    public boolean isShowPWD() {
-        return isShowPWD;
-    }
-
-    public void setShowPWD(boolean showPWD) {
-        isShowPWD = showPWD;
-    }
+//    public boolean isExpand() {
+//        return isExpand;
+//    }
+//
+//    public void setExpand(boolean expand) {
+//        isExpand = expand;
+//    }
+//
+//    public boolean isShowPWD() {
+//        return isShowPWD;
+//    }
+//
+//    public void setShowPWD(boolean showPWD) {
+//        isShowPWD = showPWD;
+//    }
 }

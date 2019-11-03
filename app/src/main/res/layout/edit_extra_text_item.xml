@@ -6,15 +6,35 @@
     android:layout_height="wrap_content">
     <TextView
         android:id="@+id/extra_text_key_TV"
-        style="@style/RecordItemTitleTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:textColor="@color/titleTextColor"
         android:drawableRight="@drawable/clear_black_18dp"
         android:text="名称"/>
 
     <TextView
         android:layout_below="@+id/extra_text_key_TV"
         android:id="@+id/extra_text_content_TV"
-        style="@style/RecordItemContentTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:textSize="14sp"
+        android:textColor="@color/contentTextColor"
         android:text="内容"/>
+    <View
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorExtraTextTitleBG"
+        android:layout_below="@id/extra_text_content_TV"/>
 
 <!--    <ImageView-->
 <!--        android:id="@+id/deleted_flag_IV"-->

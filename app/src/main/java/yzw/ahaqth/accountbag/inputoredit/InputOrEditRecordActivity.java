@@ -8,6 +8,7 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.card.MaterialCardView;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -16,14 +17,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 
 import com.hjq.permissions.OnPermission;
@@ -37,6 +42,7 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
@@ -80,7 +86,8 @@ public class InputOrEditRecordActivity extends AppCompatActivity {
     private EditTextRecordAdapter textRecordAdapter;
     private ToastFactory toastFactory;
     private ImagePicker imagePicker;
-
+    private MaterialCardView cardView;
+    private int mHeight,toolBarHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,11 +103,18 @@ public class InputOrEditRecordActivity extends AppCompatActivity {
             }
         });
         prepareData(getIntent());
+        float scale=getResources().getDisplayMetrics().density;
+        toolBarHeight = (int)(56*scale+0.5f);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        Window window = getWindow();
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        mHeight = dm.heightPixels;
         showRcordData();
     }
 
@@ -122,7 +136,8 @@ public class InputOrEditRecordActivity extends AppCompatActivity {
         imagePicker.onActivityResult(this,requestCode,resultCode,data);
     }
 
-    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                                      @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         imagePicker.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
@@ -131,7 +146,7 @@ public class InputOrEditRecordActivity extends AppCompatActivity {
     private void prepareData(Intent intent) {
         long id = intent.getLongExtra("id", -1L);
         imagePicker = new ImagePicker();
-        toastFactory.showCenterToast(id + "");
+//        toastFactory.showCenterToast(id + "");
         accountRecord = RecordOperator.findOne(id);
         if (accountRecord == null) {
             setTitle("新增记录");
@@ -166,6 +181,7 @@ public class InputOrEditRecordActivity extends AppCompatActivity {
     private void initialView() {
         toastFactory = new ToastFactory(this);
         root = findViewById(R.id.root);
+        cardView = findViewById(R.id.text_cardView);
         recordNameET = findViewById(R.id.record_name_ET);
         accountNameTV = findViewById(R.id.account_name_TV);
         accountPwdTV = findViewById(R.id.account_pwd_TV);
@@ -259,8 +275,6 @@ public class InputOrEditRecordActivity extends AppCompatActivity {
         fragment.setOnDismiss(new DialogDismissListener() {
             @Override
             public void onDismiss(boolean isConfirm, Object... objects) {
-                InputMethodManager inputMethodManager =(InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
                 if (isConfirm) {
                     String key = (String) objects[0];
                     String content = (String) objects[1];
@@ -269,6 +283,16 @@ public class InputOrEditRecordActivity extends AppCompatActivity {
                     accountRecord.addTextRecord(record);
                     int c = textRecordAdapter.getItemCount();
                     textRecordAdapter.notifyItemInserted(c);
+                    root.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            extraTextRLV.requestFocus();
+                            int y = cardView.getBottom() + toolBarHeight + 100;
+                            if(y > mHeight) {
+                                root.smoothScrollTo(0, y - mHeight);
+                            }
+                        }
+                    },300);
                 }
             }
         });
@@ -292,28 +316,6 @@ public class InputOrEditRecordActivity extends AppCompatActivity {
         });
         fragment.show(getSupportFragmentManager(), "EditTextRecord");
     }
-
-//    private void showAddImageMenu(View view){
-//        PopupMenu popupMenu = new PopupMenu(this,view);
-//        Menu menu = popupMenu.getMenu();
-//        menu.add(0,1,1,"拍摄");
-//        menu.add(0,2,2,"选择图片");
-//        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                switch (item.getItemId()){
-//                    case 1:
-//                        takePhotoPrepare();
-//                        break;
-//                    case 2:
-//                        choosePhoto();
-//                        break;
-//                }
-//                return true;
-//            }
-//        });
-//        popupMenu.show();
-//    }
 
     private void choosePhoto() {
 //        Intent intentToPickPic = new Intent(Intent.ACTION_PICK, uri);
@@ -356,19 +358,6 @@ public class InputOrEditRecordActivity extends AppCompatActivity {
             }
         });
     }
-
-//    private void cropImage(Uri uri) {
-//        Intent intent = new Intent("com.android.camera.action.CROP");
-//        intent.setDataAndType(uri, "image/*");
-//        intent.putExtra("crop", "true");
-//        intent.putExtra("aspectX", 3);
-//        intent.putExtra("aspectY", 2);
-////        intent.putExtra("outputX", 300);
-////        intent.putExtra("outputY", 200);
-//        intent.putExtra("return-data", true);
-//        intent.putExtra("scale", false);
-//        startActivityForResult(intent, CROP_IMAGE);
-//    }
 
     private void addExtraImage(Uri uri) {
         File image = null;

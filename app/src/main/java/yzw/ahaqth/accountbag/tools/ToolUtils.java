@@ -3,10 +3,21 @@ package yzw.ahaqth.accountbag.tools;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.util.Log;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.Random;
 
+import yzw.ahaqth.accountbag.operators.SetupOperator;
+
 public final class ToolUtils {
+    public static final long ONE_DAY_MILLES = 24 * 60 * 60 * 1000;
+
     public static String getRandomString(int length) {
         String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         Random random = new Random();
@@ -20,6 +31,25 @@ public final class ToolUtils {
     public static String getRandomPassword(){
         int flag = new Random().nextInt(8) + 5;
         return getRandomString(flag);
+    }
+
+    public static String getHelloString(){
+        GregorianCalendar gregorianCalendar = new GregorianCalendar(Locale.CHINA);
+        int hour = gregorianCalendar.get(Calendar.HOUR_OF_DAY);
+        StringBuilder builder = new StringBuilder();
+        if(hour > 18 ){
+            builder.append("晚上");
+        }else if(hour > 12){
+            builder.append("下午");
+        }else if(hour > 7){
+            builder.append("上午");
+        }else if(hour > 4){
+            builder.append("早晨");
+        }else{
+            builder.append("凌晨");
+        }
+        builder.append("好！").append(SetupOperator.getUserName());
+        return builder.toString();
     }
 
     //系统剪贴板-复制:   s为内容
@@ -43,5 +73,38 @@ public final class ToolUtils {
             return clipData.getItemAt(0).getText().toString();
         }
         return null;
+    }
+
+    public static long getAppVersionCode(Context context) {
+        long appVersionCode = 0;
+        try {
+            PackageInfo packageInfo = context.getApplicationContext()
+                    .getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                appVersionCode = packageInfo.getLongVersionCode();
+            } else {
+                appVersionCode = packageInfo.versionCode;
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e("", e.getMessage());
+        }
+        return appVersionCode;
+    }
+
+    /**
+     * 获取当前app version name
+     */
+    public static String getAppVersionName(Context context) {
+        String appVersionName = "";
+        try {
+            PackageInfo packageInfo = context.getApplicationContext()
+                    .getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            appVersionName = packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return appVersionName;
     }
 }

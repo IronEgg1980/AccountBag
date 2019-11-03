@@ -17,6 +17,8 @@ import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -42,14 +44,16 @@ import yzw.ahaqth.accountbag.tools.ToolUtils;
 public class ShowDetailsActivity extends AppCompatActivity {
     private String TAG = "殷宗旺";
 
-    private MaterialEditText accountNameTV;
-    private MaterialEditText accountPwdTV;
+    private TextView accountNameTV;
+    private TextView accountPwdTV;
     private TextView accountDiscribeTV;
     private RecyclerView extraTextRLV;
     private TextView recordTimeTV,modifyTimeTV;
     private RecyclerView extraImageRLV;
     private Toolbar toolbar;
-    private CardView contentCardView,extraTextCardView,extraImageCardView;
+    private CardView accountNameCardView,accountPWDCardView,extraTextCardView,extraImageCardView;
+    private ImageButton copyName,copyPWD,seePWD;
+    private TextView recordNameTV;
 
     private long id;
     private SimpleDateFormat format;
@@ -57,18 +61,21 @@ public class ShowDetailsActivity extends AppCompatActivity {
     private List<ImageRecord> imageRecords;
     private TextRecordAdapter textRecordAdapter;
     private ImageRecordAdapter imageRecordAdapter;
-
+    private LinearLayoutManager manager;
+    private DividerItemDecoration dividerItemDecoration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_details);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        setContentView(R.layout.temp);
         Intent intent = getIntent();
         if(intent != null){
             id = intent.getLongExtra("id",-1L);
         }
         initialView();
         setSupportActionBar(toolbar);
+        setTitle("详细信息");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,18 +127,23 @@ public class ShowDetailsActivity extends AppCompatActivity {
     private void deleRecord(){
         AccountRecord record = RecordOperator.findOne(id);
         if (record!=null) {
-            for (ImageRecord imageRecord : record.getImageRecords()) {
-                ImageOperator.deleImageFile(imageRecord);
-//                Log.d(TAG, "deleRecord: "+imageRecord.getImageFileName());
-            }
-            record.delete();
+//            for (ImageRecord imageRecord : record.getImageRecords()) {
+//                ImageOperator.deleImageFile(imageRecord);
+//            }
+//            record.delete();
+            RecordOperator.dele(record);
             new ToastFactory(this).showCenterToast("已删除");
             finish();
         }
     }
 
     private void initialView(){
-        contentCardView = findViewById(R.id.contentCardView);
+//        accountNameGroup = findViewById(R.id.accountNameGroup);
+//        accountPWDGroup = findViewById(R.id.accountPWDGroup);
+//        line = findViewById(R.id.line);
+//        contentCardView = findViewById(R.id.contentCardView);
+        accountNameCardView = findViewById(R.id.accountNameCardView);
+        accountPWDCardView = findViewById(R.id.accountPWDCardView);
         extraTextCardView = findViewById(R.id.extraTextCardView);
         extraImageCardView  = findViewById(R.id.extraImageCardView);
 //        noteGroup = findViewById(R.id.noteGroup);
@@ -143,17 +155,22 @@ public class ShowDetailsActivity extends AppCompatActivity {
         recordTimeTV = findViewById(R.id.record_time_TV);
         modifyTimeTV = findViewById(R.id.modify_time_TV);
         extraImageRLV = findViewById(R.id.extra_image_RLV);
-        extraImageRLV.setLayoutManager(new LinearLayoutManager(this));
         toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        copyName = findViewById(R.id.copy_account_name);
+        copyPWD = findViewById(R.id.copy_account_pwd);
+        seePWD = findViewById(R.id.show_account_pwd);
+        recordNameTV = findViewById(R.id.record_name_TV);
+        manager = new LinearLayoutManager(this);
     }
 
     private void readData(){
-        boolean b = true;
+        boolean b2 = false;
         final AccountRecord record = RecordOperator.findOne(id);
         if(record == null)
             return;
-        setTitle(record.getRecordName());
+//        setTitle(record.getRecordName());
+        recordNameTV.setText(record.getRecordName());
         String createTimeString = "创建时间："+format.format(record.getRecordTime());
         recordTimeTV.setText(createTimeString);
         if(record.getModifyTime() > 1000){
@@ -163,12 +180,15 @@ public class ShowDetailsActivity extends AppCompatActivity {
             modifyTimeTV.setText("");
         }
         if(TextUtils.isEmpty(record.getAccountName())){
-            accountNameTV.setVisibility(View.GONE);
+            b2 = true;
+//            accountNameGroup.setVisibility(View.GONE);
+            accountNameCardView.setVisibility(View.GONE);
         }else {
-            accountNameTV.setVisibility(View.VISIBLE);
-            b = false;
+//            accountNameGroup.setVisibility(View.VISIBLE);
+            accountNameCardView.setVisibility(View.VISIBLE);
+//            b = false;
             accountNameTV.setText(record.getAccountName());
-            accountNameTV.setOnClickListener(new View.OnClickListener() {
+            copyName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ToolUtils.copy(v.getContext(),record.getAccountName());
@@ -177,16 +197,25 @@ public class ShowDetailsActivity extends AppCompatActivity {
             });
         }
         if(TextUtils.isEmpty(record.getAccountPWD())){
-            accountPwdTV.setVisibility(View.GONE);
+            b2 = true;
+//            accountPWDGroup.setVisibility(View.GONE);
+            accountPWDCardView.setVisibility(View.GONE);
         }else {
-            accountPwdTV.setVisibility(View.VISIBLE);
-            b = false;
-            accountPwdTV.setText(record.getAccountPWD());
-            accountPwdTV.setOnClickListener(new View.OnClickListener() {
+            accountPWDCardView.setVisibility(View.VISIBLE);
+//            accountPWDGroup.setVisibility(View.VISIBLE);
+//            b = false;
+            accountPwdTV.setText("********");
+            copyPWD.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ToolUtils.copy(v.getContext(),record.getAccountPWD());
                     new ToastFactory(v.getContext()).showCenterToast("密码已复制");
+                }
+            });
+            seePWD.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    accountPwdTV.setText(record.getAccountPWD());
                 }
             });
         }
@@ -196,17 +225,27 @@ public class ShowDetailsActivity extends AppCompatActivity {
             accountDiscribeTV.setVisibility(View.VISIBLE);
             accountDiscribeTV.setText(record.getDescribe());
         }
-        if(b)
-            contentCardView.setVisibility(View.GONE);
-        else
-            contentCardView.setVisibility(View.VISIBLE);
+//        if(b)
+//            contentCardView.setVisibility(View.GONE);
+//        else
+//            contentCardView.setVisibility(View.VISIBLE);
+//        if(b2){
+//            line.setVisibility(View.GONE);
+//        }else{
+//            line.setVisibility(View.VISIBLE);
+//        }
         textRecords = record.getTextRecords();
         if(textRecords.size() == 0){
+            manager.setOrientation(LinearLayoutManager.VERTICAL);
+            dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
+            extraImageCardView.setMinimumHeight(800);
             extraTextCardView.setVisibility(View.GONE);
         }else{
             extraTextCardView.setVisibility(View.VISIBLE);
             textRecordAdapter = new TextRecordAdapter(textRecords);
             extraTextRLV.setAdapter(textRecordAdapter);
+            manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.HORIZONTAL);
         }
         imageRecords = record.getImageRecords();
         if(imageRecords.size() == 0){
@@ -220,12 +259,15 @@ public class ShowDetailsActivity extends AppCompatActivity {
                     ImageRecord imageRecord = imageRecords.get(position);
                     Intent intent = new Intent(ShowDetailsActivity.this,ShowLargeImageActivity.class);
                     intent.putExtra("path",ImageOperator.getRealImagePath(imageRecord));
+                    String s = record.getRecordName()+"_图片"+(position+1)+".jpg";
+                    intent.putExtra("name",s);
                     Pair<View,String> pair = new Pair<>((View) values[0],"showLargeImage");
                     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ShowDetailsActivity.this,pair).toBundle());
                 }
             });
+            extraImageRLV.setLayoutManager(manager);
             extraImageRLV.setAdapter(imageRecordAdapter);
-            extraImageRLV.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+            extraImageRLV.addItemDecoration(dividerItemDecoration);
         }
     }
 }

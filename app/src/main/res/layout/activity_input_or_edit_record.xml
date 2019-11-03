@@ -1,173 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/root"
+    android:id="@+id/linear_root"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".details.ShowDetailsActivity">
-    <LinearLayout
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        app:titleTextColor="@color/colorWhite"
+        style="@style/ToolBarStyle" />
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            app:titleTextColor="@color/colorWhite"
-            style="@style/ToolBarStyle" />
-        <com.rengwuxian.materialedittext.MaterialEditText
+        android:layout_height="match_parent"
+        tools:context=".details.ShowDetailsActivity">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="20sp"
-            android:hint="名称"
-            android:inputType="text"
-            app:met_floatingLabelTextSize="20dp"
-            app:met_floatingLabelAnimating="true"
-            app:met_primaryColor="@color/colorAccent"
-            app:met_floatingLabelPadding="4dp"
-            app:met_floatingLabel="highlight"
-            app:met_clearButton="true"
-            app:met_helperText="请给记录取个名字（必填）"
-            app:met_helperTextAlwaysShown="false"
-            android:id="@+id/record_name_ET"/>
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:inputType="textMultiLine"
-            android:id="@+id/account_discribe_TV"
-            android:hint="备注"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            app:met_floatingLabelAnimating="true"
-            app:met_primaryColor="@color/colorAccent"
-            app:met_floatingLabelPadding="4dp"
-            app:met_floatingLabel="highlight"
-            app:met_clearButton="true"
-            app:met_helperText="输入与记录相关的描述信息"
-            app:met_helperTextAlwaysShown="false"
-            />
-
-        <android.support.design.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius = "6dp"
-            app:cardElevation="8dp"
-            android:layout_margin="8dp">
-            <LinearLayout
+            android:orientation="vertical">
+            <com.rengwuxian.materialedittext.MaterialEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    style="@style/RecordItemTitleTextViewStyle"
-                    android:text="账号信息" />
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:inputType="text"
-                    android:hint="用户名"
-                    android:id="@+id/account_name_TV"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    app:met_floatingLabelAnimating="true"
-                    app:met_primaryColor="@color/colorAccent"
-                    app:met_floatingLabelPadding="4dp"
-                    app:met_floatingLabel="highlight"
-                    app:met_clearButton="true"
-                    app:met_helperText="输入要记录的用户名"
-                    app:met_helperTextAlwaysShown="false"/>
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="20sp"
+                android:hint="名称"
+                android:inputType="text"
+                app:met_floatingLabelTextSize="20dp"
+                app:met_floatingLabelAnimating="true"
+                app:met_primaryColor="@color/colorAccent"
+                app:met_floatingLabelPadding="4dp"
+                app:met_floatingLabel="highlight"
+                app:met_clearButton="true"
+                app:met_helperText="请给记录取个名字（必填）"
+                app:met_helperTextAlwaysShown="false"
+                android:id="@+id/record_name_ET"/>
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:inputType="textMultiLine"
+                android:id="@+id/account_discribe_TV"
+                android:hint="备注"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:met_floatingLabelAnimating="true"
+                app:met_primaryColor="@color/colorAccent"
+                app:met_floatingLabelPadding="4dp"
+                app:met_floatingLabel="highlight"
+                app:met_clearButton="true"
+                app:met_helperText="输入与记录相关的描述信息"
+                app:met_helperTextAlwaysShown="false"
+                />
 
+            <android.support.design.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius = "6dp"
+                app:cardElevation="8dp"
+                android:layout_margin="8dp">
                 <LinearLayout
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
+                    <TextView
+                        style="@style/RecordItemTitleTextViewStyle"
+                        android:text="账号信息" />
                     <com.rengwuxian.materialedittext.MaterialEditText
-                        android:id="@+id/account_pwd_TV"
-                        android:layout_width="0dp"
+                        android:inputType="text"
+                        android:hint="用户名"
+                        android:id="@+id/account_name_TV"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:hint="密码"
-                        android:inputType="textVisiblePassword"
                         android:textSize="14sp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
                         app:met_floatingLabelAnimating="true"
                         app:met_primaryColor="@color/colorAccent"
                         app:met_floatingLabelPadding="4dp"
                         app:met_floatingLabel="highlight"
                         app:met_clearButton="true"
-                        app:met_helperText="输入要记录的密码"
+                        app:met_helperText="输入要记录的用户名"
                         app:met_helperTextAlwaysShown="false"/>
-                    <ImageButton
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/random_pwd"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:id="@+id/random_pwd_BT"/>
+
+                    <LinearLayout
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <com.rengwuxian.materialedittext.MaterialEditText
+                            android:id="@+id/account_pwd_TV"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="5"
+                            android:hint="密码"
+                            android:inputType="textVisiblePassword"
+                            android:textSize="14sp"
+                            android:layout_marginStart="8dp"
+                            app:met_floatingLabelAnimating="true"
+                            app:met_primaryColor="@color/colorAccent"
+                            app:met_floatingLabelPadding="4dp"
+                            app:met_floatingLabel="highlight"
+                            app:met_clearButton="true"
+                            app:met_helperText="输入要记录的密码"
+                            app:met_helperTextAlwaysShown="false"/>
+                        <ImageButton
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/random_pwd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:id="@+id/random_pwd_BT"/>
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-        </android.support.design.card.MaterialCardView>
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius = "6dp"
-            app:cardElevation="8dp"
-            android:layout_margin="8dp">
-            <LinearLayout
+            </android.support.design.card.MaterialCardView>
+            <android.support.design.card.MaterialCardView
+                android:id="@+id/text_cardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    style="@style/RecordItemTitleTextViewStyle"
-                    android:text="其他文本信息" />
-                <Button
-                    android:drawableLeft="@drawable/ic_text_18dp"
-                    android:id="@+id/add_extra_text_BT"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="添加"/>
-                <android.support.v7.widget.RecyclerView
-                    android:scrollbars="none"
-                    android:id="@+id/extra_text_RLV"
+                app:cardCornerRadius = "6dp"
+                app:cardElevation="8dp"
+                android:layout_margin="8dp">
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius = "6dp"
-            app:cardElevation="8dp"
-            android:layout_margin="8dp">
-            <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        style="@style/RecordItemTitleTextViewStyle"
+                        android:text="其他文本信息" />
+                    <android.support.v7.widget.RecyclerView
+                        android:focusableInTouchMode="true"
+                        android:focusable="true"
+                        android:scrollbars="none"
+                        android:id="@+id/extra_text_RLV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <Button
+                        android:drawableLeft="@drawable/ic_text_18dp"
+                        android:id="@+id/add_extra_text_BT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="添加"/>
+                </LinearLayout>
+            </android.support.design.card.MaterialCardView>
+            <android.support.design.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    style="@style/RecordItemTitleTextViewStyle"
-                    android:text="图片" />
-                <Button
-                    android:drawableLeft="@drawable/ic_photo_18dp"
-                    android:id="@+id/add_extra_image_BT"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="添加"/>
-                <android.support.v7.widget.RecyclerView
-                    android:scrollbars="none"
-                    android:id="@+id/extra_image_RLV"
+                app:cardCornerRadius = "6dp"
+                app:cardElevation="8dp"
+                android:layout_margin="8dp">
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-    </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        style="@style/RecordItemTitleTextViewStyle"
+                        android:text="图片" />
+                    <android.support.v7.widget.RecyclerView
+                        android:scrollbars="none"
+                        android:focusableInTouchMode="true"
+                        android:focusable="true"
+                        android:id="@+id/extra_image_RLV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <Button
+                        android:drawableLeft="@drawable/ic_photo_18dp"
+                        android:id="@+id/add_extra_image_BT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="添加"/>
+                </LinearLayout>
+            </android.support.design.card.MaterialCardView>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

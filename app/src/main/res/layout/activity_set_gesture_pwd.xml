@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        app:title="设置手势密码"
+        style="@style/ToolBarStyle"
+        app:titleTextColor="@android:color/white" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="请画出手势"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:id="@+id/set_gesturePWD_info_TV"/>
+    <yzw.ahaqth.accountbag.main.GestureView
+        app:not_touched_color="@android:color/darker_gray"
+        app:touched_color="@color/colorPrimary"
+        app:validate_failed_color="@android:color/holo_red_light"
+        app:validate_success_color="@android:color/holo_green_light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/set_gesturePWD_gestureView"
+        android:layout_below="@+id/set_gesturePWD_info_TV"/>
+</LinearLayout>

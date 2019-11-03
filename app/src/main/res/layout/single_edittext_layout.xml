@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:gravity="center_vertical"
+        android:text="    验证密码"
+        android:drawableLeft="@drawable/ic_lock_24dp"
+        android:id="@+id/textview"/>
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:maxLength="20"
+        android:textSize="16sp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        app:met_helperTextAlwaysShown="true"
+        app:met_helperText="请输入密码"
+        app:met_clearButton="true"
+        app:met_floatingLabel="highlight"
+        app:met_floatingLabelPadding="4dp"
+        app:met_primaryColor="@color/colorAccent"
+        android:id="@+id/edittext"/>
+    <android.support.design.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:id="@+id/button"
+        android:text="确定"/>
+</LinearLayout>

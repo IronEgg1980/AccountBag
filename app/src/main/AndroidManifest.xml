@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name="org.litepal.LitePalApplication"
@@ -14,17 +15,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".details.ShowLargeImageActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".inputoredit.InputOrEditRecordActivity" />
-        <activity android:name=".details.ShowDetailsActivity" />
-        <activity android:name=".main.MainActivity">
+        <activity android:name=".allrecords.DeleResumeActivity"></activity>
+        <activity
+            android:name=".allrecords.SetGesturePWDActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".allrecords.SetUserNamePWDActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".main.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".details.ShowLargeImageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".inputoredit.InputOrEditRecordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".details.ShowDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".allrecords.ShowAllRecordActivity" />
         <activity
             android:name="com.linchaolong.android.imagepicker.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
