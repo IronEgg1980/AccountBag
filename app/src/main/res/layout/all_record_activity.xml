@@ -44,8 +44,7 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         android:scrollbarSize="2dp"
-        android:scrollbarStyle="outsideOverlay"
-        android:padding="8dp"/>
+        android:scrollbarStyle="outsideOverlay"/>
     <android.support.design.widget.FloatingActionButton
         app:layout_anchor="@id/recyclerview"
         app:layout_anchorGravity="end|bottom"

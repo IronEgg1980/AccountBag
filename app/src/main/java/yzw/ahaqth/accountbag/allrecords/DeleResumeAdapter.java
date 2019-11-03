@@ -52,8 +52,7 @@ public class DeleResumeAdapter extends RecyclerView.Adapter<DeleResumeAdapter.VH
 
     @Override
     public void onBindViewHolder(@NonNull final VH vh, int i) {
-        final int position = vh.getAdapterPosition();
-        final AccountRecord accountRecord = list.get(position);
+        final AccountRecord accountRecord = list.get(i);
         vh.nameTV.setText(accountRecord.getRecordName());
         long deleTime = accountRecord.getDeleTime();
         int remainDay = 30 - (int) ((System.currentTimeMillis() - deleTime) / ToolUtils.ONE_DAY_MILLES);
@@ -67,7 +66,7 @@ public class DeleResumeAdapter extends RecyclerView.Adapter<DeleResumeAdapter.VH
                 @Override
                 public void onClick(View v) {
                     accountRecord.isSeleted = !accountRecord.isSeleted;
-                    notifyItemChanged(position);
+                    notifyItemChanged(vh.getAdapterPosition());
                 }
             });
             vh.swipeMenuLayout.quickClose();
@@ -83,7 +82,7 @@ public class DeleResumeAdapter extends RecyclerView.Adapter<DeleResumeAdapter.VH
                     }
                     accountRecord.isSeleted = true;
                     notifyDataSetChanged();
-                    longClick.click(position);
+                    longClick.click(vh.getAdapterPosition());
                     return true;
                 }
             });
@@ -91,8 +90,8 @@ public class DeleResumeAdapter extends RecyclerView.Adapter<DeleResumeAdapter.VH
                 @Override
                 public void onClick(View v) {
                     RecordOperator.resumeOne(accountRecord);
-                    list.remove(position);
-                    notifyItemRemoved(position);
+                    list.remove(vh.getAdapterPosition());
+                    notifyItemRemoved(vh.getAdapterPosition());
                     toastFactory.showCenterToast("恢复操作成功");
                 }
             });
@@ -103,9 +102,9 @@ public class DeleResumeAdapter extends RecyclerView.Adapter<DeleResumeAdapter.VH
                             "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    RecordOperator.clear(list.get(position));
-                                    list.remove(position);
-                                    notifyItemRemoved(position);
+                                    RecordOperator.clear(list.get(vh.getAdapterPosition()));
+                                    list.remove(vh.getAdapterPosition());
+                                    notifyItemRemoved(vh.getAdapterPosition());
                                     toastFactory.showCenterToast("已清除该项");
                                 }
                             },

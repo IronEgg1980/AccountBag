@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.card.MaterialCardView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    android:layout_marginStart="4dp"
-    android:layout_marginEnd="4dp"
-    app:cardCornerRadius = "6dp"
-    app:cardElevation="6dp">
+    android:layout_marginTop="4dp"
+    android:layout_marginEnd="4dp">
     <com.mcxtzhang.swipemenulib.SwipeMenuLayout
         android:id="@+id/swipemenu"
         android:layout_height="wrap_content"
@@ -20,64 +16,79 @@
         app:leftSwipe="true"
         app:swipeEnable="true">
         <LinearLayout
+            android:background="@color/colorWhite"
             android:id="@+id/root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
-                android:background="@color/colorWhite"
+            <LinearLayout
                 android:transitionName="mainRecordItem"
-                android:text="名称"
-                android:id="@+id/record_time_TV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:textSize="18sp"
-                android:textColor="@color/contentTextColor"
-                />
+                android:orientation="horizontal">
+                <TextView
+                    android:background="@color/colorWhite"
+                    android:text="名称"
+                    android:id="@+id/record_time_TV"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/contentTextColor"
+                    />
+                <ImageView
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:scaleType="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_favorite_24dp"
+                    android:id="@+id/favoriteIV"/>
+            </LinearLayout>
             <LinearLayout
-                android:padding="4dp"
-                android:background="@color/colorExtraTextTitleBG"
-                android:id="@+id/linear3"
+                android:layout_marginBottom="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
                     android:drawableLeft="@drawable/ic_text_18dp"
                     android:id="@+id/text_extra_TV"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/contentTextColor"
+                    android:textColor="@color/titleTextColor"
                     android:text="  0" />
                 <TextView
                     android:drawableLeft="@drawable/ic_photo_18dp"
                     android:id="@+id/image_extra_TV"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/contentTextColor"
+                    android:textColor="@color/titleTextColor"
                     android:text="  2" />
-                <TextView
-                    android:id="@+id/show_details_TV"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"/>
-                <ImageButton
-                    android:padding="8dp"
-                    android:id="@+id/favorite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_favorite_24dp"/>
             </LinearLayout>
+
         </LinearLayout>
         <!--    以下是菜单内容-->
+        <TextView
+            android:text="收藏"
+            android:gravity="center_vertical"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/colorWhite"
+            android:background="@android:color/holo_blue_light"
+            android:drawableLeft="@drawable/ic_favorite_border_24dp"
+            android:id="@+id/favorite_BT"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -94,4 +105,4 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
     </com.mcxtzhang.swipemenulib.SwipeMenuLayout>
-</android.support.design.card.MaterialCardView>
+</LinearLayout>

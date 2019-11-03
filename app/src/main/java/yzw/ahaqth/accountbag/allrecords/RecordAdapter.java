@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -47,20 +48,13 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> 
         recordVH.delButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                recordVH.swipeMenuLayout.quickClose();
                 delClick.click(recordVH.getAdapterPosition(),recordVH);
             }
         });
-        recordVH.recordNameTV.setText(record.getRecordName());
-        recordVH.root.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clickListener.click(recordVH.getAdapterPosition(), recordVH.recordNameTV, recordVH.root);
-            }
-        });
-        if (record.getSortIndex() > 1) {
-            recordVH.favoriteBT.setImageResource(R.drawable.ic_favorite_24dp);
-            recordVH.favoriteBT.setOnClickListener(new View.OnClickListener() {
+        if(record.getSortIndex() > 1){
+            recordVH.favorite.setVisibility(View.VISIBLE);
+            ((TextView)recordVH.favoriteButton).setText("取消收藏");
+            recordVH.favoriteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     record.setSortIndex(1);
@@ -68,9 +62,10 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> 
                     notifyItemChanged(recordVH.getAdapterPosition());
                 }
             });
-        } else {
-            recordVH.favoriteBT.setImageResource(R.drawable.ic_favorite_border_24dp);
-            recordVH.favoriteBT.setOnClickListener(new View.OnClickListener() {
+        }else{
+            recordVH.favorite.setVisibility(View.GONE);
+            ((TextView)recordVH.favoriteButton).setText("加入收藏");
+            recordVH.favoriteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     record.setSortIndex(100);
@@ -79,63 +74,19 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> 
                 }
             });
         }
-        if (record.getTotalTextCount() == 0)
-            recordVH.textExtraTV.setVisibility(View.GONE);
-        else {
-            recordVH.textExtraTV.setVisibility(View.VISIBLE);
-            String textcount = "  " + record.getTotalTextCount();
-            recordVH.textExtraTV.setText(textcount);
-        }
-//        if(TextUtils.isEmpty(record.getAccountName()))
-//            recordVH.linear1.setVisibility(View.GONE);
-//        else {
-//            recordVH.linear1.setVisibility(View.VISIBLE);
-//            recordVH.accountNameTV.setText(record.getAccountName());
-//            recordVH.accountNameTV.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    ToolUtils.copy(v.getContext(), record.getAccountName());
-//                    new ToastFactory(v.getContext()).showCenterToast("用户名已复制");
-//                }
-//            });
-//        }
-//        if(TextUtils.isEmpty(record.getAccountPWD()))
-//            recordVH.linear2.setVisibility(View.GONE);
-//        else {
-//            recordVH.linear2.setVisibility(View.VISIBLE);
-//            if (record.isShowPWD())
-//                recordVH.accountPwdTV.setText(record.getAccountPWD());
-//            else
-//                recordVH.accountPwdTV.setText("******");
-//            recordVH.accountPwdTV.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    ToolUtils.copy(v.getContext(), record.getAccountPWD());
-//                    new ToastFactory(v.getContext()).showCenterToast("密码已复制");
-//                }
-//            });
-//            recordVH.showPWDTV.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    record.setShowPWD(!record.isShowPWD());
-//                    notifyItemChanged(recordVH.getAdapterPosition());
-//                }
-//            });
-//        }
-//        if (record.getExtraTextCount() == 0)
-//            recordVH.textExtraTV.setVisibility(View.GONE);
-//        else {
-//            recordVH.textExtraTV.setVisibility(View.VISIBLE);
-//            String s1 = "其他信息： " + record.getExtraTextCount();
-//            recordVH.textExtraTV.setText(s1);
-//        }
-        if (record.getExtraImageCount() == 0)
-            recordVH.imageExtraTV.setVisibility(View.GONE);
-        else {
-            recordVH.imageExtraTV.setVisibility(View.VISIBLE);
-            String s2 = "  " + record.getExtraImageCount();
-            recordVH.imageExtraTV.setText(s2);
-        }
+        recordVH.recordNameTV.setText(record.getRecordName());
+        recordVH.root.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickListener.click(recordVH.getAdapterPosition(), recordVH.recordNameTV, recordVH.root);
+            }
+        });
+        recordVH.textExtraTV.setVisibility(View.VISIBLE);
+        String textcount = "\t" + record.getTotalTextCount();
+        recordVH.textExtraTV.setText(textcount);
+        recordVH.imageExtraTV.setVisibility(View.VISIBLE);
+        String s2 = "\t" + record.getExtraImageCount();
+        recordVH.imageExtraTV.setText(s2);
     }
 
     @Override
@@ -144,37 +95,27 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> 
     }
 
     protected class RecordVH extends RecyclerView.ViewHolder {
-        private ImageButton favoriteBT;
+        private ImageView favorite;
         private TextView recordNameTV;
         private LinearLayout root;
         private TextView imageExtraTV;
         private TextView textExtraTV;
-        private View delButton;
+        private View delButton,favoriteButton;
         private SwipeMenuLayout swipeMenuLayout;
-//        private TextView accountNameTV;
-//        private TextView accountPwdTV;
-
-        //        private TextView showPWDTV;
-//        private LinearLayout linear1,linear2;
         public RecordVH(@NonNull View itemView) {
             super(itemView);
-            favoriteBT = itemView.findViewById(R.id.favorite);
+            favorite = itemView.findViewById(R.id.favoriteIV);
             root = itemView.findViewById(R.id.root);
             recordNameTV = itemView.findViewById(R.id.record_time_TV);
             imageExtraTV = itemView.findViewById(R.id.image_extra_TV);
             textExtraTV = itemView.findViewById(R.id.text_extra_TV);
             delButton = itemView.findViewById(R.id.delbutton);
+            favoriteButton = itemView.findViewById(R.id.favorite_BT);
             swipeMenuLayout = itemView.findViewById(R.id.swipemenu);
-//            accountNameTV = itemView.findViewById(R.id.account_name_TV);
-//            accountPwdTV = itemView.findViewById(R.id.account_pwd_TV);
-//            showPWDTV = itemView.findViewById(R.id.showPWD);
-//            linear1 = itemView.findViewById(R.id.linear1);
-//            linear2 = itemView.findViewById(R.id.linear2);
-
         }
 
         public void closeMenu(){
-            swipeMenuLayout.quickClose();
+            swipeMenuLayout.smoothClose();
         }
     }
 }
