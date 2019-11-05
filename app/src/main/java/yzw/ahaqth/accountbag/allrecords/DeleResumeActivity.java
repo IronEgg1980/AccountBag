@@ -12,11 +12,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import yzw.ahaqth.accountbag.BaseActivity;
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
 import yzw.ahaqth.accountbag.tools.DialogFactory;
 
-public class DeleResumeActivity extends AppCompatActivity {
+public class DeleResumeActivity extends BaseActivity {
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private LinearLayout buttonGroup;

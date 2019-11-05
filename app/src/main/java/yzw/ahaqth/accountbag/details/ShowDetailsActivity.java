@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import yzw.ahaqth.accountbag.BaseActivity;
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.inputoredit.InputOrEditRecordActivity;
 import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
@@ -49,7 +50,7 @@ import yzw.ahaqth.accountbag.tools.DialogFactory;
 import yzw.ahaqth.accountbag.tools.ToastFactory;
 import yzw.ahaqth.accountbag.tools.ToolUtils;
 
-public class ShowDetailsActivity extends AppCompatActivity {
+public class ShowDetailsActivity extends BaseActivity {
     private String TAG = "殷宗旺";
 
     private TextView accountNameTV;
@@ -58,11 +59,9 @@ public class ShowDetailsActivity extends AppCompatActivity {
     private RecyclerView extraTextRLV;
     private TextView recordTimeTV,modifyTimeTV;
     private ViewPager extraImageVP;
-//    private RecyclerView extraImageRLV;
     private Toolbar toolbar;
     private LinearLayout accountNameGroup,accPWDGroup;
     private ImageButton copyName,copyPWD,seePWD;
-//    private TextView recordNameTV;
 
     private long id;
     private SimpleDateFormat format;
@@ -70,15 +69,12 @@ public class ShowDetailsActivity extends AppCompatActivity {
     private List<ImageRecord> imageRecords;
     private TextRecordAdapter textRecordAdapter;
     private int currentImageIndex = 0;
-//    private ImageRecordAdapter imageRecordAdapter;
-//    private LinearLayoutManager manager;
-//    private int lastPosition = -1,xOffset = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
-        setContentView(R.layout.temp);
+        setContentView(R.layout.activity_show_details);
         Intent intent = getIntent();
         if(intent != null){
             id = intent.getLongExtra("id",-1L);
@@ -159,16 +155,12 @@ public class ShowDetailsActivity extends AppCompatActivity {
         extraTextRLV.setLayoutManager(new LinearLayoutManager(this));
         recordTimeTV = findViewById(R.id.record_time_TV);
         modifyTimeTV = findViewById(R.id.modify_time_TV);
-//        extraImageRLV = findViewById(R.id.extra_image_RLV);
         toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         copyName = findViewById(R.id.copy_account_name);
         copyPWD = findViewById(R.id.copy_account_pwd);
         seePWD = findViewById(R.id.show_account_pwd);
         extraImageVP = findViewById(R.id.extra_image_VP);
-//        recordNameTV = findViewById(R.id.record_name_TV);
-//        manager = new LinearLayoutManager(this);
-//        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
     }
 
     private void readData(){
@@ -176,7 +168,6 @@ public class ShowDetailsActivity extends AppCompatActivity {
         if(record == null)
             return;
         setTitle(record.getRecordName());
-//        recordNameTV.setText(record.getRecordName());
         String createTimeString = "创建时间："+format.format(record.getRecordTime());
         recordTimeTV.setText(createTimeString);
         if(record.getModifyTime() > 1000){
@@ -217,12 +208,6 @@ public class ShowDetailsActivity extends AppCompatActivity {
                 }
             });
         }
-//        if(TextUtils.isEmpty(record.getDescribe())){
-//            accountDiscribeTV.setVisibility(View.GONE);
-//        }else {
-//            accountDiscribeTV.setVisibility(View.VISIBLE);
-//
-//        }
         String s = "备注：" + record.getDescribe();
         accountDiscribeTV.setText(s);
         textRecords = record.getTextRecords();
@@ -234,37 +219,15 @@ public class ShowDetailsActivity extends AppCompatActivity {
             extraTextRLV.setAdapter(textRecordAdapter);
         }
         imageRecords = record.getImageRecords();
-        extraImageVP.setAdapter(new ImageAdapter());
-        if(currentImageIndex > imageRecords.size() - 1){
-            currentImageIndex = 0;
+        if(imageRecords.size() == 0){
+            extraImageVP.setVisibility(View.GONE);
+        }else {
+            extraImageVP.setAdapter(new ImageAdapter());
+            if (currentImageIndex > imageRecords.size() - 1) {
+                currentImageIndex = 0;
+            }
+            extraImageVP.setCurrentItem(currentImageIndex);
         }
-        extraImageVP.setCurrentItem(currentImageIndex);
-//        if(imageRecords.size() == 0){
-//            extraImageRLV.setVisibility(View.GONE);
-//        }else{
-//            extraImageRLV.setVisibility(View.VISIBLE);
-//            imageRecordAdapter = new ImageRecordAdapter(imageRecords);
-//            imageRecordAdapter.setClickListener(new ItemClickListener() {
-//                @Override
-//                public void click(int position, @Nullable Object... values) {
-//                    View v = manager.getChildAt(0);
-//                    xOffset = Objects.requireNonNull(v).getLeft();
-//                    Log.d(TAG, "xOffset: "+xOffset);
-//                    lastPosition = manager.getPosition(v);
-//                    ImageRecord imageRecord = imageRecords.get(position);
-//                    Intent intent = new Intent(ShowDetailsActivity.this,ShowLargeImageActivity.class);
-//                    intent.putExtra("path",ImageOperator.getRealImagePath(imageRecord));
-//                    String s = record.getRecordName()+"_图片"+(position+1)+".jpg";
-//                    intent.putExtra("name",s);
-//                    Pair<View,String> pair = new Pair<>((View) values[0],"showLargeImage");
-//                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ShowDetailsActivity.this,pair).toBundle());
-//                }
-//            });
-//            extraImageRLV.setLayoutManager(manager);
-//            extraImageRLV.setAdapter(imageRecordAdapter);
-//            manager.scrollToPositionWithOffset(lastPosition,xOffset);
-////            extraImageRLV.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-//        }
     }
     protected class ImageAdapter extends PagerAdapter{
         List<View> views = new ArrayList<>();
@@ -273,7 +236,7 @@ public class ShowDetailsActivity extends AppCompatActivity {
             super();
             for(int i = 0;i<imageRecords.size();i++){
                 final ImageRecord imageRecord = imageRecords.get(i);
-                View view = getLayoutInflater().inflate(R.layout.extra_image_item,null);
+                final View view = getLayoutInflater().inflate(R.layout.extra_image_item,null);
                 final ImageView imageView = view.findViewById(R.id.extra_image_IV);
                 imageView.setImageBitmap(ImageOperator.getRealImage(imageRecord));
                 final int finalI = i;
@@ -283,9 +246,7 @@ public class ShowDetailsActivity extends AppCompatActivity {
                         currentImageIndex = finalI;
                         Intent intent = new Intent(ShowDetailsActivity.this,ShowLargeImageActivity.class);
                         intent.putExtra("path",ImageOperator.getRealImagePath(imageRecord));
-                        String s = System.currentTimeMillis()+".jpg";
-                        intent.putExtra("name",s);
-                        Pair<View,String> pair = new Pair<>(v,"showLargeImage");
+                        Pair<View,String> pair = new Pair<>((View) imageView,"showLargeImage");
                         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ShowDetailsActivity.this,pair).toBundle());
                     }
                 });

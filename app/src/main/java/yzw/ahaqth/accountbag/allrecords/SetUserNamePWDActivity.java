@@ -10,11 +10,12 @@ import android.view.WindowManager;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import yzw.ahaqth.accountbag.BaseActivity;
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.operators.SetupOperator;
 import yzw.ahaqth.accountbag.tools.ToastFactory;
 
-public class SetUserNamePWDActivity extends AppCompatActivity {
+public class SetUserNamePWDActivity extends BaseActivity {
 
     private Toolbar toolbar;
     private MaterialEditText appUsernameET;

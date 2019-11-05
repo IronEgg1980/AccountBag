@@ -2,188 +2,159 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".details.ShowDetailsActivity">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         style="@style/ToolBarStyle"
         app:titleTextColor="@android:color/white" />
+
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedSV"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fadeScrollbars="false"
+        android:scrollbarSize="2dp"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbars="vertical">
+
         <LinearLayout
+            android:id="@+id/linear_root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/rootLinearLayout">
-            <TextView
-                android:transitionName="mainRecordItem"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:gravity="center_vertical"
-                android:textSize="18sp"
-                android:text="记录名称"
-                android:background="@color/colorWhite"
-                android:id="@+id/record_name_TV"/>
-
+            android:orientation="vertical">
             <TextView
                 android:id="@+id/account_discribe_TV"
-                android:text="账户描述"
-                android:textSize="11sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                android:textColor="@color/titleTextColor"/>
+                android:layout_margin="12dp"
+                android:text="账户描述"
+                android:textColor="@color/titleTextColor"
+                android:textSize="11sp" />
+            <android.support.v4.view.ViewPager
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:id="@+id/extra_image_VP"/>
+
+            <!--            <android.support.v7.widget.RecyclerView-->
+            <!--                android:id="@+id/extra_image_RLV"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="240dp"-->
+            <!--                android:layout_marginBottom="12dp"-->
+            <!--                android:fadeScrollbars="false"-->
+            <!--                android:scrollbarSize="2dp"-->
+            <!--                android:scrollbarStyle="insideOverlay"-->
+            <!--                android:scrollbars="horizontal" />-->
 
             <LinearLayout
-                android:layout_marginTop="12dp"
+                android:id="@+id/account_name_Group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/contentLinearLayout">
-                <android.support.design.card.MaterialCardView
-                    app:cardCornerRadius = "6dp"
-                    app:cardElevation="8dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_margin="8dp"
-                    android:id="@+id/accountNameCardView">
-                    <LinearLayout
-                        android:id="@+id/accountNameGroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_marginRight="1dp"
-                            android:background="@color/colorExtraTextTitleBG"
-                            android:layout_width="80dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:paddingStart="8dp"
-                            android:text="用户名："/>
-                        <TextView
-                            android:background="@color/colorWhite"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="match_parent"
-                            android:padding="8dp"
-                            android:textSize="16sp"
-                            android:gravity="center_vertical"
-                            android:textIsSelectable="true"
-                            android:id="@+id/account_name_TV"
-                            android:text="名称"
-                            />
-                        <ImageButton
-                            android:background="@android:color/transparent"
-                            android:paddingEnd="8dp"
-                            android:paddingStart="8dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:id="@+id/copy_account_name"
-                            android:src="@drawable/copy_24dp"/>
-                    </LinearLayout>
-                </android.support.design.card.MaterialCardView>
-                <android.support.design.card.MaterialCardView
-                    app:cardCornerRadius = "6dp"
-                    app:cardElevation="8dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_margin="8dp"
-                    android:id="@+id/accountPWDCardView">
-                    <LinearLayout
-                        android:id="@+id/accountPWDGroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_marginRight="1dp"
-                            android:background="@color/colorExtraTextTitleBG"
-                            android:layout_width="80dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:paddingStart="8dp"
-                            android:text="密码："/>
-                        <TextView
-                            android:background="@color/colorWhite"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="match_parent"
-                            android:padding="8dp"
-                            android:textSize="16sp"
-                            android:gravity="center_vertical"
-                            android:id="@+id/account_pwd_TV"
-                            android:text="123456"
-                            />
-                        <ImageButton
-                            android:background="@android:color/transparent"
-                            android:paddingEnd="8dp"
-                            android:paddingStart="8dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:id="@+id/show_account_pwd"
-                            android:src="@drawable/eye_24dp"/>
-                        <ImageButton
-                            android:background="@android:color/transparent"
-                            android:paddingEnd="8dp"
-                            android:paddingStart="8dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:id="@+id/copy_account_pwd"
-                            android:src="@drawable/copy_24dp"/>
+                android:orientation="vertical">
 
-                    </LinearLayout>
-                </android.support.design.card.MaterialCardView>
-                <android.support.design.card.MaterialCardView
-                    app:cardCornerRadius = "6dp"
-                    app:cardElevation="8dp"
+                <TextView
+                    android:id="@+id/account_name_title_TV"
+                    style="@style/RecordItemTitleTextViewStyle"
+                    android:text="用户名" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:id="@+id/extraTextCardView">
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/extra_text_RLV"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </android.support.design.card.MaterialCardView>
-                <android.support.design.card.MaterialCardView
-                    app:cardCornerRadius = "6dp"
-                    app:cardElevation="8dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:id="@+id/extraImageCardView">
+                    android:orientation="horizontal">
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/extra_image_RLV"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                </android.support.design.card.MaterialCardView>
+                    <TextView
+                        android:id="@+id/account_name_TV"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="12dp"
+                        android:text="用户名"
+                        android:textIsSelectable="true" />
+
+                    <ImageButton
+                        android:id="@+id/copy_account_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:src="@drawable/copy_24dp" />
+                </LinearLayout>
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/account_PWD_Group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/account_PWD_title_TV"
+                    style="@style/RecordItemTitleTextViewStyle"
+                    android:text="密码" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/account_pwd_TV"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="12dp"
+                        android:text="123456"
+                        android:textIsSelectable="true" />
+
+                    <ImageButton
+                        android:id="@+id/show_account_pwd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:src="@drawable/eye_24dp" />
+
+                    <ImageButton
+                        android:id="@+id/copy_account_pwd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:src="@drawable/copy_24dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/extra_text_RLV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/record_time_TV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="end"
                 android:paddingTop="8dp"
                 android:paddingEnd="8dp"
-                android:gravity="end"
                 android:text="创建时间：2019年12月12日 19:00:00"
                 android:textColor="@color/titleTextColor"
-                android:textSize="11sp"/>
+                android:textSize="11sp" />
+
             <TextView
                 android:id="@+id/modify_time_TV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:paddingEnd="8dp"
                 android:gravity="end"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
                 android:text="最近修改：2019年12月12日 19:00:00"
                 android:textColor="@color/titleTextColor"
-                android:textSize="11sp"/>
+                android:textSize="11sp" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

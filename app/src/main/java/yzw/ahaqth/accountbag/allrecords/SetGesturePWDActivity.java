@@ -7,13 +7,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import yzw.ahaqth.accountbag.BaseActivity;
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.interfaces.OnGestureViewValidateListener;
 import yzw.ahaqth.accountbag.main.GestureView;
 import yzw.ahaqth.accountbag.operators.SetupOperator;
 import yzw.ahaqth.accountbag.tools.ToastFactory;
 
-public class SetGesturePWDActivity extends AppCompatActivity {
+public class SetGesturePWDActivity extends BaseActivity {
     private Toolbar toolbar;
     private TextView setGesturePWDInfoTV;
     private GestureView setGesturePWDGestureView;

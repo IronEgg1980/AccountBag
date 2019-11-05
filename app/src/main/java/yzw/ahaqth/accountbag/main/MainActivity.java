@@ -8,13 +8,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ScrollView;
 
+import yzw.ahaqth.accountbag.BaseActivity;
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.modules.AccountRecord;
 import yzw.ahaqth.accountbag.operators.RecordOperator;
 import yzw.ahaqth.accountbag.operators.SetupOperator;
 import yzw.ahaqth.accountbag.tools.ToolUtils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private ScrollView scrollView;
     private FragmentManager fragmentManager;
     @Override

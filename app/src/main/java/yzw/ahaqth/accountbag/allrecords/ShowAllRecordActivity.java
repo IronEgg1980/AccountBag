@@ -25,6 +25,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
+import yzw.ahaqth.accountbag.BaseActivity;
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.details.ShowDetailsActivity;
 import yzw.ahaqth.accountbag.inputoredit.InputOrEditRecordActivity;
@@ -40,7 +41,7 @@ import yzw.ahaqth.accountbag.tools.DialogFactory;
 import yzw.ahaqth.accountbag.tools.ToastFactory;
 import yzw.ahaqth.accountbag.tools.ToolUtils;
 
-public class ShowAllRecordActivity extends AppCompatActivity {
+public class ShowAllRecordActivity extends BaseActivity {
     String TAG = "殷宗旺";
     private FloatingActionButton fab;
     private Toolbar toolbar;

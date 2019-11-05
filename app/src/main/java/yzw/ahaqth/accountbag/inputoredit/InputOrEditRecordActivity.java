@@ -46,6 +46,7 @@ import java.util.Objects;
 
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
+import yzw.ahaqth.accountbag.BaseActivity;
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.interfaces.DialogDismissListener;
 import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
@@ -58,7 +59,7 @@ import yzw.ahaqth.accountbag.operators.RecordOperator;
 import yzw.ahaqth.accountbag.tools.ToastFactory;
 import yzw.ahaqth.accountbag.tools.ToolUtils;
 
-public class InputOrEditRecordActivity extends AppCompatActivity {
+public class InputOrEditRecordActivity extends BaseActivity {
     String TAG = "殷宗旺";
 
     private final int OPEN_ALBUM = 100;

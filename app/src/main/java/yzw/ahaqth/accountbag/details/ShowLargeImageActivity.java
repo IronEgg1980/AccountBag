@@ -7,34 +7,39 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.hjq.permissions.OnPermission;
+import com.hjq.permissions.Permission;
+import com.hjq.permissions.XXPermissions;
+
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.List;
 
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
+import yzw.ahaqth.accountbag.BaseActivity;
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.tools.ToastFactory;
 import yzw.ahaqth.accountbag.tools.ToolUtils;
 
-public class ShowLargeImageActivity extends AppCompatActivity {
-    private String TAG = "ShowLargeImageActivity";
+public class ShowLargeImageActivity extends BaseActivity {
     private Bitmap bitmap;
-    private ImageViewTouch imageView;
-    private String name,path;
+    private String path = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_large_image);
-        name =System.currentTimeMillis() + ".jpg";
         Intent intent = getIntent();
         path = intent.getStringExtra("path");
-        name = intent.getStringExtra("name");
         bitmap = BitmapFactory.decodeFile(path);
-        imageView = findViewById(R.id.imageView);
+        ImageViewTouch imageView = findViewById(R.id.imageView);
         imageView.setImageBitmap(bitmap,null,1f,5f);
         imageView.setDisplayType(ImageViewTouchBase.DisplayType.FIT_WIDTH);
         imageView.setSingleTapListener(new ImageViewTouch.OnImageViewTouchSingleTapListener() {
@@ -64,25 +69,31 @@ public class ShowLargeImageActivity extends AppCompatActivity {
     }
 
     private void exportToAlbum(){
-        ToastFactory toastFactory = new ToastFactory(this);
-        try {
-            MediaStore.Images.Media.insertImage(getContentResolver(),bitmap,name, "导出图片："+name);
-            toastFactory.showCenterToast("已保存");
-        } catch (Exception e) {
-            e.printStackTrace();
-            toastFactory.showCenterToast("保存失败！\n"+e.getMessage());
-        }
-        // 通知图库更新
-        MediaScannerConnection.scanFile(this, new String[]{path}, null,
-                new MediaScannerConnection.OnScanCompletedListener() {
+        final ToastFactory toastFactory = new ToastFactory(this);
+        XXPermissions.with(this)
+                .permission(Permission.Group.STORAGE)
+                .request(new OnPermission() {
                     @Override
-                    public void onScanCompleted(String path, Uri uri) {
-                        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                        mediaScanIntent.setData(uri);
-                        sendBroadcast(mediaScanIntent);
-                    }
-                });
-        // 目标版本号低于23时用下面的代码
+                    public void hasPermission(List<String> granted, boolean isAll) {
+                        if(isAll){
+                            try {
+                                MediaStore.Images.Media.insertImage(getContentResolver(),bitmap,"", "");
+                                toastFactory.showCenterToast("已保存");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                toastFactory.showCenterToast("保存失败！\n"+e.getMessage());
+                            }
+                            // 通知图库更新
+                            MediaScannerConnection.scanFile(ShowLargeImageActivity.this, new String[]{path}, null,
+                                    new MediaScannerConnection.OnScanCompletedListener() {
+                                        @Override
+                                        public void onScanCompleted(String path, Uri uri) {
+                                            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                                            mediaScanIntent.setData(uri);
+                                            sendBroadcast(mediaScanIntent);
+                                        }
+                                    });
+                            // 目标版本号低于23时用下面的代码
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            MediaScannerConnection.scanFile(this, new String[]{path}, null,
 //                    new MediaScannerConnection.OnScanCompletedListener() {
@@ -98,5 +109,13 @@ public class ShowLargeImageActivity extends AppCompatActivity {
 //            File file1 = new File(relationDir);
 //            sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.fromFile(file1.getAbsoluteFile())));
 //        }
+                        }
+                    }
+
+                    @Override
+                    public void noPermission(List<String> denied, boolean quick) {
+                        toastFactory.showCenterToast("已拒绝授权，不能保存");
+                    }
+                });
     }
 }
