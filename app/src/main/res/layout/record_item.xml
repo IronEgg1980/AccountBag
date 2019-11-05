@@ -38,7 +38,7 @@
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:textSize="18sp"
-                    android:textColor="@color/contentTextColor"
+                    android:textColor="#000000"
                     />
                 <ImageView
                     android:layout_marginTop="8dp"

@@ -14,6 +14,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 
@@ -128,10 +129,12 @@ public class ShowAllRecordActivity extends AppCompatActivity {
             @Override
             public void click(int position, @Nullable Object... values) {
                 AccountRecord accountRecord = list.get(position);
-                Pair<View, String> pair1 = new Pair<>((View) values[0], "mainRecordItem");
+//                Pair<View, String> pair1 = new Pair<>((View) values[0], "mainRecordItem");
                 Intent intent = new Intent(ShowAllRecordActivity.this, ShowDetailsActivity.class);
                 intent.putExtra("id", accountRecord.getId());
-                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ShowAllRecordActivity.this, pair1).toBundle());
+                View view = (View) values[1];
+                int startX = 0,startY = view.getMeasuredHeight() / 2;
+                startActivity(intent, ActivityOptions.makeScaleUpAnimation(view,startX,startY,view.getMeasuredWidth(),0).toBundle());
             }
         });
         adapter.setDelClick(new ItemClickListener() {
@@ -192,6 +195,7 @@ public class ShowAllRecordActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
         if (isAddRecord) {
             recyclerview.scrollToPosition(adapter.getItemCount() - 1);
+            isAddRecord = false;
         }
         if (fab.getVisibility() != View.VISIBLE)
             fab.show();
