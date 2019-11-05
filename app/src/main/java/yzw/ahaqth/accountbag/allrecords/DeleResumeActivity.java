@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +22,8 @@ public class DeleResumeActivity extends BaseActivity {
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private LinearLayout buttonGroup;
-    private LinearLayout infoGroup;
+    private AppCompatTextView infoTV;
+//    private LinearLayout infoGroup;
     private DeleResumeAdapter adapter;
     private boolean isMultiMode;
     @Override
@@ -37,6 +39,7 @@ public class DeleResumeActivity extends BaseActivity {
                 finish();
             }
         });
+        infoTV = findViewById(R.id.info_TV);
         recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
@@ -45,14 +48,14 @@ public class DeleResumeActivity extends BaseActivity {
             @Override
             public void click(int position, @Nullable Object... values) {
                 isMultiMode = true;
-                infoGroup.setVisibility(View.GONE);
+                infoTV.setVisibility(View.GONE);
                 buttonGroup.setVisibility(View.VISIBLE);
             }
         });
         recyclerView.setAdapter(adapter);
         buttonGroup = findViewById(R.id.button_group);
         buttonGroup.setVisibility(View.GONE);
-        infoGroup = findViewById(R.id.info_Group);
+//        infoGroup = findViewById(R.id.info_Group);
         findViewById(R.id.resume_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,12 +83,12 @@ public class DeleResumeActivity extends BaseActivity {
                 cancelMultiMode();
             }
         });
-        findViewById(R.id.close_info_Group).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                infoGroup.setVisibility(View.GONE);
-            }
-        });
+//        findViewById(R.id.close_info_Group).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                infoGroup.setVisibility(View.GONE);
+//            }
+//        });
     }
 
     private void cancelMultiMode(){

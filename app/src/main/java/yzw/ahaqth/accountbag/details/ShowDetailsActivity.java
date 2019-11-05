@@ -38,6 +38,7 @@ import java.util.Objects;
 
 import yzw.ahaqth.accountbag.BaseActivity;
 import yzw.ahaqth.accountbag.R;
+import yzw.ahaqth.accountbag.ViewPagerIndicator;
 import yzw.ahaqth.accountbag.inputoredit.InputOrEditRecordActivity;
 import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
 import yzw.ahaqth.accountbag.modules.AccountRecord;
@@ -59,6 +60,7 @@ public class ShowDetailsActivity extends BaseActivity {
     private RecyclerView extraTextRLV;
     private TextView recordTimeTV,modifyTimeTV;
     private ViewPager extraImageVP;
+    private ViewPagerIndicator indicator;
     private Toolbar toolbar;
     private LinearLayout accountNameGroup,accPWDGroup;
     private ImageButton copyName,copyPWD,seePWD;
@@ -161,6 +163,7 @@ public class ShowDetailsActivity extends BaseActivity {
         copyPWD = findViewById(R.id.copy_account_pwd);
         seePWD = findViewById(R.id.show_account_pwd);
         extraImageVP = findViewById(R.id.extra_image_VP);
+        indicator = findViewById(R.id.viewpagerIndicator);
     }
 
     private void readData(){
@@ -222,11 +225,13 @@ public class ShowDetailsActivity extends BaseActivity {
         if(imageRecords.size() == 0){
             extraImageVP.setVisibility(View.GONE);
         }else {
+            extraImageVP.setVisibility(View.VISIBLE);
             extraImageVP.setAdapter(new ImageAdapter());
             if (currentImageIndex > imageRecords.size() - 1) {
                 currentImageIndex = 0;
             }
             extraImageVP.setCurrentItem(currentImageIndex);
+            indicator.setViewPager(extraImageVP);
         }
     }
     protected class ImageAdapter extends PagerAdapter{

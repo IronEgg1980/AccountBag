@@ -34,10 +34,35 @@
                 android:text="账户描述"
                 android:textColor="@color/titleTextColor"
                 android:textSize="11sp" />
-            <android.support.v4.view.ViewPager
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
-                android:id="@+id/extra_image_VP"/>
+                android:id="@+id/framelayout">
+                <android.support.v4.view.ViewPager
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/extra_image_VP"/>
+                <LinearLayout
+                    android:layout_marginBottom="24dp"
+                    android:layout_gravity="bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="8dp"/>
+                    <yzw.ahaqth.accountbag.ViewPagerIndicator
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/viewpagerIndicator"/>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="8dp"/>
+                </LinearLayout>
+            </FrameLayout>
+
 
             <!--            <android.support.v7.widget.RecyclerView-->
             <!--                android:id="@+id/extra_image_RLV"-->
@@ -50,6 +75,7 @@
             <!--                android:scrollbars="horizontal" />-->
 
             <LinearLayout
+                android:background="@color/colorWhite"
                 android:id="@+id/account_name_Group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -86,6 +112,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:background="@color/colorWhite"
                 android:id="@+id/account_PWD_Group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -131,6 +158,7 @@
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
+                android:background="@color/colorWhite"
                 android:id="@+id/extra_text_RLV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

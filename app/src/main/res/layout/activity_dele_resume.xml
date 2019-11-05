@@ -25,37 +25,51 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-    <LinearLayout
-        android:id="@+id/info_Group"
+<!--    <LinearLayout-->
+<!--        android:id="@+id/info_Group"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="4dp"-->
+<!--        android:layout_marginEnd="4dp"-->
+<!--        android:layout_marginBottom="16dp"-->
+<!--        android:background="@android:color/darker_gray"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:paddingStart="8dp"-->
+<!--        android:paddingEnd="4dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/recyclerview"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent">-->
+
+<!--        <TextView-->
+<!--            android:padding="8dp"-->
+<!--            android:id="@+id/info_TV"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:textColor="@color/colorWhite"-->
+<!--            android:text="已删除项目在回收站内保留30天，30天后自动清除。向左滑动项目显示操作菜单，长按项目开启批量操作。" />-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/close_info_Group"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:src="@drawable/clear_black_18dp" />-->
+<!--    </LinearLayout>-->
+    <yzw.ahaqth.accountbag.CloseableTextView
+        android:id="@+id/info_TV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="16dp"
-        android:background="@android:color/darker_gray"
-        android:orientation="horizontal"
-        android:paddingStart="8dp"
-        android:paddingEnd="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:padding="8dp"
+        android:background="@color/titleTextColor"
+        android:text="已删除项目在回收站内保留30天，30天后自动清除。向左滑动项目显示操作菜单，长按项目开启批量操作。"
+        android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerview"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:padding="8dp"
-            android:id="@+id/info_TV"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/colorWhite"
-            android:text="已删除项目在回收站内保留30天，30天后自动清除。向左滑动项目显示操作菜单，长按项目开启批量操作。" />
-
-        <ImageButton
-            android:id="@+id/close_info_Group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:src="@drawable/clear_black_18dp" />
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:id="@+id/button_group"
@@ -77,10 +91,7 @@
             android:background="@android:color/holo_green_light"
             android:drawableLeft="@drawable/ic_restore_24dp"
             android:gravity="center"
-            android:paddingStart="20dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="8dp"
+            android:padding="8dp"
             android:text="全部恢复"
             android:textColor="@color/colorWhite" />
 
@@ -92,10 +103,7 @@
             android:background="@android:color/holo_red_light"
             android:drawableLeft="@drawable/delete_24dp"
             android:gravity="center"
-            android:paddingStart="20dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="8dp"
+            android:padding="8dp"
             android:text="全部清除"
             android:textColor="@color/colorWhite" />
 
@@ -106,10 +114,7 @@
             android:layout_weight="1"
             android:background="@android:color/darker_gray"
             android:gravity="center"
-            android:paddingStart="24dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="24dp"
-            android:paddingBottom="8dp"
+            android:padding="8dp"
             android:text="取消操作"
             android:textColor="@color/colorWhite" />
     </LinearLayout>
