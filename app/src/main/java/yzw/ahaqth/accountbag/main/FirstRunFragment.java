@@ -1,5 +1,6 @@
 package yzw.ahaqth.accountbag.main;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.operators.SetupOperator;
+import yzw.ahaqth.accountbag.tools.DialogFactory;
 import yzw.ahaqth.accountbag.tools.ToastFactory;
 
 public class FirstRunFragment extends Fragment {
@@ -84,7 +86,18 @@ public class FirstRunFragment extends Fragment {
         }
         SetupOperator.saveUserName(userName);
         SetupOperator.savePassWord(s1);
-        new ToastFactory(getContext()).showCenterToast("设置成功");
-        activity.changeToInputMode();
+        new DialogFactory(getContext()).showWarningDialog("安全设置", "用户名和密码设置成功！是否现在设置手势密码？",
+                "去设置", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        activity.changeToSetGesturePWD();
+                    }
+                },
+                "以后再说", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        activity.changeToInputMode();
+                    }
+                });
     }
 }

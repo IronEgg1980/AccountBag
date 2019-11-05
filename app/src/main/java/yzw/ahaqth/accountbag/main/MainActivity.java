@@ -29,15 +29,23 @@ public class MainActivity extends BaseActivity {
             fragmentManager.beginTransaction().replace(R.id.fragment_group, new FirstRunFragment()).commit();
         }else {
             if(mode == 1)
-                fragmentManager.beginTransaction().replace(R.id.fragment_group,new InputPassWordFragment()).commit();
+                changeToInputMode();
             else if(mode == 2)
-                fragmentManager.beginTransaction().replace(R.id.fragment_group,new GesturePassWordFragment()).commit();
+                changeToGestureMode();
         }
         update();
     }
 
+    public void changeToGestureMode(){
+        fragmentManager.beginTransaction().replace(R.id.fragment_group,new GesturePassWordFragment()).commit();
+    }
+
     public void changeToInputMode(){
         fragmentManager.beginTransaction().replace(R.id.fragment_group,new InputPassWordFragment()).commit();
+    }
+
+    public void changeToSetGesturePWD(){
+        fragmentManager.beginTransaction().replace(R.id.fragment_group,new GesturePWDSetFragmet()).commit();
     }
 
     public void scrollToBottom(){

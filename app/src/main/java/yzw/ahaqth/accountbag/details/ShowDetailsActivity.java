@@ -5,18 +5,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,19 +22,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.rengwuxian.materialedittext.MaterialEditText;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import yzw.ahaqth.accountbag.BaseActivity;
 import yzw.ahaqth.accountbag.R;
-import yzw.ahaqth.accountbag.ViewPagerIndicator;
+import yzw.ahaqth.accountbag.custom_views.ViewPagerPointIndicator;
 import yzw.ahaqth.accountbag.inputoredit.InputOrEditRecordActivity;
-import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
 import yzw.ahaqth.accountbag.modules.AccountRecord;
 import yzw.ahaqth.accountbag.modules.ImageRecord;
 import yzw.ahaqth.accountbag.modules.TextRecord;
@@ -60,7 +50,7 @@ public class ShowDetailsActivity extends BaseActivity {
     private RecyclerView extraTextRLV;
     private TextView recordTimeTV,modifyTimeTV;
     private ViewPager extraImageVP;
-    private ViewPagerIndicator indicator;
+    private ViewPagerPointIndicator indicator;
     private Toolbar toolbar;
     private LinearLayout accountNameGroup,accPWDGroup;
     private ImageButton copyName,copyPWD,seePWD;

@@ -19,6 +19,7 @@ import java.util.Objects;
 
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.allrecords.ShowAllRecordActivity;
+import yzw.ahaqth.accountbag.custom_views.GestureView;
 import yzw.ahaqth.accountbag.interfaces.OnGestureViewValidateListener;
 import yzw.ahaqth.accountbag.operators.SetupOperator;
 import yzw.ahaqth.accountbag.tools.ToastFactory;

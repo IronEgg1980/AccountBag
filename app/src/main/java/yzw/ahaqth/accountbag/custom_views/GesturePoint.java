@@ -1,4 +1,4 @@
-package yzw.ahaqth.accountbag.main;
+package yzw.ahaqth.accountbag.custom_views;
 
 import android.content.Context;
 import android.graphics.Canvas;

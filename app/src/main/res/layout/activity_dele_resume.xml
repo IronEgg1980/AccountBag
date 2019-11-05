@@ -56,7 +56,7 @@
 <!--            android:background="@android:color/transparent"-->
 <!--            android:src="@drawable/clear_black_18dp" />-->
 <!--    </LinearLayout>-->
-    <yzw.ahaqth.accountbag.CloseableTextView
+    <yzw.ahaqth.accountbag.custom_views.CloseableTextView
         android:id="@+id/info_TV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
