@@ -10,9 +10,9 @@ import android.view.MotionEvent;
 
 public class CloseableTextView extends android.support.v7.widget.AppCompatTextView {
     private Paint mPaint;
-    private int padding = 40;
+    private int padding = 30;
     private int closeButtonSize = 25;
-    private int buttonX1,buttonY1;
+    private int line1X,line1Y,line2X,line2Y;
     int left,right,top,bottom;
     public CloseableTextView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -29,12 +29,14 @@ public class CloseableTextView extends android.support.v7.widget.AppCompatTextVi
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        buttonX1 = getRight() - padding - closeButtonSize;
-        buttonY1 = padding / 2;
+        line1X = getRight() - closeButtonSize - padding;
+        line1Y = padding;
+        line2X = line1X;
+        line2Y = line1Y + closeButtonSize;
         setPadding(left,top,right,bottom);
-        canvas.drawRect(buttonX1-5,buttonY1-5,(buttonX1+closeButtonSize+5),(buttonY1 + closeButtonSize+5),mPaint);
-        canvas.drawLine(buttonX1,buttonY1,(buttonX1+closeButtonSize),(buttonY1 + closeButtonSize),mPaint);
-        canvas.drawLine(buttonX1,(buttonY1+closeButtonSize),(buttonX1+closeButtonSize),buttonY1,mPaint);
+        canvas.drawRect(line1X-10,line1Y-10,(line1X+closeButtonSize+10),(line1Y + closeButtonSize+10),mPaint);
+        canvas.drawLine(line1X,line1Y,(line1X+closeButtonSize),(line1Y + closeButtonSize),mPaint);
+        canvas.drawLine(line2X,line2Y,line2X + closeButtonSize,line2Y - closeButtonSize,mPaint);
     }
 
     @Override
@@ -46,7 +48,7 @@ public class CloseableTextView extends android.support.v7.widget.AppCompatTextVi
             case MotionEvent.ACTION_MOVE:
                 break;
             case MotionEvent.ACTION_UP:
-                if (event.getX()>=buttonX1 && event.getY()<=buttonY1 + closeButtonSize){
+                if (event.getX()>=line1X && event.getY()<=line1Y + closeButtonSize){
                     setVisibility(GONE);
                 }
                 break;
