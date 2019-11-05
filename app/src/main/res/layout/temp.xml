@@ -34,16 +34,20 @@
                 android:text="账户描述"
                 android:textColor="@color/titleTextColor"
                 android:textSize="11sp" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/extra_image_RLV"
+            <android.support.v4.view.ViewPager
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
-                android:layout_marginBottom="12dp"
-                android:fadeScrollbars="false"
-                android:scrollbarSize="2dp"
-                android:scrollbarStyle="insideOverlay"
-                android:scrollbars="horizontal" />
+                android:id="@+id/extra_image_VP"/>
+
+<!--            <android.support.v7.widget.RecyclerView-->
+<!--                android:id="@+id/extra_image_RLV"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="240dp"-->
+<!--                android:layout_marginBottom="12dp"-->
+<!--                android:fadeScrollbars="false"-->
+<!--                android:scrollbarSize="2dp"-->
+<!--                android:scrollbarStyle="insideOverlay"-->
+<!--                android:scrollbars="horizontal" />-->
 
             <LinearLayout
                 android:id="@+id/account_name_Group"
