@@ -1,5 +1,6 @@
 package yzw.ahaqth.accountbag.main;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -32,6 +34,13 @@ public class FirstRunFragment extends Fragment {
         View view = inflater.inflate(R.layout.setup_username_pwd_layout,container,false);
         initialView(view);
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        appUsernameET.setShowSoftInputOnFocus(true);
+        appUsernameET.requestFocus();
     }
 
     private void initialView(View view){
@@ -90,6 +99,8 @@ public class FirstRunFragment extends Fragment {
                 "去设置", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        InputMethodManager manager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        manager.hideSoftInputFromWindow(appPwdConfirmET.getWindowToken(),0);
                         activity.changeToSetGesturePWD();
                     }
                 },

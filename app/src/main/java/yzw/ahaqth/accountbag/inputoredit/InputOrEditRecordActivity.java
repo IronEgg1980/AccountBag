@@ -150,7 +150,7 @@ public class InputOrEditRecordActivity extends BaseActivity {
 //        toastFactory.showCenterToast(id + "");
         accountRecord = RecordOperator.findOne(id);
         if (accountRecord == null) {
-            setTitle("新增记录");
+            setTitle("新建");
             accountRecord = new AccountRecord();
             mode = 1; // add record
             recordName = "";
@@ -158,7 +158,7 @@ public class InputOrEditRecordActivity extends BaseActivity {
             accountPWD = "";
             describe = "";
         } else {
-            setTitle("修改记录");
+            setTitle("修改");
             mode = 2;// edit record
             recordName = accountRecord.getRecordName();
             accountName = accountRecord.getAccountName();
@@ -342,7 +342,7 @@ public class InputOrEditRecordActivity extends BaseActivity {
             public void cropConfig(CropImage.ActivityBuilder builder) {
                 builder
                         // 是否启动多点触摸
-                        .setMultiTouchEnabled(false)
+                        .setMultiTouchEnabled(true)
                         // 设置网格显示模式
                         .setGuidelines(CropImageView.Guidelines.ON)
                         // 圆形/矩形

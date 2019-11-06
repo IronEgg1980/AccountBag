@@ -2,8 +2,6 @@ package yzw.ahaqth.accountbag.main;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ScrollView;
@@ -49,7 +47,13 @@ public class MainActivity extends BaseActivity {
     }
 
     public void scrollToBottom(){
-        scrollView.fullScroll(View.FOCUS_DOWN); // 底部
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.smoothScrollBy(0,250);
+            }
+        },100);
+//        scrollView.fullScroll(View.FOCUS_DOWN); // 底部
 //        scrollView.fullScroll(View.FOCUS_UP); // 顶部
     }
 

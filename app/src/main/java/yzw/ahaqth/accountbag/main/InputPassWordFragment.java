@@ -69,7 +69,8 @@ public class InputPassWordFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        appPwdET.setShowSoftInputOnFocus(true);
+        appPwdET.requestFocus();
     }
 
     private void enterApp(){

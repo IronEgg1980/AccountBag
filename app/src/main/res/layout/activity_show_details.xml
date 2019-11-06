@@ -42,26 +42,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/extra_image_VP"/>
-                <LinearLayout
+                <yzw.ahaqth.accountbag.custom_views.ViewPagerPointIndicator
+                    android:layout_gravity="center_horizontal|bottom"
                     android:layout_marginBottom="24dp"
-                    android:layout_gravity="bottom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="8dp"/>
-                    <yzw.ahaqth.accountbag.custom_views.ViewPagerPointIndicator
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#38000000"
-                        android:id="@+id/viewpagerIndicator"/>
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="8dp"/>
-                </LinearLayout>
+                    android:id="@+id/viewpagerIndicator"/>
             </FrameLayout>
 
 

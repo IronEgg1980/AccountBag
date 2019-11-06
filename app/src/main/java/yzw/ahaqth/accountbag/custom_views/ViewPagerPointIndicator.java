@@ -26,15 +26,22 @@ public class ViewPagerPointIndicator extends View {
     private int pointRadius = 10;
     private int pointMargin = pointRadius * 2 + 20;
     private int paintStrokeWidth = 2;
-    private Paint normalPaint, currentPaint;
+    private Paint normalPaint, bgPaint;
     private ViewPager viewPager;
     private boolean isScroll;
     private int count;
     private int mWidth, mHeight, x0, y0, currentX;
+    private int bgX1,bgY1,bgX2,bgY2;
 
     public ViewPagerPointIndicator setPointColor(int color){
         normalPaint.setColor(color);
-        currentPaint.setColor(color);
+//        currentPaint.setColor(color);
+        invalidate();
+        return this;
+    }
+
+    public ViewPagerPointIndicator setBgColor(int color){
+        bgPaint.setColor(color);
         invalidate();
         return this;
     }
@@ -87,30 +94,30 @@ public class ViewPagerPointIndicator extends View {
         normalPaint.setStrokeWidth(paintStrokeWidth);
         normalPaint.setStyle(Paint.Style.STROKE);
 
-        currentPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        currentPaint.setColor(Color.parseColor("#ffffff"));
-        currentPaint.setStrokeWidth(paintStrokeWidth);
-        currentPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        bgPaint.setColor(Color.parseColor("#38ffffff"));
+        bgPaint.setStrokeWidth(paintStrokeWidth);
+        bgPaint.setStyle(Paint.Style.FILL_AND_STROKE);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-
         mWidth = MeasureSpec.getSize(widthMeasureSpec);
-        mHeight = MeasureSpec.getSize(heightMeasureSpec);
 
         if (widthMode == MeasureSpec.UNSPECIFIED || widthMode == MeasureSpec.AT_MOST) {
             mWidth = mWidth > pointsTotalWidth ? mWidth : pointsTotalWidth;
         }
-        if (heightMode == MeasureSpec.UNSPECIFIED || heightMode == MeasureSpec.AT_MOST) {
-            int miniHeight = pointRadius *4;
-            mHeight = mHeight > miniHeight ? mHeight : miniHeight;
-        }
+        mHeight = pointRadius *4;
+
+        bgX1 = (mWidth - pointsTotalWidth) / 2 - pointMargin;
+        bgY1 = 0;
+        bgX2 = bgX1 + pointsTotalWidth + pointMargin * 2;
+        bgY2 = mHeight;
 
         x0 = (mWidth - pointsTotalWidth) / 2 + pointRadius;
         y0 = mHeight / 2;
+
         createPoint();
         currentX = points.get(viewPager.getCurrentItem()).x;
         setMeasuredDimension(mWidth, mHeight);
@@ -119,12 +126,15 @@ public class ViewPagerPointIndicator extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        canvas.drawRoundRect(bgX1,bgY1,bgX2,bgY2,pointRadius * 2,pointRadius * 2,bgPaint);
         if(points !=null) {
+            normalPaint.setStyle(Paint.Style.STROKE);
             for (int i = 0; i < points.size(); i++) {
                 Point p = points.get(i);
                 canvas.drawCircle(p.x, p.y, pointRadius, normalPaint);
             }
-            canvas.drawCircle(currentX, y0, pointRadius, currentPaint);
+            normalPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+            canvas.drawCircle(currentX, y0, pointRadius, normalPaint);
         }
     }
 
