@@ -10,10 +10,10 @@
     <application
         android:name=".MyApApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/accountbag_ico2"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
+        android:roundIcon="@drawable/accountbag_ico2"
+        android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <activity android:name=".allrecords.DeleResumeActivity"></activity>
         <activity

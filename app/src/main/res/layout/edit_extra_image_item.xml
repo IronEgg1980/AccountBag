@@ -7,7 +7,7 @@
         android:background="@android:color/darker_gray"
         android:id="@+id/extra_image_IV"
         android:scaleType="fitCenter"
-        android:src="@drawable/image"
+        android:src="@drawable/ic_launcher_foreground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="图片">

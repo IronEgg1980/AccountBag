@@ -87,6 +87,7 @@ public class InputOrEditRecordActivity extends BaseActivity {
     private EditTextRecordAdapter textRecordAdapter;
     private ToastFactory toastFactory;
     private ImagePicker imagePicker;
+    private ImagePicker.Callback imagePickerCallback;
     private MaterialCardView cardView;
     private int mHeight,toolBarHeight;
 
@@ -106,6 +107,38 @@ public class InputOrEditRecordActivity extends BaseActivity {
         prepareData(getIntent());
         float scale=getResources().getDisplayMetrics().density;
         toolBarHeight = (int)(56*scale+0.5f);
+        imagePickerCallback = new ImagePicker.Callback() {
+            // 选择图片回调
+            @Override public void onPickImage(Uri imageUri) {
+
+            }
+
+            // 裁剪图片回调
+            @Override public void onCropImage(Uri imageUri) {
+                addExtraImage(imageUri);
+            }
+
+            // 自定义裁剪配置
+            @Override
+            public void cropConfig(CropImage.ActivityBuilder builder) {
+                builder
+                        // 是否启动多点触摸
+                        .setMultiTouchEnabled(true)
+                        // 设置网格显示模式
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        // 圆形/矩形
+                        .setCropShape(CropImageView.CropShape.RECTANGLE)
+                        // 调整裁剪后的图片最终大小
+                        .setRequestedSize(900, 600)
+                        // 宽高比
+                        .setAspectRatio(3, 2);
+            }
+
+            // 用户拒绝授权回调
+            @Override public void onPermissionDenied(int requestCode, String[] permissions,
+                                                     int[] grantResults) {
+            }
+        };
     }
 
     @Override
@@ -318,6 +351,18 @@ public class InputOrEditRecordActivity extends BaseActivity {
         fragment.show(getSupportFragmentManager(), "EditTextRecord");
     }
 
+    private void openAlbum(){
+        imagePicker.setTitle("相册");
+        imagePicker.setCropImage(true);
+        imagePicker.startGallery(this, imagePickerCallback);
+    }
+
+    private void openCamera(){
+        imagePicker.setTitle("相机");
+        imagePicker.setCropImage(true);
+        imagePicker.startCamera(this, imagePickerCallback);
+    }
+
     private void choosePhoto() {
 //        Intent intentToPickPic = new Intent(Intent.ACTION_PICK, uri);
 //        intentToPickPic.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
@@ -326,38 +371,7 @@ public class InputOrEditRecordActivity extends BaseActivity {
         // 设置是否裁剪图片
         imagePicker.setCropImage(true);
         // 启动图片选择器
-        imagePicker.startChooser(this, new ImagePicker.Callback() {
-            // 选择图片回调
-            @Override public void onPickImage(Uri imageUri) {
-
-            }
-
-            // 裁剪图片回调
-            @Override public void onCropImage(Uri imageUri) {
-                addExtraImage(imageUri);
-            }
-
-            // 自定义裁剪配置
-            @Override
-            public void cropConfig(CropImage.ActivityBuilder builder) {
-                builder
-                        // 是否启动多点触摸
-                        .setMultiTouchEnabled(true)
-                        // 设置网格显示模式
-                        .setGuidelines(CropImageView.Guidelines.ON)
-                        // 圆形/矩形
-                        .setCropShape(CropImageView.CropShape.RECTANGLE)
-                        // 调整裁剪后的图片最终大小
-                        .setRequestedSize(900, 600)
-                        // 宽高比
-                        .setAspectRatio(3, 2);
-            }
-
-            // 用户拒绝授权回调
-            @Override public void onPermissionDenied(int requestCode, String[] permissions,
-                                                     int[] grantResults) {
-            }
-        });
+        imagePicker.startChooser(this, imagePickerCallback);
     }
 
     private void addExtraImage(Uri uri) {
@@ -405,46 +419,48 @@ public class InputOrEditRecordActivity extends BaseActivity {
         }
     }
 
-    private void takePhotoPrepare() {
-        if (XXPermissions.isHasPermission(this, Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE, Permission.CAMERA)) {
-            takePhoto();
-        } else {
-            XXPermissions.with(this)
-                    .permission(Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE, Permission.CAMERA)
-                    .request(new OnPermission() {
-                        @Override
-                        public void hasPermission(List<String> granted, boolean isAll) {
-                            if (isAll) {
-                                takePhoto();
-                            }
-                        }
 
-                        @Override
-                        public void noPermission(List<String> denied, boolean quick) {
-                            if (quick) {
-                                toastFactory.showCenterToast("已永久拒绝权限，请手动授予权限");
-                                XXPermissions.gotoPermissionSettings(InputOrEditRecordActivity.this);
-                            }
-                        }
-                    });
-        }
-    }
 
-    private void takePhoto() {
-        // 跳转到系统的拍照界面
-        Intent intentToTakePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // 这里设置为固定名字 这样就只会只有一张temp图 如果要所有中间图片都保存可以通过时间或者加其他东西设置图片的名称
-        // File.separator为系统自带的分隔符 是一个固定的常量
-        String mTempPhotoPath = FileOperator.imageCacheDir+File.separator+System.currentTimeMillis() + ".jpg";
-        Uri imageUri;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            imageUri = FileProvider.getUriForFile(this, "yzw.ahaqth.accountbag.imagePicker.provider", new File(mTempPhotoPath));
-            intentToTakePhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        } else {
-            imageUri = Uri.fromFile(new File(mTempPhotoPath));
-        }
-        //下面这句指定调用相机拍照后的照片存储的路径
-        intentToTakePhoto.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        startActivityForResult(intentToTakePhoto, TAKE_PHOTO);
-    }
+//    private void takePhotoPrepare() {
+//        if (XXPermissions.isHasPermission(this, Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE, Permission.CAMERA)) {
+//            takePhoto();
+//        } else {
+//            XXPermissions.with(this)
+//                    .permission(Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE, Permission.CAMERA)
+//                    .request(new OnPermission() {
+//                        @Override
+//                        public void hasPermission(List<String> granted, boolean isAll) {
+//                            if (isAll) {
+//                                takePhoto();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void noPermission(List<String> denied, boolean quick) {
+//                            if (quick) {
+//                                toastFactory.showCenterToast("已永久拒绝权限，请手动授予权限");
+//                                XXPermissions.gotoPermissionSettings(InputOrEditRecordActivity.this);
+//                            }
+//                        }
+//                    });
+//        }
+//    }
+//
+//    private void takePhoto() {
+//        // 跳转到系统的拍照界面
+//        Intent intentToTakePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        // 这里设置为固定名字 这样就只会只有一张temp图 如果要所有中间图片都保存可以通过时间或者加其他东西设置图片的名称
+//        // File.separator为系统自带的分隔符 是一个固定的常量
+//        String mTempPhotoPath = FileOperator.imageCacheDir+File.separator+System.currentTimeMillis() + ".jpg";
+//        Uri imageUri;
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            imageUri = FileProvider.getUriForFile(this, "yzw.ahaqth.accountbag.imagePicker.provider", new File(mTempPhotoPath));
+//            intentToTakePhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//        } else {
+//            imageUri = Uri.fromFile(new File(mTempPhotoPath));
+//        }
+//        //下面这句指定调用相机拍照后的照片存储的路径
+//        intentToTakePhoto.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+//        startActivityForResult(intentToTakePhoto, TAKE_PHOTO);
+//    }
 }

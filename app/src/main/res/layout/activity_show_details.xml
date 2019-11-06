@@ -131,7 +131,7 @@
                         android:background="@android:color/transparent"
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
-                        android:src="@drawable/eye_24dp" />
+                        android:src="@drawable/view" />
 
                     <ImageButton
                         android:id="@+id/copy_account_pwd"
