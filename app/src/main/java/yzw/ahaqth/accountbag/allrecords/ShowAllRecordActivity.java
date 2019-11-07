@@ -3,6 +3,7 @@ package yzw.ahaqth.accountbag.allrecords;
 import android.app.ActivityOptions;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,7 +17,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,6 +27,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import yzw.ahaqth.accountbag.BaseActivity;
 import yzw.ahaqth.accountbag.R;
@@ -42,7 +46,6 @@ import yzw.ahaqth.accountbag.tools.ToastFactory;
 import yzw.ahaqth.accountbag.tools.ToolUtils;
 
 public class ShowAllRecordActivity extends BaseActivity {
-    String TAG = "殷宗旺";
     private FloatingActionButton fab;
     private Toolbar toolbar;
     private RecyclerView recyclerview;
@@ -51,6 +54,9 @@ public class ShowAllRecordActivity extends BaseActivity {
     private boolean isAddRecord;
     private AppBarLayout appBarLayout;
     private CollapsingToolbarLayout toolbarLayout;
+    private ImageView titleIV;
+    private Random random;
+    private int[] imagesId = {R.mipmap.bg1, R.mipmap.bg2, R.mipmap.bg3, R.mipmap.bg4, R.mipmap.bg5};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +71,10 @@ public class ShowAllRecordActivity extends BaseActivity {
                 dialogFragment.setOnDismiss(new DialogDismissListener() {
                     @Override
                     public void onDismiss(boolean isConfirm, Object... objects) {
-                        if(isConfirm) {
+                        if (isConfirm) {
                             int id = (int) objects[0];
                             if (id > 0) {
-                                if(id == 3)
+                                if (id == 3)
                                     deleResume();
                                 else
                                     showInputPWDDialog(id);
@@ -77,7 +83,7 @@ public class ShowAllRecordActivity extends BaseActivity {
                         }
                     }
                 });
-                dialogFragment.show(getSupportFragmentManager(),"setup");
+                dialogFragment.show(getSupportFragmentManager(), "setup");
             }
         });
         FileOperator.initialAppDir(this);
@@ -91,13 +97,13 @@ public class ShowAllRecordActivity extends BaseActivity {
         readData();
     }
 
-    private void showInputPWDDialog(final int mode){
+    private void showInputPWDDialog(final int mode) {
         InputPWDDialog dialog = new InputPWDDialog();
         dialog.setOnDismiss(new DialogDismissListener() {
             @Override
             public void onDismiss(boolean isConfirm, Object... objects) {
-                if(isConfirm){
-                    switch (mode){
+                if (isConfirm) {
+                    switch (mode) {
                         case 1:
                             setUserNamePWD();// 设置用户名和密码
                             break;
@@ -108,34 +114,39 @@ public class ShowAllRecordActivity extends BaseActivity {
                 }
             }
         });
-        dialog.show(getSupportFragmentManager(),"showInputPWDDialog");
+        dialog.show(getSupportFragmentManager(), "showInputPWDDialog");
     }
 
-    private void setUserNamePWD(){
-        startActivity(new Intent(ShowAllRecordActivity.this,SetUserNamePWDActivity.class));
+    private void setUserNamePWD() {
+        startActivity(new Intent(ShowAllRecordActivity.this, SetUserNamePWDActivity.class));
     }
 
-    private void setGesturePWD(){
-        startActivity(new Intent(ShowAllRecordActivity.this,SetGesturePWDActivity.class));
+    private void setGesturePWD() {
+        startActivity(new Intent(ShowAllRecordActivity.this, SetGesturePWDActivity.class));
     }
 
-    private void deleResume(){
-        startActivity(new Intent(ShowAllRecordActivity.this,DeleResumeActivity.class));
+    private void deleResume() {
+        startActivity(new Intent(ShowAllRecordActivity.this, DeleResumeActivity.class));
+    }
+
+    private void setImage(){
+        int index = random.nextInt(5);
+        titleIV.setImageResource(imagesId[index]);
     }
 
     private void initialView() {
         list = new ArrayList<>();
+        random = new Random();
         adapter = new RecordAdapter(list);
         adapter.setClickListener(new ItemClickListener() {
             @Override
             public void click(int position, @Nullable Object... values) {
                 AccountRecord accountRecord = list.get(position);
-//                Pair<View, String> pair1 = new Pair<>((View) values[0], "mainRecordItem");
                 Intent intent = new Intent(ShowAllRecordActivity.this, ShowDetailsActivity.class);
                 intent.putExtra("id", accountRecord.getId());
                 View view = (View) values[1];
-                int startX = 0,startY = view.getMeasuredHeight() / 2;
-                startActivity(intent, ActivityOptions.makeScaleUpAnimation(view,startX,startY,view.getMeasuredWidth(),0).toBundle());
+                int startX = 0, startY = view.getMeasuredHeight() / 2;
+                startActivity(intent, ActivityOptions.makeScaleUpAnimation(view, startX, startY, view.getMeasuredWidth(), 0).toBundle());
             }
         });
         adapter.setDelClick(new ItemClickListener() {
@@ -154,12 +165,12 @@ public class ShowAllRecordActivity extends BaseActivity {
             }
         });
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_settings_white_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_menu_24dp);
 
         recyclerview = findViewById(R.id.recyclerview);
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         recyclerview.setAdapter(adapter);
-        recyclerview.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -175,16 +186,30 @@ public class ShowAllRecordActivity extends BaseActivity {
             }
         });
         toolbarLayout = findViewById(R.id.toolbar_layout);
+        toolbarLayout.setExpandedTitleGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
+        titleIV = findViewById(R.id.titleIV);
+        setImage();
         appBarLayout = findViewById(R.id.app_bar);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-                if (Math.abs(i) < 300) {
-                    toolbarLayout.setTitle(ToolUtils.getHelloString());
-                    toolbar.setNavigationIcon(null);
-                } else {
+                int offset = Math.abs(i);
+                int range = appBarLayout.getTotalScrollRange();
+                if(offset > range - 1){
+                    if(titleIV.getVisibility() == View.VISIBLE) {
+                        titleIV.setVisibility(View.INVISIBLE);
+                        setImage();
+                    }
                     toolbarLayout.setTitle(getString(R.string.app_name));
-                    toolbar.setNavigationIcon(R.drawable.ic_settings_white_24dp);
+                    toolbar.setNavigationIcon(R.drawable.ic_menu_24dp);
+                }else if(offset < range){
+                    if(titleIV.getVisibility() != View.VISIBLE)
+                        titleIV.setVisibility(View.VISIBLE);
+                    toolbarLayout.setTitle("");
+                    toolbar.setNavigationIcon(null);
+                    if(offset < 1){
+                        toolbarLayout.setTitle(ToolUtils.getHelloString());
+                    }
                 }
             }
         });

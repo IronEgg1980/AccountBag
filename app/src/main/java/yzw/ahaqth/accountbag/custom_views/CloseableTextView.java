@@ -13,7 +13,8 @@ public class CloseableTextView extends android.support.v7.widget.AppCompatTextVi
     private int padding;
     private int closeButtonSize;
     private int line1X, line1Y, line2X, line2Y;
-    int width;
+    private int width;
+    private int touchOffset = 50;
 
     public CloseableTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -58,7 +59,7 @@ public class CloseableTextView extends android.support.v7.widget.AppCompatTextVi
             case MotionEvent.ACTION_MOVE:
                 break;
             case MotionEvent.ACTION_UP:
-                if (event.getX() >= line1X && event.getY() <= line1Y + closeButtonSize) {
+                if (event.getX() >= (line1X - touchOffset) && event.getY() <= (line1Y + closeButtonSize + touchOffset)) {
                     setVisibility(GONE);
                 }
                 break;

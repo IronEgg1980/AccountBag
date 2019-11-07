@@ -1,8 +1,12 @@
 package yzw.ahaqth.accountbag.main;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.Objects;
 
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.custom_views.GestureView;
@@ -23,6 +29,7 @@ public class GesturePWDSetFragmet extends Fragment {
     private TextView setGesturePWDInfoTV;
     private GestureView setGesturePWDGestureView;
     private boolean isFirsTouch = true;
+    private Vibrator vibrator;
     private void initialView(View view){
         setGesturePWDInfoTV = view.findViewById(R.id.set_gesturePWD_info_TV);
         setGesturePWDGestureView = view.findViewById(R.id.set_gesturePWD_gestureView);
@@ -31,6 +38,12 @@ public class GesturePWDSetFragmet extends Fragment {
         setGesturePWDGestureView.setValidateListener(new OnGestureViewValidateListener() {
             @Override
             public void onBlockSelected(int cId) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    VibrationEffect effect = VibrationEffect.createOneShot(30, 50);
+                    vibrator.vibrate(effect);
+                } else {
+                    vibrator.vibrate(30);
+                }
             }
 
             @Override
@@ -76,6 +89,7 @@ public class GesturePWDSetFragmet extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.gesture_pwd_set_fragment,container,false);
         activity = (MainActivity) getActivity();
+        vibrator = (Vibrator) Objects.requireNonNull(getContext()).getSystemService(Context.VIBRATOR_SERVICE);
         initialView(view);
         return view;
     }

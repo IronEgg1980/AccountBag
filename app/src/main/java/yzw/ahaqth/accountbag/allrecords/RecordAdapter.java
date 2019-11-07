@@ -63,7 +63,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> 
                 }
             });
         }else{
-            recordVH.favorite.setVisibility(View.GONE);
+            recordVH.favorite.setVisibility(View.INVISIBLE);
             ((TextView)recordVH.favoriteButton).setText("加入收藏");
             recordVH.favoriteButton.setOnClickListener(new View.OnClickListener() {
                 @Override

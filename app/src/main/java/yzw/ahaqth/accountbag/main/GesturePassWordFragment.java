@@ -47,10 +47,10 @@ public class GesturePassWordFragment extends Fragment {
             @Override
             public void onBlockSelected(int cId) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    VibrationEffect effect = VibrationEffect.createOneShot(50, 100);
+                    VibrationEffect effect = VibrationEffect.createOneShot(30, 50);
                     vibrator.vibrate(effect);
                 } else {
-                    vibrator.vibrate(50);
+                    vibrator.vibrate(30);
                 }
             }
 

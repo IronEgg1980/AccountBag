@@ -3,6 +3,7 @@ package yzw.ahaqth.accountbag.details;
 import android.app.ActivityOptions;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -51,6 +53,7 @@ public class ShowDetailsActivity extends BaseActivity {
     private TextView recordTimeTV,modifyTimeTV;
     private ViewPager extraImageVP;
     private ViewPagerPointIndicator indicator;
+    private FrameLayout frameLayout;
     private Toolbar toolbar;
     private LinearLayout accountNameGroup,accPWDGroup;
     private ImageButton copyName,copyPWD,seePWD;
@@ -61,6 +64,7 @@ public class ShowDetailsActivity extends BaseActivity {
     private List<ImageRecord> imageRecords;
     private TextRecordAdapter textRecordAdapter;
     private int currentImageIndex = 0;
+    private boolean isShowPWD = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +158,7 @@ public class ShowDetailsActivity extends BaseActivity {
         seePWD = findViewById(R.id.show_account_pwd);
         extraImageVP = findViewById(R.id.extra_image_VP);
         indicator = findViewById(R.id.viewpagerIndicator);
+        frameLayout = findViewById(R.id.framelayout);
     }
 
     private void readData(){
@@ -197,7 +202,15 @@ public class ShowDetailsActivity extends BaseActivity {
             seePWD.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    accountPwdTV.setText(record.getAccountPWD());
+                    if(isShowPWD) {
+                        isShowPWD = false;
+                        accountPwdTV.setText(record.getAccountPWD());
+                        seePWD.setImageResource(R.drawable.view_off);
+                    }else{
+                        isShowPWD = true;
+                        accountPwdTV.setText("********");
+                        seePWD.setImageResource(R.drawable.view);
+                    }
                 }
             });
         }
@@ -213,17 +226,20 @@ public class ShowDetailsActivity extends BaseActivity {
         }
         imageRecords = record.getImageRecords();
         if(imageRecords.size() == 0){
-            extraImageVP.setVisibility(View.GONE);
+            frameLayout.setVisibility(View.GONE);
         }else {
-            extraImageVP.setVisibility(View.VISIBLE);
+            frameLayout.setVisibility(View.VISIBLE);
             extraImageVP.setAdapter(new ImageAdapter());
             if (currentImageIndex > imageRecords.size() - 1) {
                 currentImageIndex = 0;
             }
             extraImageVP.setCurrentItem(currentImageIndex);
-            indicator.setViewPager(extraImageVP);
+            if(imageRecords.size() > 1){
+                indicator.setBgColor(Color.parseColor("#38000000")).attachToViewPager(extraImageVP);
+            }
         }
     }
+
     protected class ImageAdapter extends PagerAdapter{
         List<View> views = new ArrayList<>();
 

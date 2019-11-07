@@ -13,7 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import com.hjq.permissions.OnPermission;
+import com.hjq.permissions.Permission;
+import com.hjq.permissions.XXPermissions;
 import com.rengwuxian.materialedittext.MaterialEditText;
+
+import java.util.List;
 
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.operators.SetupOperator;

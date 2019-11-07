@@ -1,10 +1,16 @@
 package yzw.ahaqth.accountbag.allrecords;
 
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
+
+import java.util.Objects;
 
 import yzw.ahaqth.accountbag.BaseActivity;
 import yzw.ahaqth.accountbag.R;
@@ -18,6 +24,7 @@ public class SetGesturePWDActivity extends BaseActivity {
     private TextView setGesturePWDInfoTV;
     private GestureView setGesturePWDGestureView;
     private boolean isFirsTouch = true;
+    private Vibrator vibrator;
     private void initialView(){
         toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
@@ -28,6 +35,12 @@ public class SetGesturePWDActivity extends BaseActivity {
         setGesturePWDGestureView.setValidateListener(new OnGestureViewValidateListener() {
             @Override
             public void onBlockSelected(int cId) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    VibrationEffect effect = VibrationEffect.createOneShot(30, 50);
+                    vibrator.vibrate(effect);
+                } else {
+                    vibrator.vibrate(30);
+                }
             }
 
             @Override
@@ -70,5 +83,6 @@ public class SetGesturePWDActivity extends BaseActivity {
                 finish();
             }
         });
+        vibrator = (Vibrator) Objects.requireNonNull(getSystemService(Context.VIBRATOR_SERVICE));
     }
 }
