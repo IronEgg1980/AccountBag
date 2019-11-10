@@ -55,12 +55,12 @@ public class ShowAllRecordActivity extends BaseActivity {
     private Random random;
     private int[] imagesId = {R.mipmap.bg1, R.mipmap.bg2, R.mipmap.bg3, R.mipmap.bg4, R.mipmap.bg5};
     private Spinner recordGroupSpinner, sortSpinner;
-    private List<String> sortList;
+    private String[] sortList;
     private List<RecordGroup> recordGroupList;
-    private long recordGroupId = -1;
-    private int sortMode = 0;
+    private int currentSortModeIndex = 0, currentRecordGroupIndex = 0;
+    private long recordGroupId;
     //    private Comparator<AccountRecord> nameAscComparator,nameDscComparator,timeAscComparator,timeDscComparator;
-    private boolean readDataFlag = false;
+//    private boolean readDataFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +92,7 @@ public class ShowAllRecordActivity extends BaseActivity {
         });
         FileOperator.initialAppDir(this);
         isAddRecord = false;
+        initialRecordGroupSpinner();
         initialSortSpinner();
     }
 
@@ -99,23 +100,19 @@ public class ShowAllRecordActivity extends BaseActivity {
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        initialRecordGroupSpinner();
+        sortSpinner.setSelection(currentSortModeIndex);
+        recordGroupSpinner.setSelection(currentRecordGroupIndex);
         readData();
     }
 
     private void initialSortSpinner() {
-        sortList = new ArrayList<>();
-        sortList.add("日期升序");
-        sortList.add("日期降序");
-        sortList.add("名称升序");
-        sortList.add("名称降序");
-        sortSpinner.setAdapter(new ArrayAdapter<String>(this, R.layout.spinner_item, sortList));
+        sortList = new String[]{"日期升序↑", "日期降序↓", "名称升序↑", "名称降序↓"};
+        sortSpinner.setAdapter(new ArrayAdapter<>(this, R.layout.spinner_item, sortList));
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                sortMode = position;
-                if (readDataFlag)
-                    readData();
+                currentSortModeIndex = position;
+                readData();
             }
 
             @Override
@@ -128,23 +125,22 @@ public class ShowAllRecordActivity extends BaseActivity {
     private void initialRecordGroupSpinner() {
         recordGroupList = new ArrayList<>();
         recordGroupList.add(new RecordGroup("所有分组"));
-        recordGroupList.add(new RecordGroup("测试"));
         recordGroupList.addAll(GroupOperator.findAll(true));
-        recordGroupList.add(new RecordGroup("管理分组..."));
+        recordGroupList.add(new RecordGroup("分组管理..."));
         recordGroupSpinner.setAdapter(new ArrayAdapter<RecordGroup>(this, R.layout.spinner_item, recordGroupList));
         recordGroupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    recordGroupId = -1;
-                    if(readDataFlag)
-                        readData();
-                } else if (position == recordGroupList.size() - 1) {
-                    parent.setSelection(0);
+                currentRecordGroupIndex = position;
+                if(position == 0){
+                    recordGroupId = -1L;
+                    readData();
+                }else if(position == recordGroupList.size() - 1){
                     startActivity(new Intent(ShowAllRecordActivity.this,RecordGroupActivity.class));
-                } else {
-                    if(readDataFlag)
-                        readData();
+                    currentRecordGroupIndex = 0;
+                }else{
+                    recordGroupId = recordGroupList.get(position).getId();
+                    readData();
                 }
             }
 
@@ -153,6 +149,7 @@ public class ShowAllRecordActivity extends BaseActivity {
 
             }
         });
+
     }
 
     private void showInputPWDDialog(final int mode) {
@@ -276,9 +273,8 @@ public class ShowAllRecordActivity extends BaseActivity {
     }
 
     private void readData() {
-        readDataFlag = true;
         list.clear();
-        list.addAll(RecordOperator.findAll(sortMode, recordGroupId));
+        list.addAll(RecordOperator.findAll(currentSortModeIndex, recordGroupId));
         adapter.notifyDataSetChanged();
         if (isAddRecord) {
             recyclerview.scrollToPosition(adapter.getItemCount() - 1);
