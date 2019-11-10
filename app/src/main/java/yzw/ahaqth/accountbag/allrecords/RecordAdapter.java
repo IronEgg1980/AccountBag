@@ -17,6 +17,7 @@ import java.util.List;
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
 import yzw.ahaqth.accountbag.modules.AccountRecord;
+import yzw.ahaqth.accountbag.operators.GroupOperator;
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> {
     private List<AccountRecord> mList;
@@ -57,7 +58,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> 
             recordVH.favoriteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    record.setSortIndex(1);
+                    record.setSortIndex(-1);
                     record.save();
                     notifyItemChanged(recordVH.getAdapterPosition());
                 }
@@ -75,6 +76,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> 
             });
         }
         recordVH.recordNameTV.setText(record.getRecordName());
+        recordVH.groupTV.setText(GroupOperator.getGroupName(record));
         recordVH.root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,6 +102,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> 
         private LinearLayout root;
         private TextView imageExtraTV;
         private TextView textExtraTV;
+        private TextView groupTV;
         private View delButton,favoriteButton;
         private SwipeMenuLayout swipeMenuLayout;
         public RecordVH(@NonNull View itemView) {
@@ -112,6 +115,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> 
             delButton = itemView.findViewById(R.id.delbutton);
             favoriteButton = itemView.findViewById(R.id.favorite_BT);
             swipeMenuLayout = itemView.findViewById(R.id.swipemenu);
+            groupTV = itemView.findViewById(R.id.groupTV);
         }
 
         public void closeMenu(){

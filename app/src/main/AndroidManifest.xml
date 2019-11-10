@@ -15,7 +15,8 @@
         android:roundIcon="@drawable/accountbag_ico2"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".allrecords.DeleResumeActivity"></activity>
+        <activity android:name=".allrecords.RecordGroupActivity"></activity>
+        <activity android:name=".allrecords.DeleResumeActivity" />
         <activity
             android:name=".allrecords.SetGesturePWDActivity"
             android:screenOrientation="portrait" />

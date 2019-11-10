@@ -11,8 +11,34 @@ import yzw.ahaqth.accountbag.tools.ToolUtils;
 
 public final class RecordOperator {
     public static List<AccountRecord> findAll(){
-        return LitePal.order("sortindex desc,recordtime")
-                .find(AccountRecord.class,true);
+        return LitePal.findAll(AccountRecord.class,true);
+    }
+
+    public static List<AccountRecord> findAll(int sortMode,long recordGroupId){
+        String sortString = "sortindex desc,";
+        switch (sortMode){
+            case 0:
+                sortString += "recordname";
+                break;
+            case 1:
+                sortString += "recordname desc";
+                break;
+            case 2:
+                sortString += "recordtime";
+                break;
+            case 3:
+                sortString += "recordtime desc";
+                break;
+        }
+        if(recordGroupId < 0){
+            return LitePal.order(sortString)
+                    .where("isDeleted = 0")
+                    .find(AccountRecord.class,true);
+        }else{
+            return LitePal.order(sortString)
+                    .where("isDeleted = 0 and groupId = ?",String.valueOf(recordGroupId))
+                    .find(AccountRecord.class,true);
+        }
     }
 
     public static List<AccountRecord> findAllNotDeleted(){
@@ -26,12 +52,6 @@ public final class RecordOperator {
                 .where("isDeleted = 1")
                 .find(AccountRecord.class,true);
     }
-//    public static List<AccountRecord> findOldDeleted(){
-//        Calendar calendar = new GregorianCalendar();
-//        calendar.add(Calendar.DAY_OF_MONTH,-30);
-//        return LitePal.where("isDeleted = 1 and deletime < ?",String.valueOf(calendar.getTimeInMillis()))
-//                .find(AccountRecord.class,true);
-//    }
 
     public static void clearOldDeletedRecord(){
         for(AccountRecord record:findAllDeleted()){

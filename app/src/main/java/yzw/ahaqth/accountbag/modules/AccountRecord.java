@@ -17,6 +17,7 @@ public class AccountRecord extends LitePalSupport {
     private String accountName;
     private String accountPWD;
     private String describe;
+    private long groupId;
     private int sortIndex;
     private long recordTime;
     private long modifyTime;
@@ -24,17 +25,18 @@ public class AccountRecord extends LitePalSupport {
     private long deleTime;
     private List<TextRecord> textRecords = new ArrayList<>();
     private List<ImageRecord> imageRecords = new ArrayList<>();
+
     @Column(ignore = true)
     public boolean isSeleted = false;
     @Column(ignore = true)
     public boolean isMultiMode = false;
-//    @Column(ignore = true)
-//    private boolean isExpand;
-//    @Column(ignore = true)
-//    private boolean isShowPWD;
+
     public AccountRecord(){
         super();
         this.isDeleted = false;
+        this.isMultiMode = false;
+        this.sortIndex = -1;
+        this.groupId = -1;
     }
 
     public long getId() {
@@ -137,6 +139,14 @@ public class AccountRecord extends LitePalSupport {
 
     public void setSortIndex(int sortIndex) {
         this.sortIndex = sortIndex;
+    }
+
+    public long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(long groupId) {
+        this.groupId = groupId;
     }
 
     public long getRecordTime() {

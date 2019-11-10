@@ -3,30 +3,29 @@ package yzw.ahaqth.accountbag.allrecords;
 import android.app.ActivityOptions;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.util.Pair;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 
 import yzw.ahaqth.accountbag.BaseActivity;
@@ -36,13 +35,11 @@ import yzw.ahaqth.accountbag.inputoredit.InputOrEditRecordActivity;
 import yzw.ahaqth.accountbag.interfaces.DialogDismissListener;
 import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
 import yzw.ahaqth.accountbag.modules.AccountRecord;
-import yzw.ahaqth.accountbag.modules.ImageRecord;
+import yzw.ahaqth.accountbag.modules.RecordGroup;
 import yzw.ahaqth.accountbag.operators.FileOperator;
-import yzw.ahaqth.accountbag.operators.ImageOperator;
+import yzw.ahaqth.accountbag.operators.GroupOperator;
 import yzw.ahaqth.accountbag.operators.RecordOperator;
-import yzw.ahaqth.accountbag.operators.SetupOperator;
 import yzw.ahaqth.accountbag.tools.DialogFactory;
-import yzw.ahaqth.accountbag.tools.ToastFactory;
 import yzw.ahaqth.accountbag.tools.ToolUtils;
 
 public class ShowAllRecordActivity extends BaseActivity {
@@ -57,6 +54,13 @@ public class ShowAllRecordActivity extends BaseActivity {
     private ImageView titleIV;
     private Random random;
     private int[] imagesId = {R.mipmap.bg1, R.mipmap.bg2, R.mipmap.bg3, R.mipmap.bg4, R.mipmap.bg5};
+    private Spinner recordGroupSpinner, sortSpinner;
+    private List<String> sortList;
+    private List<RecordGroup> recordGroupList;
+    private long recordGroupId = -1;
+    private int sortMode = 0;
+    //    private Comparator<AccountRecord> nameAscComparator,nameDscComparator,timeAscComparator,timeDscComparator;
+    private boolean readDataFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,13 +92,67 @@ public class ShowAllRecordActivity extends BaseActivity {
         });
         FileOperator.initialAppDir(this);
         isAddRecord = false;
+        initialSortSpinner();
     }
 
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
+        initialRecordGroupSpinner();
         readData();
+    }
+
+    private void initialSortSpinner() {
+        sortList = new ArrayList<>();
+        sortList.add("日期升序");
+        sortList.add("日期降序");
+        sortList.add("名称升序");
+        sortList.add("名称降序");
+        sortSpinner.setAdapter(new ArrayAdapter<String>(this, R.layout.spinner_item, sortList));
+        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                sortMode = position;
+                if (readDataFlag)
+                    readData();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void initialRecordGroupSpinner() {
+        recordGroupList = new ArrayList<>();
+        recordGroupList.add(new RecordGroup("所有分组"));
+        recordGroupList.add(new RecordGroup("测试"));
+        recordGroupList.addAll(GroupOperator.findAll(true));
+        recordGroupList.add(new RecordGroup("管理分组..."));
+        recordGroupSpinner.setAdapter(new ArrayAdapter<RecordGroup>(this, R.layout.spinner_item, recordGroupList));
+        recordGroupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    recordGroupId = -1;
+                    if(readDataFlag)
+                        readData();
+                } else if (position == recordGroupList.size() - 1) {
+                    parent.setSelection(0);
+                    startActivity(new Intent(ShowAllRecordActivity.this,RecordGroupActivity.class));
+                } else {
+                    if(readDataFlag)
+                        readData();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void showInputPWDDialog(final int mode) {
@@ -129,7 +187,7 @@ public class ShowAllRecordActivity extends BaseActivity {
         startActivity(new Intent(ShowAllRecordActivity.this, DeleResumeActivity.class));
     }
 
-    private void setImage(){
+    private void setImage() {
         int index = random.nextInt(5);
         titleIV.setImageResource(imagesId[index]);
     }
@@ -195,36 +253,37 @@ public class ShowAllRecordActivity extends BaseActivity {
             public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
                 int offset = Math.abs(i);
                 int range = appBarLayout.getTotalScrollRange();
-                if(offset > range - 1){
-                    if(titleIV.getVisibility() == View.VISIBLE) {
+                if (offset > range - 1) {
+                    if (titleIV.getVisibility() == View.VISIBLE) {
                         titleIV.setVisibility(View.INVISIBLE);
                         setImage();
                     }
                     toolbarLayout.setTitle(getString(R.string.app_name));
                     toolbar.setNavigationIcon(R.drawable.ic_menu_24dp);
-                }else if(offset < range){
-                    if(titleIV.getVisibility() != View.VISIBLE)
+                } else if (offset < range) {
+                    if (titleIV.getVisibility() != View.VISIBLE)
                         titleIV.setVisibility(View.VISIBLE);
                     toolbarLayout.setTitle("");
                     toolbar.setNavigationIcon(null);
-                    if(offset < 1){
+                    if (offset < 1) {
                         toolbarLayout.setTitle(ToolUtils.getHelloString());
                     }
                 }
             }
         });
+        recordGroupSpinner = findViewById(R.id.recordGroupSpinner);
+        sortSpinner = findViewById(R.id.sortSpinner);
     }
 
     private void readData() {
+        readDataFlag = true;
         list.clear();
-        list.addAll(RecordOperator.findAllNotDeleted());
+        list.addAll(RecordOperator.findAll(sortMode, recordGroupId));
         adapter.notifyDataSetChanged();
         if (isAddRecord) {
             recyclerview.scrollToPosition(adapter.getItemCount() - 1);
             isAddRecord = false;
         }
-        if (fab.getVisibility() != View.VISIBLE)
-            fab.show();
     }
 
     private void deleRecord(final int position, final RecordAdapter.RecordVH recordVH) {

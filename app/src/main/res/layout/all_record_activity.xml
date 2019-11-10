@@ -37,14 +37,61 @@
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
-    <android.support.v7.widget.RecyclerView
+    <LinearLayout
         app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior"
-        android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        android:scrollbarSize="2dp"
-        android:scrollbarStyle="outsideOverlay"/>
+        android:orientation="vertical">
+        <LinearLayout
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/linear1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:id="@+id/recordGroupTitle"
+                android:text="分组："/>
+           <Spinner
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:id="@+id/recordGroupSpinner"
+               android:spinnerMode="dropdown"
+               android:animateLayoutChanges="true"
+               android:elevation="8dp"
+               android:overlapAnchor="false"
+               />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:id="@+id/sortTitle"
+                android:text="排序："/>
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sortSpinner"
+                android:spinnerMode="dropdown"
+                android:animateLayoutChanges="true"
+                android:elevation="8dp"
+                android:overlapAnchor="false"
+                />
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior"
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:scrollbarSize="2dp"
+            android:scrollbarStyle="outsideOverlay"/>
+    </LinearLayout>
     <android.support.design.widget.FloatingActionButton
         app:layout_anchor="@id/recyclerview"
         app:layout_anchorGravity="end|bottom"
