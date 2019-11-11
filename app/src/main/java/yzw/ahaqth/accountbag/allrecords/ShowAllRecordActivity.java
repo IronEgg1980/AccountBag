@@ -59,6 +59,7 @@ public class ShowAllRecordActivity extends BaseActivity {
     private List<RecordGroup> recordGroupList;
     private int currentSortModeIndex = 0, currentRecordGroupIndex = 0;
     private long recordGroupId;
+    private boolean isReadDataFlag = false;
     //    private Comparator<AccountRecord> nameAscComparator,nameDscComparator,timeAscComparator,timeDscComparator;
 //    private boolean readDataFlag = false;
 
@@ -92,7 +93,6 @@ public class ShowAllRecordActivity extends BaseActivity {
         });
         FileOperator.initialAppDir(this);
         isAddRecord = false;
-        initialRecordGroupSpinner();
         initialSortSpinner();
     }
 
@@ -101,8 +101,8 @@ public class ShowAllRecordActivity extends BaseActivity {
     protected void onPostResume() {
         super.onPostResume();
         sortSpinner.setSelection(currentSortModeIndex);
+        initialRecordGroupSpinner();
         recordGroupSpinner.setSelection(currentRecordGroupIndex);
-        readData();
     }
 
     private void initialSortSpinner() {
@@ -112,7 +112,8 @@ public class ShowAllRecordActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 currentSortModeIndex = position;
-                readData();
+                if(isReadDataFlag)
+                    readData();
             }
 
             @Override
@@ -134,13 +135,16 @@ public class ShowAllRecordActivity extends BaseActivity {
                 currentRecordGroupIndex = position;
                 if(position == 0){
                     recordGroupId = -1L;
-                    readData();
+                    if(isReadDataFlag)
+                        readData();
                 }else if(position == recordGroupList.size() - 1){
                     startActivity(new Intent(ShowAllRecordActivity.this,RecordGroupActivity.class));
                     currentRecordGroupIndex = 0;
+                    isReadDataFlag = false;
                 }else{
                     recordGroupId = recordGroupList.get(position).getId();
-                    readData();
+                    if(isReadDataFlag)
+                        readData();
                 }
             }
 
@@ -149,7 +153,7 @@ public class ShowAllRecordActivity extends BaseActivity {
 
             }
         });
-
+        isReadDataFlag = true;
     }
 
     private void showInputPWDDialog(final int mode) {

@@ -71,4 +71,15 @@ public class GroupOperator {
     public static String getGroupName(AccountRecord record){
         return getGroupName(record.getGroupId());
     }
+
+    public static void swapSortIndex(RecordGroup r1,RecordGroup r2){
+        if(r1 == null || r2 == null){
+            throw new RuntimeException("The parameter is NULL !");
+        }
+        int preSortIndex = r1.getSortIndex();
+        r1.setSortIndex(r2.getSortIndex());
+        r2.setSortIndex(preSortIndex);
+        save(r1);
+        save(r2);
+    }
 }

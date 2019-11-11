@@ -25,11 +25,14 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.Spinner;
 
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
@@ -41,6 +44,7 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,12 +52,16 @@ import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
 import yzw.ahaqth.accountbag.BaseActivity;
 import yzw.ahaqth.accountbag.R;
+import yzw.ahaqth.accountbag.allrecords.RecordGroupActivity;
+import yzw.ahaqth.accountbag.allrecords.ShowAllRecordActivity;
 import yzw.ahaqth.accountbag.interfaces.DialogDismissListener;
 import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
 import yzw.ahaqth.accountbag.modules.AccountRecord;
 import yzw.ahaqth.accountbag.modules.ImageRecord;
+import yzw.ahaqth.accountbag.modules.RecordGroup;
 import yzw.ahaqth.accountbag.modules.TextRecord;
 import yzw.ahaqth.accountbag.operators.FileOperator;
+import yzw.ahaqth.accountbag.operators.GroupOperator;
 import yzw.ahaqth.accountbag.operators.ImageOperator;
 import yzw.ahaqth.accountbag.operators.RecordOperator;
 import yzw.ahaqth.accountbag.tools.ToastFactory;
@@ -89,7 +97,9 @@ public class InputOrEditRecordActivity extends BaseActivity {
     private ImagePicker imagePicker;
     private ImagePicker.Callback imagePickerCallback;
     private MaterialCardView cardView;
+    private Spinner spinner;
     private int mHeight,toolBarHeight;
+    private long recordGroupId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +159,7 @@ public class InputOrEditRecordActivity extends BaseActivity {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         mHeight = dm.heightPixels;
+        initialSpinner();
         showRcordData();
     }
 
@@ -190,6 +201,7 @@ public class InputOrEditRecordActivity extends BaseActivity {
             accountName = "";
             accountPWD = "";
             describe = "";
+            recordGroupId = -1;
         } else {
             setTitle("修改");
             mode = 2;// edit record
@@ -197,6 +209,7 @@ public class InputOrEditRecordActivity extends BaseActivity {
             accountName = accountRecord.getAccountName();
             accountPWD = accountRecord.getAccountPWD();
             describe = accountRecord.getDescribe();
+            recordGroupId = accountRecord.getGroupId();
         }
         textRecords = accountRecord.getTextRecords();
         imageRecords = accountRecord.getImageRecords();
@@ -247,6 +260,43 @@ public class InputOrEditRecordActivity extends BaseActivity {
         extraImageRLV.setLayoutManager(new LinearLayoutManager(this));
         toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        spinner = findViewById(R.id.recordGroupSpinner);
+    }
+
+    private void initialSpinner(){
+        final List<RecordGroup> list = new ArrayList<>();
+        list.add(new RecordGroup("未分组"));
+        list.addAll(GroupOperator.findAll(true));
+        list.add(new RecordGroup("管理分组..."));
+        spinner.setAdapter(new ArrayAdapter<RecordGroup>(this, R.layout.spinner_item, list));
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position == 0){
+                    recordGroupId = -1L;
+                }else if(position == list.size() - 1){
+                    startActivity(new Intent(InputOrEditRecordActivity.this, RecordGroupActivity.class));
+                    spinner.setSelection(0);
+                    recordGroupId = -1;
+                }else{
+                    recordGroupId = list.get(position).getId();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        if(recordGroupId != -1L) {
+            for (int i = 1; i < list.size() - 1; i++) {
+                RecordGroup r = list.get(i);
+                if (r.getId() == recordGroupId) {
+                    spinner.setSelection(i);
+                    break;
+                }
+            }
+        }
     }
 
     private void showRcordData() {
@@ -288,6 +338,7 @@ public class InputOrEditRecordActivity extends BaseActivity {
         accountRecord.setAccountName(accountName);
         accountRecord.setAccountPWD(accountPWD);
         accountRecord.setDescribe(describe);
+        accountRecord.setGroupId(recordGroupId);
         if(mode == 1) {
             accountRecord.setRecordTime(System.currentTimeMillis());
         }else{

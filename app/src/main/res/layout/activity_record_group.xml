@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/input_ET"
             app:met_helperTextAlwaysShown="true"
-            app:met_helperText="名称不能为空且不能重复"
+            app:met_helperText="名称不能为空并且不能重复"
             app:met_floatingLabelAlwaysShown="true"
             app:met_floatingLabel="highlight"
             app:met_floatingLabelText="分组名称"/>

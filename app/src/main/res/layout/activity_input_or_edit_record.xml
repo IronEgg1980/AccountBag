@@ -39,6 +39,19 @@
                 app:met_helperText="请给记录取个名字（必填）"
                 app:met_helperTextAlwaysShown="false"
                 android:id="@+id/record_name_ET"/>
+
+            <Spinner
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/recordGroupSpinner"
+                android:spinnerMode="dropdown"
+                android:animateLayoutChanges="true"
+                android:overlapAnchor="false"/>
+
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:inputType="textMultiLine"
                 android:id="@+id/account_discribe_TV"

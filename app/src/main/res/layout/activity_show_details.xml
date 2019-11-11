@@ -27,13 +27,26 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:id="@+id/account_discribe_TV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
                 android:text="账户描述"
                 android:textColor="@color/titleTextColor"
                 android:textSize="11sp" />
+            <Spinner
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:animateLayoutChanges="true"
+                android:overlapAnchor="false"
+                android:id="@+id/spinner"/>
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="240dp"

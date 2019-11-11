@@ -18,10 +18,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -35,8 +38,10 @@ import yzw.ahaqth.accountbag.custom_views.ViewPagerPointIndicator;
 import yzw.ahaqth.accountbag.inputoredit.InputOrEditRecordActivity;
 import yzw.ahaqth.accountbag.modules.AccountRecord;
 import yzw.ahaqth.accountbag.modules.ImageRecord;
+import yzw.ahaqth.accountbag.modules.RecordGroup;
 import yzw.ahaqth.accountbag.modules.TextRecord;
 import yzw.ahaqth.accountbag.operators.FileOperator;
+import yzw.ahaqth.accountbag.operators.GroupOperator;
 import yzw.ahaqth.accountbag.operators.ImageOperator;
 import yzw.ahaqth.accountbag.operators.RecordOperator;
 import yzw.ahaqth.accountbag.tools.DialogFactory;
@@ -57,6 +62,7 @@ public class ShowDetailsActivity extends BaseActivity {
     private Toolbar toolbar;
     private LinearLayout accountNameGroup,accPWDGroup;
     private ImageButton copyName,copyPWD,seePWD;
+    private Spinner spinner;
 
     private long id;
     private SimpleDateFormat format;
@@ -133,9 +139,9 @@ public class ShowDetailsActivity extends BaseActivity {
     }
 
     private void deleRecord(){
-        AccountRecord record = RecordOperator.findOne(id);
-        if (record!=null) {
-            RecordOperator.dele(record);
+        AccountRecord accountRecord = RecordOperator.findOne(id);
+        if (accountRecord!=null) {
+            RecordOperator.dele(accountRecord);
             new ToastFactory(this).showCenterToast("已删除");
             finish();
         }
@@ -159,35 +165,69 @@ public class ShowDetailsActivity extends BaseActivity {
         extraImageVP = findViewById(R.id.extra_image_VP);
         indicator = findViewById(R.id.viewpagerIndicator);
         frameLayout = findViewById(R.id.framelayout);
+        spinner = findViewById(R.id.spinner);
+    }
+
+    private void initialSpinner(){
+        final AccountRecord accountRecord = RecordOperator.findOne(id);
+        final List<RecordGroup> list = new ArrayList<>();
+        list.add(new RecordGroup("未分组"));
+        list.addAll(GroupOperator.findAll(true));
+        spinner.setAdapter(new ArrayAdapter<RecordGroup>(this, R.layout.spinner_item, list));
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position == 0){
+                    accountRecord.setGroupId(-1);
+                    accountRecord.save();
+
+                }else{
+                    accountRecord.setGroupId(list.get(position).getId());
+                    accountRecord.save();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        for (int i = 1; i < list.size() - 1; i++) {
+            RecordGroup r = list.get(i);
+            if (r.getId() == accountRecord.getGroupId()) {
+                spinner.setSelection(i);
+                break;
+            }
+        }
     }
 
     private void readData(){
-        final AccountRecord record = RecordOperator.findOne(id);
-        if(record == null)
+        final AccountRecord accountRecord = RecordOperator.findOne(id);
+        if(accountRecord == null)
             return;
-        setTitle(record.getRecordName());
-        String createTimeString = "创建时间："+format.format(record.getRecordTime());
+        setTitle(accountRecord.getRecordName());
+        String createTimeString = "创建时间："+format.format(accountRecord.getRecordTime());
         recordTimeTV.setText(createTimeString);
-        if(record.getModifyTime() > 1000){
-            String modifyTimeString = "最近修改："+format.format(record.getModifyTime());
+        if(accountRecord.getModifyTime() > 1000){
+            String modifyTimeString = "最近修改："+format.format(accountRecord.getModifyTime());
             modifyTimeTV.setText(modifyTimeString);
         }else{
             modifyTimeTV.setText("");
         }
-        if(TextUtils.isEmpty(record.getAccountName())){
+        if(TextUtils.isEmpty(accountRecord.getAccountName())){
             accountNameGroup.setVisibility(View.GONE);
         }else {
             accountNameGroup.setVisibility(View.VISIBLE);
-            accountNameTV.setText(record.getAccountName());
+            accountNameTV.setText(accountRecord.getAccountName());
             copyName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ToolUtils.copy(v.getContext(),record.getAccountName());
+                    ToolUtils.copy(v.getContext(),accountRecord.getAccountName());
                     new ToastFactory(v.getContext()).showCenterToast("用户名已复制");
                 }
             });
         }
-        if(TextUtils.isEmpty(record.getAccountPWD())){
+        if(TextUtils.isEmpty(accountRecord.getAccountPWD())){
             accPWDGroup.setVisibility(View.GONE);
         }else {
             accPWDGroup.setVisibility(View.VISIBLE);
@@ -195,7 +235,7 @@ public class ShowDetailsActivity extends BaseActivity {
             copyPWD.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ToolUtils.copy(v.getContext(),record.getAccountPWD());
+                    ToolUtils.copy(v.getContext(),accountRecord.getAccountPWD());
                     new ToastFactory(v.getContext()).showCenterToast("密码已复制");
                 }
             });
@@ -204,7 +244,7 @@ public class ShowDetailsActivity extends BaseActivity {
                 public void onClick(View v) {
                     if(isShowPWD) {
                         isShowPWD = false;
-                        accountPwdTV.setText(record.getAccountPWD());
+                        accountPwdTV.setText(accountRecord.getAccountPWD());
                         seePWD.setImageResource(R.drawable.view_off);
                     }else{
                         isShowPWD = true;
@@ -214,9 +254,9 @@ public class ShowDetailsActivity extends BaseActivity {
                 }
             });
         }
-        String s = "备注：" + record.getDescribe();
+        String s = "备注：" + accountRecord.getDescribe();
         accountDiscribeTV.setText(s);
-        textRecords = record.getTextRecords();
+        textRecords = accountRecord.getTextRecords();
         if(textRecords.size() == 0){
             extraTextRLV.setVisibility(View.GONE);
         }else{
@@ -224,7 +264,7 @@ public class ShowDetailsActivity extends BaseActivity {
             textRecordAdapter = new TextRecordAdapter(textRecords);
             extraTextRLV.setAdapter(textRecordAdapter);
         }
-        imageRecords = record.getImageRecords();
+        imageRecords = accountRecord.getImageRecords();
         if(imageRecords.size() == 0){
             frameLayout.setVisibility(View.GONE);
         }else {
@@ -238,6 +278,7 @@ public class ShowDetailsActivity extends BaseActivity {
                 indicator.setBgColor(Color.parseColor("#38000000")).attachToViewPager(extraImageVP);
             }
         }
+        initialSpinner();
     }
 
     protected class ImageAdapter extends PagerAdapter{

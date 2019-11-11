@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -54,7 +55,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> 
         });
         if(record.getSortIndex() > 1){
             recordVH.favorite.setVisibility(View.VISIBLE);
-            ((TextView)recordVH.favoriteButton).setText("取消收藏");
+            ((TextView)recordVH.favoriteButton).setText("取消置顶");
             recordVH.favoriteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -65,7 +66,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> 
             });
         }else{
             recordVH.favorite.setVisibility(View.INVISIBLE);
-            ((TextView)recordVH.favoriteButton).setText("加入收藏");
+            ((TextView)recordVH.favoriteButton).setText("置顶");
             recordVH.favoriteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -103,7 +104,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> 
         private TextView imageExtraTV;
         private TextView textExtraTV;
         private TextView groupTV;
-        private View delButton,favoriteButton;
+        private TextView delButton,favoriteButton;
         private SwipeMenuLayout swipeMenuLayout;
         public RecordVH(@NonNull View itemView) {
             super(itemView);

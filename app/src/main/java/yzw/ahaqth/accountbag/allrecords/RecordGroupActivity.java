@@ -17,7 +17,10 @@ import android.widget.TextView;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import org.litepal.crud.LitePalSupport;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import yzw.ahaqth.accountbag.R;
@@ -32,13 +35,14 @@ public class RecordGroupActivity extends AppCompatActivity {
     private RecyclerView recyclerview;
     private List<RecordGroup> mList;
     private RecyclerView.Adapter adapter;
+    private int editPosition = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_group);
         mList = new ArrayList<>();
-        mList.addAll(GroupOperator.findAll(false));
+        mList.addAll(GroupOperator.findAll(true));
         adapter = new Adapter();
         initialView();
         setSupportActionBar(toolbar);
@@ -80,22 +84,41 @@ public class RecordGroupActivity extends AppCompatActivity {
             return;
         }
         String name = inputET.getText().toString();
-        if (GroupOperator.isExist(name)){
-            inputET.setError("名称重复，请修改！");
-            inputET.selectAll();
-            inputET.requestFocus();
-            return;
-        }
-        int index = mList.size();
-        RecordGroup recordGroup = new RecordGroup();
-        recordGroup.setGroupName(name);
-        recordGroup.setSortIndex(index);
-        GroupOperator.save(recordGroup);
-        mList.add(recordGroup);
-        adapter.notifyDataSetChanged();
+        if(editPosition != -1){
+            RecordGroup recordGroup = mList.get(editPosition);
+            String oldName = recordGroup.getGroupName();
+            if(!name.equals(oldName)){
+                if (GroupOperator.isExist(name)) {
+                    inputET.setError("名称重复，请修改！");
+                    inputET.selectAll();
+                    inputET.requestFocus();
+                }else {
+                    recordGroup.setGroupName(name);
+                    recordGroup.save();
+                    adapter.notifyItemChanged(editPosition);
+                }
+            }
+            editPosition = -1;
+            addBT.setText("增加");
+        }else {
+            if (GroupOperator.isExist(name)) {
+                inputET.setError("名称重复，请修改！");
+                inputET.selectAll();
+                inputET.requestFocus();
+                return;
+            }
+            int index = mList.size() + 1;
+            RecordGroup recordGroup = new RecordGroup();
+            recordGroup.setGroupName(name);
+            recordGroup.setSortIndex(index);
+            GroupOperator.save(recordGroup);
+            mList.add(recordGroup);
+            adapter.notifyDataSetChanged();
 //        adapter.notifyItemInserted(index);
-        recyclerview.smoothScrollToPosition(index);
+            recyclerview.smoothScrollToPosition(index);
+        }
         inputET.setText("");
+        inputET.setHelperText("名称不能为空并且不能重复");
         inputET.setError(null);
         inputET.requestFocus();
     }
@@ -122,15 +145,28 @@ public class RecordGroupActivity extends AppCompatActivity {
     }
 
     private void edit(int position){
-
+        editPosition = position;
+        addBT.setText("确定");
+        inputET.setText(mList.get(position).getGroupName());
+        inputET.setHelperText("请输入新的分组名称");
+        inputET.selectAll();
+        inputET.requestFocus();
     }
 
     private void up(int position){
-
+        RecordGroup pre  = mList.get(position - 1);
+        RecordGroup current = mList.get(position);
+        GroupOperator.swapSortIndex(pre,current);
+        Collections.swap(mList,position-1,position);
+        adapter.notifyItemRangeChanged(position-1,2);
     }
 
     private void down(int position){
-
+        RecordGroup next  = mList.get(position + 1);
+        RecordGroup current = mList.get(position);
+        GroupOperator.swapSortIndex(next,current);
+        Collections.swap(mList,position,position+1);
+        adapter.notifyItemRangeChanged(position,2);
     }
 
     private class Adapter extends RecyclerView.Adapter<Adapter.VH> {
@@ -142,36 +178,33 @@ public class RecordGroupActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull VH vh, int i) {
-            final int position = vh.getAdapterPosition();
-            RecordGroup recordGroup = mList.get(position);
+        public void onBindViewHolder(@NonNull final VH vh, int i) {
+            RecordGroup recordGroup = mList.get(i);
             vh.recordGroupNameTV.setText(recordGroup.getGroupName());
-            vh.up.setEnabled(position!=0);
-//            vh.up.setVisibility(position == 0?View.INVISIBLE:View.VISIBLE);
+            vh.up.setEnabled(vh.getAdapterPosition()!=0);
             vh.up.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    up(position);
+                    up(vh.getAdapterPosition());
                 }
             });
-            vh.down.setEnabled(position < getItemCount() - 1);
-//            vh.down.setVisibility(position == getItemCount() - 1?View.INVISIBLE:View.VISIBLE);
+            vh.down.setEnabled(vh.getAdapterPosition() < getItemCount() - 1);
             vh.down.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    down(position);
+                    down(vh.getAdapterPosition());
                 }
             });
             vh.del.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    del(position);
+                    del(vh.getAdapterPosition());
                 }
             });
             vh.rename.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    edit(position);
+                    edit(vh.getAdapterPosition());
                 }
             });
         }
