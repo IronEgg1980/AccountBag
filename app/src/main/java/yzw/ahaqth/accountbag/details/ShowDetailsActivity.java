@@ -70,7 +70,7 @@ public class ShowDetailsActivity extends BaseActivity {
     private List<ImageRecord> imageRecords;
     private TextRecordAdapter textRecordAdapter;
     private int currentImageIndex = 0;
-    private boolean isShowPWD = true;
+    private boolean isShowPWD = true,spinnerInitialed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +169,7 @@ public class ShowDetailsActivity extends BaseActivity {
     }
 
     private void initialSpinner(){
+        spinnerInitialed = false;
         final AccountRecord accountRecord = RecordOperator.findOne(id);
         final List<RecordGroup> list = new ArrayList<>();
         list.add(new RecordGroup("未分组"));
@@ -177,13 +178,15 @@ public class ShowDetailsActivity extends BaseActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 0){
-                    accountRecord.setGroupId(-1);
-                    accountRecord.save();
+                if(spinnerInitialed) {
+                    if (position == 0) {
+                        accountRecord.setGroupId(-1);
+                        accountRecord.save();
 
-                }else{
-                    accountRecord.setGroupId(list.get(position).getId());
-                    accountRecord.save();
+                    } else {
+                        accountRecord.setGroupId(list.get(position).getId());
+                        accountRecord.save();
+                    }
                 }
             }
 
@@ -192,13 +195,14 @@ public class ShowDetailsActivity extends BaseActivity {
 
             }
         });
-        for (int i = 1; i < list.size() - 1; i++) {
+        for (int i = 1; i < list.size(); i++) {
             RecordGroup r = list.get(i);
             if (r.getId() == accountRecord.getGroupId()) {
                 spinner.setSelection(i);
                 break;
             }
         }
+        spinnerInitialed = true;
     }
 
     private void readData(){

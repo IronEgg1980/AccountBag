@@ -34,19 +34,30 @@
                 android:id="@+id/account_discribe_TV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="账户描述"
+                android:text="备注："
                 android:textColor="@color/titleTextColor"
                 android:textSize="11sp" />
-            <Spinner
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+            <LinearLayout
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
                 android:layout_marginBottom="12dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
-                android:animateLayoutChanges="true"
-                android:overlapAnchor="false"
-                android:id="@+id/spinner"/>
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="分组："
+                    android:textColor="@color/titleTextColor"
+                    android:textSize="11sp" />
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:animateLayoutChanges="true"
+                    android:overlapAnchor="false"
+                    android:id="@+id/spinner"/>
+            </LinearLayout>
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="240dp"

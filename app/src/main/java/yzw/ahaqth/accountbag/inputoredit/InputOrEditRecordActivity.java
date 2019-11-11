@@ -100,7 +100,7 @@ public class InputOrEditRecordActivity extends BaseActivity {
     private Spinner spinner;
     private int mHeight,toolBarHeight;
     private long recordGroupId = -1;
-
+    private boolean isSpinnerInitialed = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -264,6 +264,7 @@ public class InputOrEditRecordActivity extends BaseActivity {
     }
 
     private void initialSpinner(){
+        isSpinnerInitialed = false;
         final List<RecordGroup> list = new ArrayList<>();
         list.add(new RecordGroup("未分组"));
         list.addAll(GroupOperator.findAll(true));
@@ -272,14 +273,16 @@ public class InputOrEditRecordActivity extends BaseActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 0){
-                    recordGroupId = -1L;
-                }else if(position == list.size() - 1){
-                    startActivity(new Intent(InputOrEditRecordActivity.this, RecordGroupActivity.class));
-                    spinner.setSelection(0);
-                    recordGroupId = -1;
-                }else{
-                    recordGroupId = list.get(position).getId();
+                if(isSpinnerInitialed) {
+                    if (position == 0) {
+                        recordGroupId = -1L;
+                    } else if (position == list.size() - 1) {
+                        startActivity(new Intent(InputOrEditRecordActivity.this, RecordGroupActivity.class));
+                        spinner.setSelection(0);
+                        recordGroupId = -1;
+                    } else {
+                        recordGroupId = list.get(position).getId();
+                    }
                 }
             }
 
@@ -297,6 +300,7 @@ public class InputOrEditRecordActivity extends BaseActivity {
                 }
             }
         }
+        isSpinnerInitialed = true;
     }
 
     private void showRcordData() {

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/setup_user_pwd"
+        android:title="重设用户名和密码"/>
+    <item android:title="分组管理"
+        android:id="@+id/setup_recordgroup"/>
+    <item android:title="验证方式">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:id="@+id/setup_gesture_pwd"
+                    android:title="手势密码"/>
+                <item android:id="@+id/setup_text_pwd"
+                    android:title="文字密码"/>
+            </group>
+        </menu>
+    </item>
+    <item android:title="其他">
+        <menu>
+            <item android:id="@+id/setup_resume"
+                android:title="回收站"
+                android:icon="@drawable/delete_24dp"/>
+            <item android:id="@+id/setup_about"
+                android:title="关于APP"
+                android:icon="@drawable/ic_info_18dp"/>
+        </menu>
+    </item>
+</menu>

@@ -9,17 +9,21 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,10 +43,14 @@ import yzw.ahaqth.accountbag.modules.RecordGroup;
 import yzw.ahaqth.accountbag.operators.FileOperator;
 import yzw.ahaqth.accountbag.operators.GroupOperator;
 import yzw.ahaqth.accountbag.operators.RecordOperator;
+import yzw.ahaqth.accountbag.operators.SetupOperator;
 import yzw.ahaqth.accountbag.tools.DialogFactory;
+import yzw.ahaqth.accountbag.tools.ToastFactory;
 import yzw.ahaqth.accountbag.tools.ToolUtils;
 
 public class ShowAllRecordActivity extends BaseActivity {
+    private DrawerLayout drawerLayout;
+    private NavigationView slideMenu;
     private FloatingActionButton fab;
     private Toolbar toolbar;
     private RecyclerView recyclerview;
@@ -72,25 +80,31 @@ public class ShowAllRecordActivity extends BaseActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SetupDialogFragment dialogFragment = new SetupDialogFragment();
-                dialogFragment.setOnDismiss(new DialogDismissListener() {
-                    @Override
-                    public void onDismiss(boolean isConfirm, Object... objects) {
-                        if (isConfirm) {
-                            int id = (int) objects[0];
-                            if (id > 0) {
-                                if (id == 3)
-                                    deleResume();
-                                else
-                                    showInputPWDDialog(id);
-                            }
-
-                        }
-                    }
-                });
-                dialogFragment.show(getSupportFragmentManager(), "setup");
+                drawerLayout.openDrawer(Gravity.START);
             }
         });
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                SetupDialogFragment dialogFragment = new SetupDialogFragment();
+//                dialogFragment.setOnDismiss(new DialogDismissListener() {
+//                    @Override
+//                    public void onDismiss(boolean isConfirm, Object... objects) {
+//                        if (isConfirm) {
+//                            int id = (int) objects[0];
+//                            if (id > 0) {
+//                                if (id == 3)
+//                                    deleResume();
+//                                else
+//                                    showInputPWDDialog(id);
+//                            }
+//
+//                        }
+//                    }
+//                });
+//                dialogFragment.show(getSupportFragmentManager(), "setup");
+//            }
+//        });
         FileOperator.initialAppDir(this);
         isAddRecord = false;
         initialSortSpinner();
@@ -138,9 +152,7 @@ public class ShowAllRecordActivity extends BaseActivity {
                     if(isReadDataFlag)
                         readData();
                 }else if(position == recordGroupList.size() - 1){
-                    startActivity(new Intent(ShowAllRecordActivity.this,RecordGroupActivity.class));
-                    currentRecordGroupIndex = 0;
-                    isReadDataFlag = false;
+                    setupRecordGroup();
                 }else{
                     recordGroupId = recordGroupList.get(position).getId();
                     if(isReadDataFlag)
@@ -154,6 +166,12 @@ public class ShowAllRecordActivity extends BaseActivity {
             }
         });
         isReadDataFlag = true;
+    }
+
+    private void setupRecordGroup(){
+        startActivity(new Intent(ShowAllRecordActivity.this,RecordGroupActivity.class));
+        currentRecordGroupIndex = 0;
+        isReadDataFlag = false;
     }
 
     private void showInputPWDDialog(final int mode) {
@@ -225,6 +243,61 @@ public class ShowAllRecordActivity extends BaseActivity {
         });
         toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_menu_24dp);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View view, float v) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View view) {
+                TextView userNameTV = view.findViewById(R.id.slide_menu_header_textView);
+                userNameTV.setText(SetupOperator.getUserName());
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View view) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int i) {
+
+            }
+        });
+        slideMenu = findViewById(R.id.slide_menu);
+        if(slideMenu != null){
+            slideMenu.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    switch (menuItem.getItemId()){
+                        case R.id.setup_user_pwd:
+                            showInputPWDDialog(1);
+                            break;
+                        case R.id.setup_recordgroup:
+                            setupRecordGroup();
+                            break;
+                        case R.id.setup_gesture_pwd:
+                            showInputPWDDialog(2);
+                            break;
+                        case R.id.setup_text_pwd:
+                            SetupOperator.setInputPassWordMode(1);
+                            new ToastFactory(ShowAllRecordActivity.this).showCenterToast("设置成功");
+                            break;
+                        case R.id.setup_resume:
+                            deleResume();
+                            break;
+                        case R.id.setup_about:
+                            new ToastFactory(ShowAllRecordActivity.this).showCenterToast("谢谢使用！本页面在建设中...");
+                            break;
+
+                    }
+                    drawerLayout.closeDrawers();
+                    return true;
+                }
+            });
+        }
 
         recyclerview = findViewById(R.id.recyclerview);
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
