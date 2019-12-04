@@ -14,16 +14,19 @@ import android.widget.TextView;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import java.util.List;
+import java.util.Random;
 
+import yzw.ahaqth.accountbag.EmptyVH;
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
 import yzw.ahaqth.accountbag.modules.AccountRecord;
 import yzw.ahaqth.accountbag.operators.GroupOperator;
 
-public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> {
+public class RecordAdapter extends RecyclerView.Adapter{
     private List<AccountRecord> mList;
     private ItemClickListener clickListener;
     private ItemClickListener delClick;
+    private int[] ids = {R.mipmap.empty1,R.mipmap.empty2,R.mipmap.empty3,R.mipmap.empty4,R.mipmap.empty5,R.mipmap.empty6,R.mipmap.empty7};
 
     public void setDelClick(ItemClickListener delClick) {
         this.delClick = delClick;
@@ -39,14 +42,32 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> 
 
     @NonNull
     @Override
-    public RecordVH onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        if(i == 0) {
+            return new EmptyVH(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.empty_item, viewGroup, false));
+        }
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.record_item, viewGroup, false);
         return new RecordVH(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final RecordVH recordVH, int i) {
+    public int getItemViewType(int position) {
+        if(mList.get(position).getSortIndex() == 999999)
+            return 0;
+        return 1;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
         final AccountRecord record = mList.get(i);
+        if(record.getSortIndex() == 999999) {
+            EmptyVH vh = (EmptyVH) viewHolder;
+            int index = new Random().nextInt(7);
+            vh.imageView.setImageResource(ids[index]);
+            vh.textView.setText("空空如也～～～");
+            return;
+        }
+        final RecordVH recordVH = (RecordVH) viewHolder;
         recordVH.delButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,6 +117,8 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordVH> 
     public int getItemCount() {
         return mList.size();
     }
+
+
 
     protected class RecordVH extends RecyclerView.ViewHolder {
         private ImageView favorite;

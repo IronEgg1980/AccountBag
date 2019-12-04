@@ -25,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.github.promeg.pinyinhelper.Pinyin;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -68,7 +70,8 @@ public class ShowAllRecordActivity extends BaseActivity {
     private int currentSortModeIndex = 0, currentRecordGroupIndex = 0;
     private long recordGroupId;
     private boolean isReadDataFlag = false;
-    //    private Comparator<AccountRecord> nameAscComparator,nameDscComparator,timeAscComparator,timeDscComparator;
+    private Comparator<AccountRecord> nameAscComparator, nameDscComparator, timeAscComparator, timeDscComparator;
+    private RecyclerView.ItemDecoration dividerItemDecoration;
 //    private boolean readDataFlag = false;
 
     @Override
@@ -83,38 +86,17 @@ public class ShowAllRecordActivity extends BaseActivity {
                 drawerLayout.openDrawer(Gravity.START);
             }
         });
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                SetupDialogFragment dialogFragment = new SetupDialogFragment();
-//                dialogFragment.setOnDismiss(new DialogDismissListener() {
-//                    @Override
-//                    public void onDismiss(boolean isConfirm, Object... objects) {
-//                        if (isConfirm) {
-//                            int id = (int) objects[0];
-//                            if (id > 0) {
-//                                if (id == 3)
-//                                    deleResume();
-//                                else
-//                                    showInputPWDDialog(id);
-//                            }
-//
-//                        }
-//                    }
-//                });
-//                dialogFragment.show(getSupportFragmentManager(), "setup");
-//            }
-//        });
         FileOperator.initialAppDir(this);
         isAddRecord = false;
+        initialComparator();
         initialSortSpinner();
+        sortSpinner.setSelection(currentSortModeIndex);
     }
 
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        sortSpinner.setSelection(currentSortModeIndex);
         initialRecordGroupSpinner();
         recordGroupSpinner.setSelection(currentRecordGroupIndex);
     }
@@ -126,8 +108,8 @@ public class ShowAllRecordActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 currentSortModeIndex = position;
-                if(isReadDataFlag)
-                    readData();
+                if (isReadDataFlag)
+                    sortList();
             }
 
             @Override
@@ -147,15 +129,15 @@ public class ShowAllRecordActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 currentRecordGroupIndex = position;
-                if(position == 0){
+                if (position == 0) {
                     recordGroupId = -1L;
-                    if(isReadDataFlag)
+                    if (isReadDataFlag)
                         readData();
-                }else if(position == recordGroupList.size() - 1){
+                } else if (position == recordGroupList.size() - 1) {
                     setupRecordGroup();
-                }else{
+                } else {
                     recordGroupId = recordGroupList.get(position).getId();
-                    if(isReadDataFlag)
+                    if (isReadDataFlag)
                         readData();
                 }
             }
@@ -168,8 +150,8 @@ public class ShowAllRecordActivity extends BaseActivity {
         isReadDataFlag = true;
     }
 
-    private void setupRecordGroup(){
-        startActivity(new Intent(ShowAllRecordActivity.this,RecordGroupActivity.class));
+    private void setupRecordGroup() {
+        startActivity(new Intent(ShowAllRecordActivity.this, RecordGroupActivity.class));
         currentRecordGroupIndex = 0;
         isReadDataFlag = false;
     }
@@ -204,6 +186,8 @@ public class ShowAllRecordActivity extends BaseActivity {
 
     private void deleResume() {
         startActivity(new Intent(ShowAllRecordActivity.this, DeleResumeActivity.class));
+        currentRecordGroupIndex = 0;
+        isReadDataFlag = false;
     }
 
     private void setImage() {
@@ -267,11 +251,11 @@ public class ShowAllRecordActivity extends BaseActivity {
             }
         });
         slideMenu = findViewById(R.id.slide_menu);
-        if(slideMenu != null){
+        if (slideMenu != null) {
             slideMenu.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                    switch (menuItem.getItemId()){
+                    switch (menuItem.getItemId()) {
                         case R.id.setup_user_pwd:
                             showInputPWDDialog(1);
                             break;
@@ -283,7 +267,7 @@ public class ShowAllRecordActivity extends BaseActivity {
                             break;
                         case R.id.setup_text_pwd:
                             SetupOperator.setInputPassWordMode(1);
-                            new ToastFactory(ShowAllRecordActivity.this).showCenterToast("设置成功");
+                            new ToastFactory(ShowAllRecordActivity.this).showCenterToast("已启用文字密码");
                             break;
                         case R.id.setup_resume:
                             deleResume();
@@ -302,7 +286,7 @@ public class ShowAllRecordActivity extends BaseActivity {
         recyclerview = findViewById(R.id.recyclerview);
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         recyclerview.setAdapter(adapter);
-        recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -349,14 +333,101 @@ public class ShowAllRecordActivity extends BaseActivity {
         sortSpinner = findViewById(R.id.sortSpinner);
     }
 
-    private void readData() {
-        list.clear();
-        list.addAll(RecordOperator.findAll(currentSortModeIndex, recordGroupId));
+    private void initialComparator() {
+        nameAscComparator = new Comparator<AccountRecord>() {
+            @Override
+            public int compare(AccountRecord o1, AccountRecord o2) {
+                int sortIndex1 = o1.getSortIndex();
+                int sortIndex2 = o2.getSortIndex();
+                String name1 = ToolUtils.getPinYin(o1.getRecordName());
+                String name2 = ToolUtils.getPinYin(o2.getRecordName());
+                if (sortIndex1 == sortIndex2) {
+                    return name1.compareTo(name2);
+                } else {
+                    return Integer.compare(sortIndex2, sortIndex1);
+                }
+            }
+        };
+        nameDscComparator = new Comparator<AccountRecord>() {
+            @Override
+            public int compare(AccountRecord o1, AccountRecord o2) {
+                int sortIndex1 = o1.getSortIndex();
+                int sortIndex2 = o2.getSortIndex();
+                String name1 = ToolUtils.getPinYin(o1.getRecordName());
+                String name2 = ToolUtils.getPinYin(o2.getRecordName());
+                if (sortIndex1 == sortIndex2) {
+                    return name2.compareTo(name1);
+                } else {
+                    return Integer.compare(sortIndex2, sortIndex1);
+                }
+            }
+        };
+        timeAscComparator = new Comparator<AccountRecord>() {
+            @Override
+            public int compare(AccountRecord o1, AccountRecord o2) {
+                int sortIndex1 = o1.getSortIndex();
+                int sortIndex2 = o2.getSortIndex();
+                long time1 = o1.getRecordTime();
+                long time2 = o2.getRecordTime();
+                if (sortIndex1 == sortIndex2) {
+                    return Long.compare(time1, time2);
+                } else {
+                    return Integer.compare(sortIndex2, sortIndex1);
+                }
+            }
+        };
+        timeDscComparator = new Comparator<AccountRecord>() {
+            @Override
+            public int compare(AccountRecord o1, AccountRecord o2) {
+                int sortIndex1 = o1.getSortIndex();
+                int sortIndex2 = o2.getSortIndex();
+                long time1 = o1.getRecordTime();
+                long time2 = o2.getRecordTime();
+                if (sortIndex1 == sortIndex2) {
+                    return Long.compare(time2, time1);
+                } else {
+                    return Integer.compare(sortIndex2, sortIndex1);
+                }
+            }
+        };
+    }
+
+    private void sortList() {
+        Comparator<AccountRecord> current = null;
+        switch (currentSortModeIndex) {
+            case 0:
+                current = timeAscComparator;
+                break;
+            case 1:
+                current = timeDscComparator;
+                break;
+            case 2:
+                current = nameAscComparator;
+                break;
+            case 3:
+                current = nameDscComparator;
+                break;
+        }
+        Collections.sort(list, current);
         adapter.notifyDataSetChanged();
         if (isAddRecord) {
             recyclerview.scrollToPosition(adapter.getItemCount() - 1);
             isAddRecord = false;
         }
+    }
+
+    private void readData() {
+        list.clear();
+        list.addAll(RecordOperator.findAll(recordGroupId));
+        recyclerview.removeItemDecoration(dividerItemDecoration);
+        if (list.isEmpty()) {
+            AccountRecord accountRecord = new AccountRecord();
+            accountRecord.setSortIndex(999999);
+            list.add(accountRecord);
+        } else {
+            recyclerview.addItemDecoration(dividerItemDecoration);
+        }
+        sortList();
     }
 
     private void deleRecord(final int position, final RecordAdapter.RecordVH recordVH) {

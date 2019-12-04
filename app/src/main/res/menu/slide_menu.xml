@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/setup_user_pwd"
-        android:title="重设用户名和密码"/>
+        android:icon="@drawable/account_circle_24dp"
+        android:title="用户名和密码"/>
     <item android:title="分组管理"
+        android:icon="@drawable/record_group"
         android:id="@+id/setup_recordgroup"/>
     <item android:title="验证方式">
         <menu>
             <group android:checkableBehavior="single">
                 <item android:id="@+id/setup_gesture_pwd"
+                    android:icon="@drawable/gesture_pwd"
                     android:title="手势密码"/>
                 <item android:id="@+id/setup_text_pwd"
+                    android:icon="@drawable/text_pwd"
                     android:title="文字密码"/>
             </group>
         </menu>

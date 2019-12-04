@@ -11,25 +11,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:context=".main.MainActivity">
-        <android.support.design.card.MaterialCardView
-            android:id="@+id/cardView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <ImageView
             android:layout_margin="16dp"
-            android:elevation="8dp"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="12dp">
-            <TextView
-                android:id="@+id/textview2"
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:gravity="center"
-                android:textColor="@color/colorPrimary"
-                android:textSize="40sp"
-                android:textStyle="bold"
-                android:text="欢迎使用"
-                />
-        </android.support.design.card.MaterialCardView>
+            android:layout_gravity="center_horizontal"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/accountbag_ico2"/>
         <FrameLayout
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"

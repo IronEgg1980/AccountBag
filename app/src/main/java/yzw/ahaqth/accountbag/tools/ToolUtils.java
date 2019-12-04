@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 
+import com.github.promeg.pinyinhelper.Pinyin;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -48,8 +50,21 @@ public final class ToolUtils {
         }else{
             builder.append("凌晨");
         }
-        builder.append("好！").append(SetupOperator.getUserName());
+        builder.append("好，").append(SetupOperator.getUserName());
         return builder.toString();
+    }
+
+    public static String getPinYin(String s){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i = 0;i<s.length();i++){
+            char c = s.charAt(i);
+            if(Pinyin.isChinese(c)) {
+                stringBuilder.append(Pinyin.toPinyin(c));
+            }else{
+                stringBuilder.append(c);
+            }
+        }
+        return stringBuilder.toString();
     }
 
     //系统剪贴板-复制:   s为内容

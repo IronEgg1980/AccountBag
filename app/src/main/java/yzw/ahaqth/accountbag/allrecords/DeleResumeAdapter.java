@@ -15,9 +15,12 @@ import android.widget.TextView;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
+import yzw.ahaqth.accountbag.EmptyVH;
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
 import yzw.ahaqth.accountbag.modules.AccountRecord;
@@ -26,33 +29,52 @@ import yzw.ahaqth.accountbag.tools.DialogFactory;
 import yzw.ahaqth.accountbag.tools.ToastFactory;
 import yzw.ahaqth.accountbag.tools.ToolUtils;
 
-public class DeleResumeAdapter extends RecyclerView.Adapter<DeleResumeAdapter.VH> {
+public class DeleResumeAdapter extends RecyclerView.Adapter {
     private List<AccountRecord> list;
     private Context mContext;
     private ToastFactory toastFactory;
     private SimpleDateFormat simpleDateFormat;
     private ItemClickListener longClick;
+    private int[] ids = {R.mipmap.empty1,R.mipmap.empty2,R.mipmap.empty3,R.mipmap.empty4,R.mipmap.empty5,R.mipmap.empty6,R.mipmap.empty7};
 
     public void setLongClick(ItemClickListener longClick) {
         this.longClick = longClick;
     }
 
-    public DeleResumeAdapter(Context context){
-        this.list = RecordOperator.findAllDeleted();
+    public DeleResumeAdapter(Context context,List<AccountRecord> list){
+        this.list = list;
         this.mContext = context;
         simpleDateFormat = new SimpleDateFormat("删除时间：yyyy年M月d日 HH:mm:ss", Locale.CHINA);
         toastFactory = new ToastFactory(mContext);
     }
     @NonNull
     @Override
-    public VH onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        if(i == 0)
+            return new EmptyVH(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.empty_item, viewGroup, false));
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.dele_record_item,viewGroup,false);
         return new VH(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final VH vh, int i) {
+    public int getItemViewType(int position) {
+        if(list.get(position).getSortIndex() == 999999){
+            return 0;
+        }
+        return 1;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         final AccountRecord accountRecord = list.get(i);
+        if(accountRecord.getSortIndex() == 999999) {
+            EmptyVH vh = (EmptyVH) viewHolder;
+            int index = new Random().nextInt(7);
+            vh.imageView.setImageResource(ids[index]);
+            vh.textView.setText("回收站内貌似很干净啊!");
+            return;
+        }
+        final VH vh = (VH) viewHolder;
         vh.nameTV.setText(accountRecord.getRecordName());
         long deleTime = accountRecord.getDeleTime();
         int remainDay = 30 - (int) ((System.currentTimeMillis() - deleTime) / ToolUtils.ONE_DAY_MILLES);

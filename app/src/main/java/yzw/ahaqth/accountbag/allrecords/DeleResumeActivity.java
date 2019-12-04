@@ -13,9 +13,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.List;
+
 import yzw.ahaqth.accountbag.BaseActivity;
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
+import yzw.ahaqth.accountbag.modules.AccountRecord;
+import yzw.ahaqth.accountbag.operators.RecordOperator;
 import yzw.ahaqth.accountbag.tools.DialogFactory;
 
 public class DeleResumeActivity extends BaseActivity {
@@ -42,8 +46,18 @@ public class DeleResumeActivity extends BaseActivity {
         infoTV = findViewById(R.id.info_TV);
         recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        adapter = new DeleResumeAdapter(this);
+        RecyclerView.ItemDecoration divider = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
+
+        List<AccountRecord> list = RecordOperator.findAllDeleted();
+        recyclerView.removeItemDecoration(divider);
+        if(list.isEmpty()){
+            AccountRecord accountRecord = new AccountRecord();
+            accountRecord.setSortIndex(999999);
+            list.add(accountRecord);
+        }else{
+            recyclerView.addItemDecoration(divider);
+        }
+        adapter = new DeleResumeAdapter(this,list);
         adapter.setLongClick(new ItemClickListener() {
             @Override
             public void click(int position, @Nullable Object... values) {
