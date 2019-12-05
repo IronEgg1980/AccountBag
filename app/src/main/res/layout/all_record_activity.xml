@@ -45,47 +45,47 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <LinearLayout
-                android:padding="8dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/linear1">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:id="@+id/recordGroupTitle"
-                    android:text="分组："/>
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/recordGroupSpinner"
-                    android:spinnerMode="dropdown"
-                    android:animateLayoutChanges="true"
-                    android:elevation="8dp"
-                    android:overlapAnchor="false"
-                    />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:id="@+id/sortTitle"
-                    android:text="排序："/>
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/sortSpinner"
-                    android:spinnerMode="dropdown"
-                    android:animateLayoutChanges="true"
-                    android:elevation="8dp"
-                    android:overlapAnchor="false"
-                    />
-            </LinearLayout>
+<!--            <LinearLayout-->
+<!--                android:padding="8dp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:id="@+id/linear1">-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:id="@+id/recordGroupTitle"-->
+<!--                    android:text="分组："/>-->
+<!--                <Spinner-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:id="@+id/recordGroupSpinner"-->
+<!--                    android:spinnerMode="dropdown"-->
+<!--                    android:animateLayoutChanges="true"-->
+<!--                    android:elevation="8dp"-->
+<!--                    android:overlapAnchor="false"-->
+<!--                    />-->
+<!--                <TextView-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:layout_height="wrap_content"/>-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:id="@+id/sortTitle"-->
+<!--                    android:text="排序："/>-->
+<!--                <Spinner-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:id="@+id/sortSpinner"-->
+<!--                    android:spinnerMode="dropdown"-->
+<!--                    android:animateLayoutChanges="true"-->
+<!--                    android:elevation="8dp"-->
+<!--                    android:overlapAnchor="false"-->
+<!--                    />-->
+<!--            </LinearLayout>-->
             <android.support.v7.widget.RecyclerView
                 app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior"
                 android:id="@+id/recyclerview"
@@ -108,28 +108,102 @@
             android:src="@drawable/ic_add_white_24dp"/>
     </android.support.design.widget.CoordinatorLayout>
     <android.support.design.widget.NavigationView
-        android:layout_width="240dp"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         android:id="@+id/slide_menu"
         android:layout_gravity = "start">
         <LinearLayout
+            android:paddingBottom="20dp"
+            android:background="@color/colorWhite"
             android:fitsSystemWindows="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <include layout="@layout/slide_menu_header"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"/>
             <TextView
+                android:paddingTop="40dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="8dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/colorAccent"
                 android:textColor="@color/colorWhite"
-                android:textSize="20sp"
-                android:text="测试"
-                android:gravity="center"/>
+                android:textSize="14sp"
+                android:text="晚上好！用户名"
+                android:id="@+id/slidemenu_title"/>
+            <TextView
+                style="@style/MenuItemTextViewStyle"
+                android:id="@+id/slide_menu_accountname_pwd"
+                android:text="重设用户名和密码"
+                android:drawableLeft="@drawable/account_circle_24dp" />
+            <include layout="@layout/divider_vertical"/>
+            <TextView
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="密码验证方式"
+                android:textColor="@color/titleTextColor"
+                android:textSize="12sp"/>
+            <TextView
+                style="@style/MenuItemTextViewStyle"
+                android:id="@+id/slide_menu_gesture"
+                android:text="手势密码"
+                android:drawableLeft="@drawable/gesture_pwd"/>
+            <TextView
+                style="@style/MenuItemTextViewStyle"
+                android:id="@+id/slide_menu_textpwd"
+                android:text="文字密码"
+                android:drawableLeft="@drawable/text_pwd"/>
+            <include layout="@layout/divider_vertical"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp">
+                <TextView
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/titleTextColor"
+                    android:text="分组查看"/>
+                <TextView
+                    android:id="@+id/slide_menu_groupmanage"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@android:color/holo_blue_dark"
+                    android:text="编辑"/>
+            </LinearLayout>
+            <TextView
+                style="@style/MenuItemTextViewStyle"
+                android:id="@+id/slide_menu_allgroup"
+                android:text="全部记录"/>
+            <android.support.v7.widget.RecyclerView
+                android:scrollbars="vertical"
+                android:fadeScrollbars="false"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/slide_menu_groupList"/>
+            <TextView
+                style="@style/MenuItemTextViewStyle"
+                android:id="@+id/slide_menu_resume"
+                android:text="回收站"
+                android:drawableLeft="@drawable/delete_gray_24dp" />
+            <TextView
+                style="@style/MenuItemTextViewStyle"
+                android:id="@+id/slide_menu_about"
+                android:text="关于APP"
+                android:drawableLeft="@drawable/ic_info_18dp" />
         </LinearLayout>
     </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>

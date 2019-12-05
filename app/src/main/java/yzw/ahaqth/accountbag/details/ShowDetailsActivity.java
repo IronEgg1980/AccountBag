@@ -90,7 +90,7 @@ public class ShowDetailsActivity extends BaseActivity {
                 onBackPressed();
             }
         });
-        format = new SimpleDateFormat("yyyy年M月d日 HH:mm:ss", Locale.CHINA);
+        format = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss", Locale.CHINA);
     }
 
     @Override
@@ -174,7 +174,7 @@ public class ShowDetailsActivity extends BaseActivity {
         final List<RecordGroup> list = new ArrayList<>();
         list.add(new RecordGroup("未分组"));
         list.addAll(GroupOperator.findAll(true));
-        spinner.setAdapter(new ArrayAdapter<RecordGroup>(this, R.layout.spinner_item, list));
+        spinner.setAdapter(new ArrayAdapter<RecordGroup>(this, R.layout.group_item, list));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

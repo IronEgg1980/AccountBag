@@ -1,42 +1,30 @@
 package yzw.ahaqth.accountbag.inputoredit;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.card.MaterialCardView;
-import android.support.v4.content.FileProvider;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.Spinner;
 
-import com.hjq.permissions.OnPermission;
-import com.hjq.permissions.Permission;
-import com.hjq.permissions.XXPermissions;
 import com.linchaolong.android.imagepicker.ImagePicker;
 import com.linchaolong.android.imagepicker.cropper.CropImage;
 import com.linchaolong.android.imagepicker.cropper.CropImageView;
@@ -46,14 +34,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
 import yzw.ahaqth.accountbag.BaseActivity;
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.allrecords.RecordGroupActivity;
-import yzw.ahaqth.accountbag.allrecords.ShowAllRecordActivity;
 import yzw.ahaqth.accountbag.interfaces.DialogDismissListener;
 import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
 import yzw.ahaqth.accountbag.modules.AccountRecord;
@@ -345,6 +331,7 @@ public class InputOrEditRecordActivity extends BaseActivity {
         accountRecord.setGroupId(recordGroupId);
         if(mode == 1) {
             accountRecord.setRecordTime(System.currentTimeMillis());
+            LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent("AddRecord"));
         }else{
             accountRecord.setModifyTime(System.currentTimeMillis());
         }
