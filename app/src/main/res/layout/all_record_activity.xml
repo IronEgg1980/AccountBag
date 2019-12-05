@@ -108,11 +108,29 @@
             android:src="@drawable/ic_add_white_24dp"/>
     </android.support.design.widget.CoordinatorLayout>
     <android.support.design.widget.NavigationView
-        android:layout_width="wrap_content"
+        android:layout_width="240dp"
         android:layout_height="match_parent"
         android:id="@+id/slide_menu"
-        android:layout_gravity = "start"
-        app:menu="@menu/slide_menu"
-        app:headerLayout="@layout/slide_menu_header"/>
+        android:layout_gravity = "start">
+        <LinearLayout
+            android:fitsSystemWindows="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <include layout="@layout/slide_menu_header"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorAccent"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp"
+                android:text="测试"
+                android:gravity="center"/>
+        </LinearLayout>
+    </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>
 

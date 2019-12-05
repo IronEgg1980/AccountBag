@@ -251,37 +251,37 @@ public class ShowAllRecordActivity extends BaseActivity {
             }
         });
         slideMenu = findViewById(R.id.slide_menu);
-        if (slideMenu != null) {
-            slideMenu.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                    switch (menuItem.getItemId()) {
-                        case R.id.setup_user_pwd:
-                            showInputPWDDialog(1);
-                            break;
-                        case R.id.setup_recordgroup:
-                            setupRecordGroup();
-                            break;
-                        case R.id.setup_gesture_pwd:
-                            showInputPWDDialog(2);
-                            break;
-                        case R.id.setup_text_pwd:
-                            SetupOperator.setInputPassWordMode(1);
-                            new ToastFactory(ShowAllRecordActivity.this).showCenterToast("已启用文字密码");
-                            break;
-                        case R.id.setup_resume:
-                            deleResume();
-                            break;
-                        case R.id.setup_about:
-                            new ToastFactory(ShowAllRecordActivity.this).showCenterToast("谢谢使用！本页面在建设中...");
-                            break;
-
-                    }
-                    drawerLayout.closeDrawers();
-                    return true;
-                }
-            });
-        }
+//        if (slideMenu != null) {
+//            slideMenu.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//                @Override
+//                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+//                    switch (menuItem.getItemId()) {
+//                        case R.id.setup_user_pwd:
+//                            showInputPWDDialog(1);
+//                            break;
+//                        case R.id.setup_recordgroup:
+//                            setupRecordGroup();
+//                            break;
+//                        case R.id.setup_gesture_pwd:
+//                            showInputPWDDialog(2);
+//                            break;
+//                        case R.id.setup_text_pwd:
+//                            SetupOperator.setInputPassWordMode(1);
+//                            new ToastFactory(ShowAllRecordActivity.this).showCenterToast("已启用文字密码");
+//                            break;
+//                        case R.id.setup_resume:
+//                            deleResume();
+//                            break;
+//                        case R.id.setup_about:
+//                            new ToastFactory(ShowAllRecordActivity.this).showCenterToast("谢谢使用！本页面在建设中...");
+//                            break;
+//
+//                    }
+//                    drawerLayout.closeDrawers();
+//                    return true;
+//                }
+//            });
+//        }
 
         recyclerview = findViewById(R.id.recyclerview);
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
