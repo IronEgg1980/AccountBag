@@ -58,21 +58,23 @@
                     android:overlapAnchor="false"
                     android:id="@+id/spinner"/>
             </LinearLayout>
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
-                android:id="@+id/framelayout">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/imageGroup">
                 <android.support.v4.view.ViewPager
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="240dp"
                     android:id="@+id/extra_image_VP"/>
                 <yzw.ahaqth.accountbag.custom_views.ViewPagerPointIndicator
                     android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/viewpagerIndicator"/>
-            </FrameLayout>
+            </LinearLayout>
 
 
             <!--            <android.support.v7.widget.RecyclerView-->

@@ -1,12 +1,14 @@
 package yzw.ahaqth.accountbag.modules;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import org.litepal.crud.LitePalSupport;
 
 public class RecordGroup extends LitePalSupport {
     private String groupName;
     private int sortIndex;
+    private String colorString;
 
     public RecordGroup(){
 
@@ -33,6 +35,16 @@ public class RecordGroup extends LitePalSupport {
 
     public void setSortIndex(int sortIndex) {
         this.sortIndex = sortIndex;
+    }
+
+    public String getColor() {
+        if(TextUtils.isEmpty(colorString))
+            return "#777777";
+        return colorString;
+    }
+
+    public void setColorString(String colorString) {
+        this.colorString = colorString;
     }
 
     @NonNull

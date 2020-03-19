@@ -25,19 +25,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
-        <com.rengwuxian.materialedittext.MaterialEditText
+        <ImageView
+            android:padding="10dp"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_class_24dp"
+            android:id="@+id/flagColorIV"/>
+        <EditText
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:id="@+id/input_ET"
-            app:met_helperTextAlwaysShown="true"
-            app:met_helperText="名称不能为空并且不能重复"
-            app:met_floatingLabelAlwaysShown="true"
-            app:met_floatingLabel="highlight"
-            app:met_floatingLabelText="分组名称"/>
+            android:hint="输入分组名称" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
             android:id="@+id/add_BT"
             android:text="增加"/>
     </LinearLayout>

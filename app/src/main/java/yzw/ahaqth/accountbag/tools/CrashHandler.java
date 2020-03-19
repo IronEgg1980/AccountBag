@@ -1,5 +1,6 @@
 package yzw.ahaqth.accountbag.tools;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -28,10 +29,11 @@ import java.util.Locale;
 import java.util.Map;
 
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
-    public static String TAG = "MyCrash";
+    private static String TAG = "MyCrash";
     // 系统默认的UncaughtException处理类
     private Thread.UncaughtExceptionHandler mDefaultHandler;
 
+    @SuppressLint("StaticFieldLeak")
     private static CrashHandler instance = new CrashHandler();
     private Context mContext;
 
@@ -166,14 +168,13 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private String saveCrashInfoFile(Throwable ex) throws Exception {
         StringBuffer sb = new StringBuffer();
         try {
-            SimpleDateFormat sDateFormat = new SimpleDateFormat(
-                    "yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.CHINA);
             String date = sDateFormat.format(new java.util.Date());
-            sb.append("\r\n" + date + "\n");
+            sb.append("\r\n").append(date).append("\n");
             for (Map.Entry<String, String> entry : infos.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
-                sb.append(key + "=" + value + "\n");
+                sb.append(key).append("=").append(value).append("\n");
             }
 
             Writer writer = new StringWriter();
@@ -189,8 +190,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             String result = writer.toString();
             sb.append(result);
 
-            String fileName = writeFile(sb.toString());
-            return fileName;
+            return writeFile(sb.toString());
         } catch (Exception e) {
             Log.e(TAG, "an error occured while writing file...", e);
             sb.append("an error occured while writing file...\r\n");

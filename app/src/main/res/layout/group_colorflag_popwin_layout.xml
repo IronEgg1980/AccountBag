@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:scaleType="center"
+            android:id="@+id/imageView1"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="12dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_class_24dp" />
+
+        <ImageView
+            android:scaleType="center"
+            android:id="@+id/imageView2"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="12dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_class_24dp" />
+
+        <ImageView
+            android:scaleType="center"
+            android:id="@+id/imageView3"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="12dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_class_24dp" />
+
+        <ImageView
+            android:scaleType="center"
+            android:id="@+id/imageView4"
+            android:layout_margin="12dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_class_24dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:scaleType="center"
+            android:id="@+id/imageView5"
+            android:layout_margin="12dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_class_24dp"/>
+        <ImageView
+            android:scaleType="center"
+            android:id="@+id/imageView6"
+            android:layout_margin="12dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_class_24dp"/>
+        <ImageView
+            android:scaleType="center"
+            android:id="@+id/imageView7"
+            android:layout_margin="12dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_class_24dp"/>
+        <ImageView
+            android:scaleType="center"
+            android:id="@+id/imageView8"
+            android:layout_margin="12dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_class_24dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textview1"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="自定义颜色" />
+</LinearLayout>

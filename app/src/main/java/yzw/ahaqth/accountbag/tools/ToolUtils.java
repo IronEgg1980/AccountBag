@@ -20,6 +20,23 @@ import yzw.ahaqth.accountbag.operators.SetupOperator;
 public final class ToolUtils {
     public static final long ONE_DAY_MILLES = 24 * 60 * 60 * 1000;
 
+    public static String getRandomColor(int alpha){
+        String c ="0123456789abcdef";
+        StringBuilder buffer = new StringBuilder();
+        Random random = new Random();
+        buffer.append('#');
+        if(alpha < 0x0)
+            alpha = 0x0;
+        if(alpha > 0xff)
+            alpha = 0xff;
+        buffer.append(String.format("%02X",alpha));
+
+        for (int i = 0; i < 6; i++) {
+            buffer.append(c.charAt(random.nextInt(16)));
+        }
+        return buffer.toString();
+    }
+
     public static String getRandomString(int length) {
         String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         Random random = new Random();

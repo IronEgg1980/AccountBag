@@ -2,7 +2,11 @@ package yzw.ahaqth.accountbag.allrecords;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,10 +15,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -26,18 +33,25 @@ import java.util.Collections;
 import java.util.List;
 
 import yzw.ahaqth.accountbag.R;
+import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
 import yzw.ahaqth.accountbag.modules.RecordGroup;
 import yzw.ahaqth.accountbag.operators.GroupOperator;
 import yzw.ahaqth.accountbag.tools.DialogFactory;
+import yzw.ahaqth.accountbag.tools.ToastFactory;
+import yzw.ahaqth.accountbag.tools.ToolUtils;
 
 public class RecordGroupActivity extends AppCompatActivity {
+    private String TAG = "RecordGroupActivity-YZW";
     private Toolbar toolbar;
-    private MaterialEditText inputET;
+    private EditText inputET;
+    private ImageView flagColorIV;
     private Button addBT;
     private RecyclerView recyclerview;
     private List<RecordGroup> mList;
     private RecyclerView.Adapter adapter;
     private int editPosition = -1;
+    private String color;
+    private SelectColorFlagPopWin popWin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +60,21 @@ public class RecordGroupActivity extends AppCompatActivity {
         mList = new ArrayList<>();
         mList.addAll(GroupOperator.findAll(true));
         adapter = new Adapter();
+        color = "#777777";
         initialView();
+        popWin = new SelectColorFlagPopWin(this);
+        popWin.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void click(int position, @Nullable Object... values) {
+                if (position == R.id.textview1) {
+                    // 自定义颜色
+                    new ToastFactory(RecordGroupActivity.this).showCenterToast("自定义颜色");
+                } else {
+                    color = (String) values[0];
+                    changeColorFlagImage(color);
+                }
+            }
+        });
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,10 +96,25 @@ public class RecordGroupActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private void initialView(){
+    private void changeColorFlagImage(String color) {
+        Drawable drawable = getDrawable(R.drawable.ic_class_24dp);
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+        drawable.setColorFilter(Color.parseColor(color), PorterDuff.Mode.MULTIPLY);
+        flagColorIV.setImageDrawable(drawable);
+    }
+
+    private void initialView() {
         toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         inputET = findViewById(R.id.input_ET);
+        flagColorIV = findViewById(R.id.flagColorIV);
+        flagColorIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popWin.showAsDropDown(v);
+            }
+        });
+        changeColorFlagImage(color);
         addBT = findViewById(R.id.add_BT);
         addBT.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,34 +124,33 @@ public class RecordGroupActivity extends AppCompatActivity {
         });
         recyclerview = findViewById(R.id.recyclerview);
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        recyclerview.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerview.setAdapter(adapter);
     }
 
-    private void add(){
-        if(TextUtils.isEmpty(inputET.getText())){
+    private void add() {
+        if (TextUtils.isEmpty(inputET.getText())) {
             inputET.setError("名称不能为空！");
             inputET.requestFocus();
             return;
         }
-        String name = inputET.getText().toString();
-        if(editPosition != -1){
+        String name = inputET.getText().toString().trim();
+        if (editPosition != -1) {
             RecordGroup recordGroup = mList.get(editPosition);
             String oldName = recordGroup.getGroupName();
-            if(!name.equals(oldName)){
-                if (GroupOperator.isExist(name)) {
-                    inputET.setError("名称重复，请修改！");
-                    inputET.selectAll();
-                    inputET.requestFocus();
-                }else {
-                    recordGroup.setGroupName(name);
-                    recordGroup.save();
-                    adapter.notifyItemChanged(editPosition);
-                }
+            if (!name.equals(oldName) && GroupOperator.isExist(name)) {
+                inputET.setError("名称重复，请修改！");
+                inputET.selectAll();
+                inputET.requestFocus();
+                return;
             }
+            recordGroup.setGroupName(name);
+            recordGroup.setColorString(color);
+            GroupOperator.save(recordGroup);
+            adapter.notifyItemChanged(editPosition);
             editPosition = -1;
             addBT.setText("增加");
-        }else {
+        } else {
             if (GroupOperator.isExist(name)) {
                 inputET.setError("名称重复，请修改！");
                 inputET.selectAll();
@@ -118,6 +160,7 @@ public class RecordGroupActivity extends AppCompatActivity {
             int index = mList.size() + 1;
             RecordGroup recordGroup = new RecordGroup();
             recordGroup.setGroupName(name);
+            recordGroup.setColorString(color);
             recordGroup.setSortIndex(index);
             GroupOperator.save(recordGroup);
             mList.add(recordGroup);
@@ -126,14 +169,13 @@ public class RecordGroupActivity extends AppCompatActivity {
             recyclerview.smoothScrollToPosition(index);
         }
         inputET.setText("");
-        inputET.setHelperText("名称不能为空并且不能重复");
         inputET.setError(null);
         inputET.requestFocus();
     }
 
-    private void del(final int position){
+    private void del(final int position) {
         final RecordGroup recordGroup = mList.get(position);
-        String s = "是否删除【"+recordGroup.getGroupName()+"】？";
+        String s = "是否删除【" + recordGroup.getGroupName() + "】？";
         new DialogFactory(RecordGroupActivity.this)
                 .showDefaultConfirmDialog(s, new DialogInterface.OnClickListener() {
                     @Override
@@ -143,7 +185,7 @@ public class RecordGroupActivity extends AppCompatActivity {
                         adapter.notifyDataSetChanged();
 //                        adapter.notifyItemRemoved(position);
 //                        adapter.notifyItemRangeChanged(position,adapter.getItemCount() - position);
-                        for(int i = position;i<mList.size();i++){
+                        for (int i = position; i < mList.size(); i++) {
                             RecordGroup recordGroup = mList.get(i);
                             recordGroup.setSortIndex(i);
                             GroupOperator.save(recordGroup);
@@ -152,44 +194,50 @@ public class RecordGroupActivity extends AppCompatActivity {
                 });
     }
 
-    private void edit(int position){
+    private void edit(int position) {
+        RecordGroup recordGroup = mList.get(position);
+        color = recordGroup.getColor();
+        changeColorFlagImage(color);
         editPosition = position;
         addBT.setText("确定");
-        inputET.setText(mList.get(position).getGroupName());
-        inputET.setHelperText("请输入新的分组名称");
+        inputET.setText(recordGroup.getGroupName());
         inputET.selectAll();
         inputET.requestFocus();
     }
 
-    private void up(int position){
-        RecordGroup pre  = mList.get(position - 1);
+    private void up(int position) {
+        RecordGroup pre = mList.get(position - 1);
         RecordGroup current = mList.get(position);
-        GroupOperator.swapSortIndex(pre,current);
-        Collections.swap(mList,position-1,position);
-        adapter.notifyItemRangeChanged(position-1,2);
+        GroupOperator.swapSortIndex(pre, current);
+        Collections.swap(mList, position - 1, position);
+        adapter.notifyItemRangeChanged(position - 1, 2);
     }
 
-    private void down(int position){
-        RecordGroup next  = mList.get(position + 1);
+    private void down(int position) {
+        RecordGroup next = mList.get(position + 1);
         RecordGroup current = mList.get(position);
-        GroupOperator.swapSortIndex(next,current);
-        Collections.swap(mList,position,position+1);
-        adapter.notifyItemRangeChanged(position,2);
+        GroupOperator.swapSortIndex(next, current);
+        Collections.swap(mList, position, position + 1);
+        adapter.notifyItemRangeChanged(position, 2);
     }
 
     private class Adapter extends RecyclerView.Adapter<Adapter.VH> {
         @NonNull
         @Override
         public VH onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recordgroup_edit_item,viewGroup,false);
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recordgroup_edit_item, viewGroup, false);
             return new VH(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull final VH vh, int i) {
             RecordGroup recordGroup = mList.get(i);
+            Drawable drawable = getDrawable(R.drawable.ic_class_24dp).mutate();
+            drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
+            drawable.setColorFilter(Color.parseColor(recordGroup.getColor()), PorterDuff.Mode.MULTIPLY);
+            vh.recordGroupNameTV.setCompoundDrawables(drawable,null,null,null);
             vh.recordGroupNameTV.setText(recordGroup.getGroupName());
-            vh.up.setEnabled(vh.getAdapterPosition()!=0);
+            vh.up.setEnabled(vh.getAdapterPosition() != 0);
             vh.up.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -222,12 +270,13 @@ public class RecordGroupActivity extends AppCompatActivity {
             return mList.size();
         }
 
-        private class VH extends RecyclerView.ViewHolder{
+        private class VH extends RecyclerView.ViewHolder {
             private TextView recordGroupNameTV;
             private TextView up;
             private TextView down;
             private TextView del;
             private TextView rename;
+
             private VH(@NonNull View itemView) {
                 super(itemView);
                 recordGroupNameTV = itemView.findViewById(R.id.record_group_name_TV);

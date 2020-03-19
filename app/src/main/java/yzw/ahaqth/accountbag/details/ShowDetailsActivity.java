@@ -58,7 +58,7 @@ public class ShowDetailsActivity extends BaseActivity {
     private TextView recordTimeTV,modifyTimeTV;
     private ViewPager extraImageVP;
     private ViewPagerPointIndicator indicator;
-    private FrameLayout frameLayout;
+    private LinearLayout imageGroup;
     private Toolbar toolbar;
     private LinearLayout accountNameGroup,accPWDGroup;
     private ImageButton copyName,copyPWD,seePWD;
@@ -164,7 +164,7 @@ public class ShowDetailsActivity extends BaseActivity {
         seePWD = findViewById(R.id.show_account_pwd);
         extraImageVP = findViewById(R.id.extra_image_VP);
         indicator = findViewById(R.id.viewpagerIndicator);
-        frameLayout = findViewById(R.id.framelayout);
+        imageGroup = findViewById(R.id.imageGroup);
         spinner = findViewById(R.id.spinner);
     }
 
@@ -174,7 +174,7 @@ public class ShowDetailsActivity extends BaseActivity {
         final List<RecordGroup> list = new ArrayList<>();
         list.add(new RecordGroup("未分组"));
         list.addAll(GroupOperator.findAll(true));
-        spinner.setAdapter(new ArrayAdapter<RecordGroup>(this, R.layout.group_item, list));
+        spinner.setAdapter(new ArrayAdapter<RecordGroup>(this, R.layout.spinner_item, list));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -270,9 +270,9 @@ public class ShowDetailsActivity extends BaseActivity {
         }
         imageRecords = accountRecord.getImageRecords();
         if(imageRecords.size() == 0){
-            frameLayout.setVisibility(View.GONE);
+            imageGroup.setVisibility(View.GONE);
         }else {
-            frameLayout.setVisibility(View.VISIBLE);
+            imageGroup.setVisibility(View.VISIBLE);
             extraImageVP.setAdapter(new ImageAdapter());
             if (currentImageIndex > imageRecords.size() - 1) {
                 currentImageIndex = 0;

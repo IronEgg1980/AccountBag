@@ -97,7 +97,6 @@ public class ShowAllRecordActivity extends BaseActivity {
         };
         lbm.registerReceiver(addRecordBR,new IntentFilter("AddRecord"));
         lbm.registerReceiver(groupFlush,new IntentFilter("GroupFlush"));
-        readData();
     }
 
     @Override
@@ -105,6 +104,12 @@ public class ShowAllRecordActivity extends BaseActivity {
         super.onDestroy();
         lbm.unregisterReceiver(addRecordBR);
         lbm.unregisterReceiver(groupFlush);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        readData();
     }
 
     private void setupRecordGroup() {
@@ -153,19 +158,20 @@ public class ShowAllRecordActivity extends BaseActivity {
         groupList = new ArrayList<>();
         groupList.addAll(GroupOperator.findAll(true));
         random = new Random();
-        groupAdapter = new GroupAdapter(groupList);
+        groupAdapter = new GroupAdapter(this,groupList);
+        adapter = new RecordAdapter(list);
         groupAdapter.setItemClickListener(new ItemClickListener() {
             @Override
             public void click(int position, @Nullable Object... values) {
                 drawerLayout.closeDrawers();
+                appBarLayout.setExpanded(false);
                 RecordGroup recordGroup = groupList.get(position);
                 recordGroupId = recordGroup.getId();
                 title = recordGroup.getGroupName();
                 readData();
-                appBarLayout.setExpanded(false);
+                recyclerview.scrollToPosition(0);
             }
         });
-        adapter = new RecordAdapter(list);
         adapter.setClickListener(new ItemClickListener() {
             @Override
             public void click(int position, @Nullable Object... values) {
@@ -305,6 +311,7 @@ public class ShowAllRecordActivity extends BaseActivity {
         } else {
             recyclerview.addItemDecoration(dividerItemDecoration);
         }
+        adapter.notifyDataSetChanged();
     }
 
     private void deleRecord(final int position, final RecordAdapter.RecordVH recordVH) {
