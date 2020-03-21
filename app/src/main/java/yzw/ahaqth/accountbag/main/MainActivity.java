@@ -100,8 +100,6 @@ public class MainActivity extends BaseActivity {
                 scrollView.smoothScrollBy(0,250);
             }
         },100);
-//        scrollView.fullScroll(View.FOCUS_DOWN); // 底部
-//        scrollView.fullScroll(View.FOCUS_UP); // 顶部
     }
 
     public void update(){

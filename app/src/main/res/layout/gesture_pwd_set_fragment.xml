@@ -16,8 +16,8 @@
         app:touched_color="@color/colorPrimary"
         app:validate_failed_color="@android:color/holo_red_light"
         app:validate_success_color="@android:color/holo_green_light"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/set_gesturePWD_gestureView"
-        android:layout_below="@+id/set_gesturePWD_info_TV"/>
+        android:layout_gravity="center_horizontal"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:id="@+id/set_gesturePWD_gestureView"/>
 </LinearLayout>

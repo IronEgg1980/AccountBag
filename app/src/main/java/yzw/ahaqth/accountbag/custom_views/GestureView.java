@@ -32,7 +32,7 @@ public class GestureView extends RelativeLayout {
     private Handler handler;
     private GesturePoint[] gesturePoints;
     /*  mCount 每条边的个数 */
-    private int mCount = 4;
+    private int mCount = 3;
     /*  存储答案 */
     private String mAnswer = "";
     /* 保存选中point的id */
