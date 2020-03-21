@@ -14,7 +14,7 @@
         <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar"
             android:fitsSystemWindows="true"
-            android:layout_height="@dimen/app_bar_height"
+            android:layout_height="@dimen/height_appBar"
             android:layout_width="match_parent"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -144,7 +144,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:id="@+id/slide_menu_about"
-                        android:drawableLeft="@drawable/ic_info_18dp" />
+                        android:drawableLeft="@drawable/ic_info" />
                 </LinearLayout>
                 <TextView
                     style="@style/MenuItemTextViewStyle"
@@ -160,7 +160,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="密码验证方式"
-                    android:textColor="@color/titleTextColor"
+                    android:textColor="@color/colorTitleText"
                     android:textSize="12sp"/>
                 <TextView
                     style="@style/MenuItemTextViewStyle"
@@ -186,7 +186,7 @@
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:textSize="12sp"
-                        android:textColor="@color/titleTextColor"
+                        android:textColor="@color/colorTitleText"
                         android:text="分组查看"/>
                     <TextView
                         android:id="@+id/slide_menu_groupmanage"

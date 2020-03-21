@@ -1,8 +1,10 @@
 package yzw.ahaqth.accountbag.allrecords;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ import java.util.Random;
 
 import yzw.ahaqth.accountbag.EmptyVH;
 import yzw.ahaqth.accountbag.R;
+import yzw.ahaqth.accountbag.interfaces.DialogDismissListener;
 import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
 import yzw.ahaqth.accountbag.modules.AccountRecord;
 import yzw.ahaqth.accountbag.operators.RecordOperator;
@@ -31,7 +34,8 @@ import yzw.ahaqth.accountbag.tools.ToolUtils;
 
 public class DeleResumeAdapter extends RecyclerView.Adapter {
     private List<AccountRecord> list;
-    private Context mContext;
+//    private Context mContext;
+    private FragmentActivity mActivity;
     private ToastFactory toastFactory;
     private SimpleDateFormat simpleDateFormat;
     private ItemClickListener longClick;
@@ -41,11 +45,11 @@ public class DeleResumeAdapter extends RecyclerView.Adapter {
         this.longClick = longClick;
     }
 
-    public DeleResumeAdapter(Context context,List<AccountRecord> list){
+    public DeleResumeAdapter(FragmentActivity activity, List<AccountRecord> list){
         this.list = list;
-        this.mContext = context;
+        mActivity = activity;
         simpleDateFormat = new SimpleDateFormat("删除时间：yyyy年M月d日 HH:mm:ss", Locale.CHINA);
-        toastFactory = new ToastFactory(mContext);
+        toastFactory = new ToastFactory(activity);
     }
     @NonNull
     @Override
@@ -120,22 +124,19 @@ public class DeleResumeAdapter extends RecyclerView.Adapter {
             vh.clearBT.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new DialogFactory(mContext).showWarningDialog("删除确认", "是否彻底清除该项目？\n注意：清除后无法恢复！",
-                            "清除", new DialogInterface.OnClickListener() {
+                    DialogFactory.getConfirmDialog("是否彻底清除该项目？\n注意：清除后无法恢复！")
+                            .setDismissListener(new DialogDismissListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    RecordOperator.clear(list.get(vh.getAdapterPosition()));
-                                    list.remove(vh.getAdapterPosition());
-                                    notifyItemRemoved(vh.getAdapterPosition());
-                                    toastFactory.showCenterToast("已清除该项");
+                                public void onDismiss(boolean isConfirm, Object... valus) {
+                                    if(isConfirm){
+                                        RecordOperator.clear(list.get(vh.getAdapterPosition()));
+                                        list.remove(vh.getAdapterPosition());
+                                        notifyItemRemoved(vh.getAdapterPosition());
+                                        toastFactory.showCenterToast("已清除该项");
+                                    }
                                 }
-                            },
-                            "取消", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    vh.swipeMenuLayout.smoothClose();
-                                }
-                            });
+                            })
+                            .show(mActivity.getSupportFragmentManager(),"confirm");
                 }
             });
             vh.checkBox.setVisibility(View.GONE);

@@ -5,21 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:gravity="center_vertical"
-        android:text="    验证密码"
-        android:drawableLeft="@drawable/ic_lock_24dp"
+        style="@style/DialogTitleTextViewStyle"
+        android:text="验证密码"
+        android:drawableStart="@drawable/ic_lock_24dp"
         android:id="@+id/textview"/>
     <com.rengwuxian.materialedittext.MaterialEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
+        style="@style/CommonEditTextStyle"
         android:maxLength="20"
-        android:textSize="16sp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
         app:met_helperTextAlwaysShown="true"
         app:met_helperText="请输入密码"
         app:met_clearButton="true"
@@ -28,9 +20,7 @@
         app:met_primaryColor="@color/colorAccent"
         android:id="@+id/edittext"/>
     <android.support.design.button.MaterialButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        style="@style/CommonButtonStyle"
         android:id="@+id/button"
-        android:text="确定"/>
+        android:text="@string/confirm"/>
 </LinearLayout>

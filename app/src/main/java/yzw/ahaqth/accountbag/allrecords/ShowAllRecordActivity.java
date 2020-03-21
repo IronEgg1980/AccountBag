@@ -60,8 +60,9 @@ public class ShowAllRecordActivity extends BaseActivity {
     private long recordGroupId;
     private String title;
     private RecyclerView.ItemDecoration dividerItemDecoration;
-    private BroadcastReceiver groupFlush,addRecordBR;
+    private BroadcastReceiver groupFlush, addRecordBR;
     private LocalBroadcastManager lbm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,8 +96,8 @@ public class ShowAllRecordActivity extends BaseActivity {
                 recyclerview.scrollToPosition(list.size() - 1);
             }
         };
-        lbm.registerReceiver(addRecordBR,new IntentFilter("AddRecord"));
-        lbm.registerReceiver(groupFlush,new IntentFilter("GroupFlush"));
+        lbm.registerReceiver(addRecordBR, new IntentFilter("AddRecord"));
+        lbm.registerReceiver(groupFlush, new IntentFilter("GroupFlush"));
     }
 
     @Override
@@ -158,7 +159,7 @@ public class ShowAllRecordActivity extends BaseActivity {
         groupList = new ArrayList<>();
         groupList.addAll(GroupOperator.findAll(true));
         random = new Random();
-        groupAdapter = new GroupAdapter(this,groupList);
+        groupAdapter = new GroupAdapter(this, groupList);
         adapter = new RecordAdapter(list);
         groupAdapter.setItemClickListener(new ItemClickListener() {
             @Override
@@ -318,25 +319,24 @@ public class ShowAllRecordActivity extends BaseActivity {
         final AccountRecord record = list.get(position);
         if (record != null) {
             String message = "是否要删除【" + record.getRecordName() + "】？";
-            new DialogFactory(this).showWarningDialog("删除确认", message,
-                    "删除", new DialogInterface.OnClickListener() {
+            DialogFactory.getConfirmDialog(message)
+                    .setDismissListener(new DialogDismissListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onDismiss(boolean isConfirm, Object... valus) {
+                            if (isConfirm) {
 //                            for (ImageRecord imageRecord : record.getImageRecords()) {
 //                                ImageOperator.deleImageFile(imageRecord);
 //                            }
 //                            record.delete();
-                            RecordOperator.dele(record);
-                            list.remove(position);
-                            adapter.notifyItemRemoved(position);
+                                RecordOperator.dele(record);
+                                list.remove(position);
+                                adapter.notifyItemRemoved(position);
+                            }else{
+                                recordVH.closeMenu();
+                            }
                         }
-                    },
-                    "取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            recordVH.closeMenu();
-                        }
-                    });
+                    })
+                    .show(getSupportFragmentManager(),"confirmDele");
         }
     }
 }

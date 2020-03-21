@@ -36,6 +36,7 @@ import yzw.ahaqth.accountbag.BaseActivity;
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.custom_views.ViewPagerPointIndicator;
 import yzw.ahaqth.accountbag.inputoredit.InputOrEditRecordActivity;
+import yzw.ahaqth.accountbag.interfaces.DialogDismissListener;
 import yzw.ahaqth.accountbag.modules.AccountRecord;
 import yzw.ahaqth.accountbag.modules.ImageRecord;
 import yzw.ahaqth.accountbag.modules.RecordGroup;
@@ -110,12 +111,16 @@ public class ShowDetailsActivity extends BaseActivity {
         int itemId = item.getItemId();
         switch (itemId){
             case R.id.del:
-                new DialogFactory(this).showDefaultConfirmDialog("是否删除该项？", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        deleRecord();
-                    }
-                });
+                DialogFactory.getConfirmDialog("是否删除该项？")
+                        .setDismissListener(new DialogDismissListener() {
+                            @Override
+                            public void onDismiss(boolean isConfirm, Object... valus) {
+                                if(isConfirm){
+                                    deleRecord();
+                                }
+                            }
+                        })
+                        .show(getSupportFragmentManager(),"confirmDele");
                 break;
             case R.id.edit:
                 Intent intent = new Intent(ShowDetailsActivity.this, InputOrEditRecordActivity.class);

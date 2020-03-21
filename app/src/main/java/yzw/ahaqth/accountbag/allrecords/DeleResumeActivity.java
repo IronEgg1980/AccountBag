@@ -17,7 +17,9 @@ import java.util.List;
 
 import yzw.ahaqth.accountbag.BaseActivity;
 import yzw.ahaqth.accountbag.R;
+import yzw.ahaqth.accountbag.interfaces.DialogDismissListener;
 import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
+import yzw.ahaqth.accountbag.interfaces.NoDoubleClicker;
 import yzw.ahaqth.accountbag.modules.AccountRecord;
 import yzw.ahaqth.accountbag.operators.RecordOperator;
 import yzw.ahaqth.accountbag.tools.DialogFactory;
@@ -70,9 +72,9 @@ public class DeleResumeActivity extends BaseActivity {
         buttonGroup = findViewById(R.id.button_group);
         buttonGroup.setVisibility(View.GONE);
 //        infoGroup = findViewById(R.id.info_Group);
-        findViewById(R.id.resume_button).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.resume_button).setOnClickListener(new NoDoubleClicker() {
             @Override
-            public void onClick(View v) {
+            public void noDoubleClick(View v) {
                 adapter.resumeAll();
                 cancelMultiMode();
             }
@@ -80,15 +82,17 @@ public class DeleResumeActivity extends BaseActivity {
         findViewById(R.id.clear_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DialogFactory(DeleResumeActivity.this).showWarningDialog("删除确认", "是否彻底清除选中的项目？\n注意：清除后无法恢复！",
-                        "清除", new DialogInterface.OnClickListener() {
+                DialogFactory.getConfirmDialog( "是否彻底清除选中的项目？\n注意：清除后无法恢复！")
+                        .setDismissListener(new DialogDismissListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                adapter.clearAll();
-                                cancelMultiMode();
+                            public void onDismiss(boolean isConfirm, Object... valus) {
+                                if(isConfirm) {
+                                    adapter.clearAll();
+                                    cancelMultiMode();
+                                }
                             }
-                        },
-                        "取消", null);
+                        })
+                        .show(getSupportFragmentManager(),"confirm");
             }
         });
         findViewById(R.id.cancel_multiMode).setOnClickListener(new View.OnClickListener() {

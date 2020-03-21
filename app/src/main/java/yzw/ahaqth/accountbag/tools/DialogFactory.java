@@ -3,169 +3,113 @@ package yzw.ahaqth.accountbag.tools;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
+
+import java.util.Objects;
 
 import yzw.ahaqth.accountbag.R;
 import yzw.ahaqth.accountbag.interfaces.DialogClickListener;
+import yzw.ahaqth.accountbag.interfaces.DialogDismissListener;
+import yzw.ahaqth.accountbag.interfaces.NoDoubleClicker;
 
-public final class DialogFactory {
-    private Context context;
+public final class DialogFactory extends DialogFragment {
+    private String message = "";
+    private boolean isConfirmMode;
+    private View cancelView, confirmView;
+    private TextView messageTextView;
+    private DialogDismissListener dismissListener;
 
-    public DialogFactory(Context context){
-        this.context =context;
+    public DialogFactory setDismissListener(DialogDismissListener dismissListener) {
+        this.dismissListener = dismissListener;
+        return this;
     }
 
-//    private void setCommonAnim(Window window){
-//        if(window!=null)
-//            window.setWindowAnimations(R.style.CommonDialogAnim);
-//    }
-//    private void setSelectAnim(Window window){
-//        if(window!=null)
-//            window.setWindowAnimations(R.style.SelectDialogAnim);
-//    }
-
-    public void showInfoDialog(String message) {
-        Dialog dialog = new AlertDialog.Builder(context)
-                .setTitle("提示")
-                .setMessage(message)
-                .setIcon(R.drawable.ic_info_18dp)
-                .setNegativeButton("关闭", null)
-                .setCancelable(true)
-                .show();
-//        setCommonAnim(dialog.getWindow());
+    public static DialogFactory getConfirmDialog(String message) {
+        DialogFactory dialogFactory = new DialogFactory();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isConfirmMode", true);
+        bundle.putString("message", message);
+        dialogFactory.setArguments(bundle);
+        return dialogFactory;
     }
 
-    public void showInfoDialog(String message, DialogInterface.OnClickListener cancelClick) {
-        Dialog dialog = new AlertDialog.Builder(context)
-                .setTitle("提示")
-                .setMessage(message)
-                .setIcon(R.drawable.ic_info_18dp)
-                .setNegativeButton("关闭", cancelClick)
-                .setCancelable(true)
-                .show();
-//        setCommonAnim(dialog.getWindow());
+    public static DialogFactory getTipsDialog(String message) {
+        DialogFactory dialogFactory = new DialogFactory();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isConfirmMode", false);
+        bundle.putString("message", message);
+        dialogFactory.setArguments(bundle);
+        return dialogFactory;
     }
 
-    public void showWarningDialog(String title, String message,
-                                  String confirmText, DialogInterface.OnClickListener confirmClick,
-                                  String cancelText, DialogInterface.OnClickListener cancelClick) {
-        Dialog dialog =  new AlertDialog.Builder(context)
-                .setTitle(title)
-                .setMessage(message)
-                .setIcon(R.drawable.ic_warning_18dp)
-                .setPositiveButton(confirmText, confirmClick)
-                .setNegativeButton(cancelText, cancelClick)
-                .setCancelable(true)
-                .show();
-//        setCommonAnim(dialog.getWindow());
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            this.isConfirmMode = bundle.getBoolean("isConfirmMode");
+            this.message = bundle.getString("message");
+        }
     }
 
-    public void showDefaultConfirmDialog(String message, DialogInterface.OnClickListener confirmClick) {
-        showWarningDialog("请确认", message,
-                "确认", confirmClick,
-                "取消", null);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.dialog_confirm_or_tips_view, container, true);
+        cancelView = view.findViewById(R.id.cancelBT);
+        cancelView.setOnClickListener(new NoDoubleClicker() {
+            @Override
+            public void noDoubleClick(View v) {
+                if (dismissListener != null)
+                    dismissListener.onDismiss(false);
+                dismiss();
+            }
+        });
+        confirmView = view.findViewById(R.id.confirmBT);
+        confirmView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dismissListener != null)
+                    dismissListener.onDismiss(true);
+                dismiss();
+            }
+        });
+        confirmView.setVisibility(isConfirmMode ? View.VISIBLE : View.GONE);
+        messageTextView = view.findViewById(R.id.messageTV);
+        messageTextView.setText(message);
+        return view;
     }
 
-    public void showQuickSingleSelect(final View view, final String[] items) {
-        int checkedId = view.getTag() == null ? -1 : (int) view.getTag();
-        Dialog dialog = new AlertDialog.Builder(context)
-                .setTitle("请选择")
-                .setIcon(R.drawable.ic_info_18dp)
-                .setSingleChoiceItems(items, checkedId, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        view.setTag(which);
-                        TextView textView = (TextView) view;
-                        textView.setText(items[which]);
-                        dialog.dismiss();
-                    }
-                })
-                .setCancelable(true)
-                .show();
-//        setSelectAnim(dialog.getWindow());
-    }
-
-    public void showSingleSelect(final String[] items, final DialogClickListener confirmClick) {
-        Dialog dialog =  new AlertDialog.Builder(context)
-                .setTitle("请选择")
-                .setIcon(R.drawable.ic_info_18dp)
-                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        confirmClick.click(which);
-                    }
-                })
-                .setNegativeButton("关闭", null)
-                .setCancelable(true)
-                .show();
-//        setSelectAnim(dialog.getWindow());
-    }
-
-    public void showSingleSelectSaveIndex(final String[] items, int currentIndex,final DialogClickListener confirmClick) {
-        Dialog dialog =  new AlertDialog.Builder(context)
-                .setTitle("请选择")
-                .setIcon(R.drawable.ic_info_18dp)
-                .setSingleChoiceItems(items, currentIndex, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        confirmClick.click(which);
-                    }
-                })
-                .setNegativeButton("关闭", null)
-                .setCancelable(true)
-                .show();
-//        setSelectAnim(dialog.getWindow());
-    }
-
-    public void showSingleSelectWithConfirmButton(final String[] items, final DialogClickListener confirmClick) {
-        final int[] checkedId = {-1};
-        Dialog dialog =  new AlertDialog.Builder(context)
-                .setTitle("请选择")
-                .setIcon(R.drawable.ic_info_18dp)
-                .setSingleChoiceItems(items, checkedId[0], new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        checkedId[0] = which;
-                    }
-                })
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-                        if (checkedId[0] != -1)
-                            confirmClick.click(checkedId[0]);
-                    }
-                })
-                .setNegativeButton("取消", null)
-                .setCancelable(true)
-                .show();
-//        setSelectAnim(dialog.getWindow());
-    }
-
-    public void showMultiSelect(String[] items, final DialogClickListener confirmClick) {
-        final boolean[] checkItems = new boolean[items.length];
-        Dialog dialog =  new AlertDialog.Builder(context)
-                .setTitle("请选择")
-                .setIcon(R.drawable.ic_info_18dp)
-                .setMultiChoiceItems(items, checkItems, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        checkItems[which] = isChecked;
-                    }
-                })
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        confirmClick.click(checkItems);
-                    }
-                })
-                .setNegativeButton("取消", null)
-                .setCancelable(true)
-                .show();
-//        setSelectAnim(dialog.getWindow());
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            Window window = dialog.getWindow();
+            if (window != null) {
+                DisplayMetrics dm = new DisplayMetrics();
+                Objects.requireNonNull(getActivity()).getWindowManager().getDefaultDisplay().getMetrics(dm);
+                int width = (int) (dm.widthPixels * 0.75);
+                int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                window.setLayout(width, height);
+                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            }
+        }
     }
 }

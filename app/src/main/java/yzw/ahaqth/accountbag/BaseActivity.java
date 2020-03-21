@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
+    public static long firstClickTime;
     @Override
     public Resources getResources() {
         Resources resources = super.getResources();

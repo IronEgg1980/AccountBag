@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!--    <color name="colorPrimary">#257673</color>-->
-<!--    <color name="colorPrimaryDark">#257673</color>-->
-<!--    <color name="colorAccent">#f67210</color>-->
-<!--    <color name="colorExtraTextTitleBG">#f0f0f0</color>-->
-<!--    <color name="colorContentText">#222222</color>-->
-<!--    <color name="titleTextColor">#aaaaaa</color>-->
-<!--    <color name="contentTextColor">#555555</color>-->
-<!--    <color name="colorWhite">#ffffff</color>-->
     <color name="colorPrimary">#26587d</color>
     <color name="colorPrimaryDark">#26587d</color>
     <color name="colorAccent">#9eaad4</color>
-    <color name="toastShapeSolidColor">#c026587d</color>
 
-    <color name="colorExtraTextTitleBG">#f0f0f0</color>
-    <color name="colorContentText">#222222</color>
-    <color name="titleTextColor">#959595</color>
-    <color name="contentTextColor">#555555</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="colorRed">@android:color/holo_red_light</color>
+    <color name="colorGreen">@android:color/holo_green_light</color>
+
+    <color name="colorToastShapeBG">@color/colorPrimary</color>
+    <color name="colorDialogShapeBG">@color/colorWhite</color>
+    <color name="colorExtraTextTitleBG">#f0f0f0</color>
+    <color name="colorCommonViewBG">?android:attr/colorBackground</color>
+    <color name="colorContentViewBG">@color/colorWhite</color>
+    <color name="colorButtonBG">@color/colorPrimary</color>
+
+    <color name="colorDivider">#efefef</color>
+
+    <color name="colorTitleText">@color/colorPrimary</color>
+    <color name="colorContentText">#666666</color>
+    <color name="colorUnusedText">#cfcfcf</color>
 </resources>

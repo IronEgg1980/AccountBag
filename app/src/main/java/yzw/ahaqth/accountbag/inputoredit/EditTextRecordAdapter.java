@@ -2,6 +2,7 @@ package yzw.ahaqth.accountbag.inputoredit;
 
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,18 +13,21 @@ import android.widget.TextView;
 import java.util.List;
 
 import yzw.ahaqth.accountbag.R;
+import yzw.ahaqth.accountbag.interfaces.DialogDismissListener;
 import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
 import yzw.ahaqth.accountbag.modules.TextRecord;
 import yzw.ahaqth.accountbag.tools.DialogFactory;
 
 public class EditTextRecordAdapter extends RecyclerView.Adapter<EditTextRecordAdapter.TextRecordVH> {
     private List<TextRecord> mList;
+    private FragmentActivity mActivity;
     public void setEditClickListener(ItemClickListener editClickListener) {
         this.editClickListener = editClickListener;
     }
     private ItemClickListener editClickListener;
-    public EditTextRecordAdapter(List<TextRecord> list){
-        this.mList = list;
+    public EditTextRecordAdapter(FragmentActivity activity, List<TextRecord> list){
+        mActivity = activity;
+        mList = list;
     }
     @NonNull
     @Override
@@ -40,15 +44,19 @@ public class EditTextRecordAdapter extends RecyclerView.Adapter<EditTextRecordAd
             @Override
             public void onClick(View v) {
                 final int position = textRecordVH.getAdapterPosition();
-                new DialogFactory(textRecordVH.extraTextKeyTV.getContext()).showDefaultConfirmDialog("是否立即移除该项？", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        record.delete();
-                        mList.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position,getItemCount() - position);
-                    }
-                });
+                DialogFactory.getConfirmDialog("是否立即移除该项？")
+                        .setDismissListener(new DialogDismissListener() {
+                            @Override
+                            public void onDismiss(boolean isConfirm, Object... valus) {
+                                if(isConfirm){
+                                    record.delete();
+                                    mList.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position,getItemCount() - position);
+                                }
+                            }
+                        })
+                        .show(mActivity.getSupportFragmentManager(),"confirmRemove");
             }
         });
         textRecordVH.extraTextContentTV.setText(record.getContent());

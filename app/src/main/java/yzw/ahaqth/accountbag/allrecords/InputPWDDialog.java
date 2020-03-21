@@ -83,7 +83,7 @@ public class InputPWDDialog extends DialogFragment {
         if(dialog != null){
             DisplayMetrics dm = new DisplayMetrics();
             Objects.requireNonNull(getActivity()).getWindowManager().getDefaultDisplay().getMetrics(dm);
-            int width = (int) (dm.widthPixels * 0.9);
+            int width = (int) (dm.widthPixels * 0.75);
             int height = ViewGroup.LayoutParams.WRAP_CONTENT;
             Window window = dialog.getWindow();
             if(window!=null){

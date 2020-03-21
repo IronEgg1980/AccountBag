@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="app_bar_height">280dp</dimen>
-    <dimen name="toast_shape_radius">12dp</dimen>
+    <dimen name="height_appBar">280dp</dimen>
+
+    <dimen name="dividerMargin">4dp</dimen>
+
+    <dimen name="radius_toastShape">12dp</dimen>
+    <dimen name="radius_dialogShape">8dp</dimen>
+
+    <dimen name="padding_M">8dp</dimen>
+    <dimen name="padding_S">4dp</dimen>
+    <dimen name="padding_L">16dp</dimen>
+
+    <dimen name="textsize_S">12sp</dimen>
+    <dimen name="textsize_M">16sp</dimen>
+    <dimen name="textsize_L">20sp</dimen>
+    <dimen name="textsize_XL">24sp</dimen>
+    <dimen name="textsize_XXL">32sp</dimen>
 </resources>

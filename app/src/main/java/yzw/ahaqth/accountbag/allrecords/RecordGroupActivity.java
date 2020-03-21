@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.List;
 
 import yzw.ahaqth.accountbag.R;
+import yzw.ahaqth.accountbag.interfaces.DialogDismissListener;
 import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
 import yzw.ahaqth.accountbag.modules.RecordGroup;
 import yzw.ahaqth.accountbag.operators.GroupOperator;
@@ -176,22 +177,25 @@ public class RecordGroupActivity extends AppCompatActivity {
     private void del(final int position) {
         final RecordGroup recordGroup = mList.get(position);
         String s = "是否删除【" + recordGroup.getGroupName() + "】？";
-        new DialogFactory(RecordGroupActivity.this)
-                .showDefaultConfirmDialog(s, new DialogInterface.OnClickListener() {
+        DialogFactory.getConfirmDialog(s)
+                .setDismissListener(new DialogDismissListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        GroupOperator.dele(recordGroup);
-                        mList.remove(position);
-                        adapter.notifyDataSetChanged();
+                    public void onDismiss(boolean isConfirm, Object... valus) {
+                        if(isConfirm){
+                            GroupOperator.dele(recordGroup);
+                            mList.remove(position);
+                            adapter.notifyDataSetChanged();
 //                        adapter.notifyItemRemoved(position);
 //                        adapter.notifyItemRangeChanged(position,adapter.getItemCount() - position);
-                        for (int i = position; i < mList.size(); i++) {
-                            RecordGroup recordGroup = mList.get(i);
-                            recordGroup.setSortIndex(i);
-                            GroupOperator.save(recordGroup);
+                            for (int i = position; i < mList.size(); i++) {
+                                RecordGroup recordGroup = mList.get(i);
+                                recordGroup.setSortIndex(i);
+                                GroupOperator.save(recordGroup);
+                            }
                         }
                     }
-                });
+                })
+                .show(getSupportFragmentManager(),"confirmDele");
     }
 
     private void edit(int position) {

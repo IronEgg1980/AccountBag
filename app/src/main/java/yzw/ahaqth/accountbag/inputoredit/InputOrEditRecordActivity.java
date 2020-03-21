@@ -199,14 +199,14 @@ public class InputOrEditRecordActivity extends BaseActivity {
         }
         textRecords = accountRecord.getTextRecords();
         imageRecords = accountRecord.getImageRecords();
-        textRecordAdapter = new EditTextRecordAdapter(textRecords);
+        textRecordAdapter = new EditTextRecordAdapter(this,textRecords);
         textRecordAdapter.setEditClickListener(new ItemClickListener() {
             @Override
             public void click(int position, @Nullable Object... values) {
                 editExtraTextRecord(position);
             }
         });
-        imagRecordAdapter = new EditImagRecordAdapter(imageRecords);
+        imagRecordAdapter = new EditImagRecordAdapter(this,imageRecords);
         extraTextRLV.setAdapter(textRecordAdapter);
         extraImageRLV.setAdapter(imagRecordAdapter);
     }

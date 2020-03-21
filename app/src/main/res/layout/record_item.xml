@@ -67,7 +67,7 @@
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:text="  0"
-                    android:textColor="@color/titleTextColor" />
+                    android:textColor="@color/colorTitleText" />
 
                 <TextView
                     android:id="@+id/image_extra_TV"
@@ -78,7 +78,7 @@
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:text="  2"
-                    android:textColor="@color/titleTextColor" />
+                    android:textColor="@color/colorTitleText" />
             </LinearLayout>
 
         </LinearLayout>

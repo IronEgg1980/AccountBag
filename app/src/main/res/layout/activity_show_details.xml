@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="备注："
-                android:textColor="@color/titleTextColor"
+                android:textColor="@color/colorTitleText"
                 android:textSize="11sp" />
             <LinearLayout
                 android:layout_marginStart="12dp"
@@ -48,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="分组："
-                    android:textColor="@color/titleTextColor"
+                    android:textColor="@color/colorTitleText"
                     android:textSize="11sp" />
                 <Spinner
                     android:layout_width="match_parent"
@@ -183,7 +183,7 @@
                 android:paddingTop="8dp"
                 android:paddingEnd="8dp"
                 android:text="创建时间：2019年12月12日 19:00:00"
-                android:textColor="@color/titleTextColor"
+                android:textColor="@color/colorTitleText"
                 android:textSize="11sp" />
 
             <TextView
@@ -194,7 +194,7 @@
                 android:paddingEnd="8dp"
                 android:paddingBottom="8dp"
                 android:text="最近修改：2019年12月12日 19:00:00"
-                android:textColor="@color/titleTextColor"
+                android:textColor="@color/colorTitleText"
                 android:textSize="11sp" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

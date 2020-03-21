@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class FileOperator {
+    public static String ERROR_LOG_SAVE_DIR = Environment.getExternalStorageDirectory() + File.separator + "AccountBagErrorLog";
     public static File cacheDir;
     public static File fileDir;
     public static File externalCacheDir;

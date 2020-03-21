@@ -6,16 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:drawableLeft="@drawable/ic_text_18dp"
+        style="@style/DialogTitleTextViewStyle"
+        android:drawableStart="@drawable/ic_text_18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/textview1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:textSize="20sp"
-        android:textColor="@color/colorPrimary"
         android:text="文本信息"/>
 
     <com.rengwuxian.materialedittext.MaterialEditText

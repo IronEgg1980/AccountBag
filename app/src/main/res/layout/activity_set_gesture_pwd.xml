@@ -25,6 +25,5 @@
         app:validate_success_color="@android:color/holo_green_light"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/set_gesturePWD_gestureView"
-        android:layout_below="@+id/set_gesturePWD_info_TV"/>
+        android:id="@+id/set_gesturePWD_gestureView"/>
 </LinearLayout>

@@ -20,8 +20,6 @@ import yzw.ahaqth.accountbag.interfaces.ItemClickListener;
 import yzw.ahaqth.accountbag.tools.ToolUtils;
 
 public class SelectColorFlagPopWin extends PopupWindow {
-    private int[] imageId = {R.id.imageView1,R.id.imageView2,R.id.imageView3,R.id.imageView4,
-            R.id.imageView5,R.id.imageView6,R.id.imageView7,R.id.imageView8};
     private List<ImageView> imageViewList;
     private List<Drawable> drawables;
     private String[] colors = new String[8];
@@ -37,6 +35,8 @@ public class SelectColorFlagPopWin extends PopupWindow {
         drawables = new ArrayList<>();
         for(int i = 0;i<8;i++){
             colors[i] = ToolUtils.getRandomColor(0xFF);
+            int[] imageId = {R.id.imageView1, R.id.imageView2, R.id.imageView3, R.id.imageView4,
+                    R.id.imageView5, R.id.imageView6, R.id.imageView7, R.id.imageView8};
             ImageView imageView = contentView.findViewById(imageId[i]);
             imageViewList.add(imageView);
             Drawable origin = context.getDrawable(R.drawable.ic_class_24dp);

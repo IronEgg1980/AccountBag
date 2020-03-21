@@ -8,26 +8,78 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="DialogTitleTextViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">@dimen/padding_M</item>
+        <item name="android:paddingTop">@dimen/padding_M</item>
+        <item name="android:paddingBottom">@dimen/padding_M</item>
+        <item name="android:paddingStart">@dimen/padding_M</item>
+        <item name="android:paddingEnd">@dimen/padding_M</item>
+        <item name="android:textSize">@dimen/textsize_L</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorTitleText</item>
+    </style>
+
+    <style name="DialogMessageTextViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/padding_L</item>
+        <item name="android:paddingBottom">@dimen/padding_L</item>
+        <item name="android:paddingStart">@dimen/padding_L</item>
+        <item name="android:paddingEnd">@dimen/padding_L</item>
+        <item name="android:textSize">@dimen/textsize_M</item>
+        <item name="android:textColor">@color/colorContentText</item>
+        <item name="android:drawablePadding">@dimen/padding_S</item>
+    </style>
+
+    <style name="CommonButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">@dimen/padding_M</item>
+        <item name="android:paddingEnd">@dimen/padding_M</item>
+        <item name="android:paddingTop">@dimen/padding_S</item>
+        <item name="android:paddingBottom">@dimen/padding_S</item>
+        <item name="android:textSize">@dimen/textsize_M</item>
+        <item name="android:layout_marginStart">@dimen/padding_M</item>
+        <item name="android:layout_marginEnd">@dimen/padding_M</item>
+        <item name="android:layout_marginTop">@dimen/padding_M</item>
+        <item name="android:layout_marginBottom">@dimen/padding_M</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DialogConfirmButtonStyle" parent="CommonButtonStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="CommonEditTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/textsize_M</item>
+        <item name="android:layout_marginStart">@dimen/padding_M</item>
+        <item name="android:layout_marginEnd">@dimen/padding_M</item>
+        <item name="android:layout_marginTop">@dimen/padding_M</item>
+        <item name="android:layout_marginBottom">@dimen/padding_M</item>
+    </style>
+
     <style name="ToolBarStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">56dp</item>
         <item name="android:background">@color/colorPrimary</item>
     </style>
-    <style name="RecordItemTitleTextViewStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/titleTextColor</item>
-        <item name="android:paddingLeft">8dp</item>
-        <item name="android:paddingRight">8dp</item>
-        <item name="android:paddingTop">4dp</item>
-        <item name="android:paddingBottom">4dp</item>
+
+    <style name="RecordItemTitleTextViewStyle" parent="DialogTitleTextViewStyle">
+        <item name="android:textSize">@dimen/textsize_S</item>
         <item name="android:background">@color/colorExtraTextTitleBG</item>
     </style>
+
     <style name="RecordItemContentTextViewStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/contentTextColor</item>
+        <item name="android:textColor">@color/colorContentText</item>
         <item name="android:padding">12dp</item>
     </style>
     <style name="GroupShapeStyle">
@@ -64,6 +116,10 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:drawablePadding">20dp</item>
     </style>
+
+
+
+
 
     <attr name="not_touched_color" format="color"/>
     <attr name="touched_color" format = "color"/>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_shape">
+
+    <TextView
+        android:id="@+id/messageTV"
+        style="@style/DialogMessageTextViewStyle"
+        android:layout_width="0dp"
+        android:text="测试文字"
+        android:layout_marginBottom="@dimen/padding_L"
+        app:layout_constraintBottom_toTopOf="@id/dividerH"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/dividerMargin"
+        android:layout_marginEnd="@dimen/dividerMargin"
+        android:background="@color/colorDivider"
+        android:id="@+id/dividerH"
+        app:layout_constraintBottom_toTopOf="@id/linear1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/linear1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/cancelBT"
+            style="@style/DialogConfirmButtonStyle"
+            android:text="@string/close"
+            android:textColor="@color/colorRed"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorDivider"
+            android:layout_marginTop="@dimen/dividerMargin"
+            android:layout_marginBottom="@dimen/dividerMargin"/>
+
+        <TextView
+            android:id="@+id/confirmBT"
+            style="@style/DialogConfirmButtonStyle"
+            android:text="@string/confirm"
+            android:textColor="@color/colorPrimary"/>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

@@ -25,7 +25,7 @@
                 android:icon="@drawable/delete_24dp"/>
             <item android:id="@+id/setup_about"
                 android:title="关于APP"
-                android:icon="@drawable/ic_info_18dp"/>
+                android:icon="@drawable/ic_info"/>
         </menu>
     </item>
 </menu>
