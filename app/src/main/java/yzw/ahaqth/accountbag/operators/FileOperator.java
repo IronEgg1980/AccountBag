@@ -4,12 +4,15 @@ import android.content.Context;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import org.json.JSONException;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public final class FileOperator {
-    public static String ERROR_LOG_SAVE_DIR = Environment.getExternalStorageDirectory() + File.separator + "AccountBagErrorLog";
+    public final static String BACKUP_FILE_ENDNAME = ".bak";
+    public final static String ERROR_LOG_SAVE_DIR = Environment.getExternalStorageDirectory() + File.separator + "AccountBagErrorLog";
     public static File cacheDir;
     public static File fileDir;
     public static File externalCacheDir;
@@ -28,7 +31,8 @@ public final class FileOperator {
         compressedImageDir = new File(externalCacheDir,"image_compressed");
         externalFileDir = context.getExternalFilesDir(null);
         sdCardDir = Environment.getExternalStorageDirectory();
-        imageDir = new File(externalFileDir, "images/" + SetupOperator.getPhoneId());
+//        imageDir = new File(externalFileDir, "images" +File.separator+ SetupOperator.getPhoneId());
+        imageDir = new File(externalFileDir, "images");
         backupDir = new File(Environment.getExternalStorageDirectory() + File.separator + "yzw.ahaqth.accountbag" + File.separator + "Backup");
         createDirs(imageDir,imageCacheDir,compressedImageDir,backupDir);
         clearFiles(cacheDir);
@@ -53,6 +57,18 @@ public final class FileOperator {
             files[i] = new File(dir[i]);
         }
         createDirs(files);
+    }
+
+    public static String[] getBackupFiles(){
+        return getFileList(backupDir,BACKUP_FILE_ENDNAME);
+    }
+
+    public static File backupImageFiles(){
+        return null;
+    }
+
+    public static void backupData() throws JSONException{
+
     }
 
     public static String[] getFileList(File path, String endName) {

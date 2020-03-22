@@ -7,9 +7,10 @@
     <dimen name="radius_toastShape">12dp</dimen>
     <dimen name="radius_dialogShape">8dp</dimen>
 
-    <dimen name="padding_M">8dp</dimen>
     <dimen name="padding_S">4dp</dimen>
+    <dimen name="padding_M">8dp</dimen>
     <dimen name="padding_L">16dp</dimen>
+    <dimen name="padding_XL">32dp</dimen>
 
     <dimen name="textsize_S">12sp</dimen>
     <dimen name="textsize_M">16sp</dimen>

@@ -74,4 +74,13 @@
         app:cornerRadius="8dp"
         app:rippleColor="@color/colorWhite"
         />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_L"
+        android:textSize="@dimen/textsize_M"
+        android:textColor="@color/colorTitleText"
+        android:gravity="end"
+        android:text="从备份数据恢复账户"
+        android:id="@+id/resume_account_TV"/>
 </LinearLayout>

@@ -1,5 +1,6 @@
 package yzw.ahaqth.accountbag.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
@@ -13,9 +14,12 @@ import java.util.List;
 
 import yzw.ahaqth.accountbag.BaseActivity;
 import yzw.ahaqth.accountbag.R;
+import yzw.ahaqth.accountbag.allrecords.SetGesturePWDActivity;
+import yzw.ahaqth.accountbag.interfaces.DialogDismissListener;
 import yzw.ahaqth.accountbag.modules.AccountRecord;
 import yzw.ahaqth.accountbag.operators.RecordOperator;
 import yzw.ahaqth.accountbag.operators.SetupOperator;
+import yzw.ahaqth.accountbag.tools.DialogFactory;
 import yzw.ahaqth.accountbag.tools.ToastFactory;
 import yzw.ahaqth.accountbag.tools.ToolUtils;
 
@@ -34,8 +38,8 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
+    protected void onStart() {
+        super.onStart();
         int mode = SetupOperator.getInputPassWordMode();
         if(TextUtils.isEmpty(SetupOperator.getUserName())) {
             initial();
@@ -90,7 +94,22 @@ public class MainActivity extends BaseActivity {
     }
 
     public void changeToSetGesturePWD(){
-        fragmentManager.beginTransaction().replace(R.id.fragment_group,new GesturePWDSetFragmet()).commit();
+        startActivity(new Intent(MainActivity.this, SetGesturePWDActivity.class));
+    }
+
+    public void onFirstRunFinished(){
+        DialogFactory.getConfirmDialog("用户名和密码设置成功！是否现在设置手势密码？")
+                .setDismissListener(new DialogDismissListener() {
+                    @Override
+                    public void onDismiss(boolean isConfirm, Object... valus) {
+                        if(isConfirm){
+                            changeToSetGesturePWD();
+                        }else{
+                            changeToInputMode();
+                        }
+                    }
+                })
+                .show(getSupportFragmentManager(),"confirm");
     }
 
     public void scrollToBottom(){

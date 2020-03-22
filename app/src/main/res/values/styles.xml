@@ -24,10 +24,10 @@
     <style name="DialogMessageTextViewStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">@dimen/padding_L</item>
-        <item name="android:paddingBottom">@dimen/padding_L</item>
-        <item name="android:paddingStart">@dimen/padding_L</item>
-        <item name="android:paddingEnd">@dimen/padding_L</item>
+        <item name="android:paddingTop">@dimen/padding_XL</item>
+        <item name="android:paddingBottom">@dimen/padding_XL</item>
+        <item name="android:paddingStart">@dimen/padding_XL</item>
+        <item name="android:paddingEnd">@dimen/padding_XL</item>
         <item name="android:textSize">@dimen/textsize_M</item>
         <item name="android:textColor">@color/colorContentText</item>
         <item name="android:drawablePadding">@dimen/padding_S</item>

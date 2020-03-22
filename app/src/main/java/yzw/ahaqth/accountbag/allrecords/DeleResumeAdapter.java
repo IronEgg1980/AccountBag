@@ -6,6 +6,9 @@ import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,9 +85,11 @@ public class DeleResumeAdapter extends RecyclerView.Adapter {
         vh.nameTV.setText(accountRecord.getRecordName());
         long deleTime = accountRecord.getDeleTime();
         int remainDay = 30 - (int) ((System.currentTimeMillis() - deleTime) / ToolUtils.ONE_DAY_MILLES);
-        String s = remainDay+"天后自动清除";
+        String s = remainDay+"天";
+        SpannableString spannableString = new SpannableString(s);
+        spannableString.setSpan(new RelativeSizeSpan(0.4f),s.length() - 1,s.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         vh.delTimeTV.setText(simpleDateFormat.format(deleTime));
-        vh.remainDayTV.setText(s);
+        vh.remainDayTV.setText(spannableString);
         if(accountRecord.isMultiMode){
             vh.checkBox.setVisibility(View.VISIBLE);
             vh.checkBox.setChecked(accountRecord.isSeleted);

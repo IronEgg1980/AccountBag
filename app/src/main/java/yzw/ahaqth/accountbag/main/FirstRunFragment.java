@@ -101,22 +101,6 @@ public class FirstRunFragment extends Fragment {
         }
         SetupOperator.saveUserName(userName);
         SetupOperator.savePassWord(s1);
-//        InputMethodManager manager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//        manager.hideSoftInputFromWindow(appPwdConfirmET.getWindowToken(),0);
-//        activity.changeToSetGesturePWD();
-        DialogFactory.getConfirmDialog("用户名和密码设置成功！是否现在设置手势密码？")
-                .setDismissListener(new DialogDismissListener() {
-                    @Override
-                    public void onDismiss(boolean isConfirm, Object... valus) {
-                        if(isConfirm){
-                            InputMethodManager manager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                            manager.hideSoftInputFromWindow(appPwdConfirmET.getWindowToken(),0);
-                            activity.changeToSetGesturePWD();
-                        }else{
-                            activity.changeToInputMode();
-                        }
-                    }
-                })
-                .show(activity.getSupportFragmentManager(),"confirm");
+        activity.onFirstRunFinished();
     }
 }
